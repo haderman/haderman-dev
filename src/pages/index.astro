@@ -1,14 +1,44 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import linkedinSVG from "../icons/linkedin.svg?raw";
-import xSVG from "../icons/x.svg?raw";
-import githubSVG from "../icons/github.svg?raw";
-import mailSVG from "../icons/mail.svg?raw";
+import { Image } from 'astro:assets';
+
+import Layout from '../layouts/Layout.astro';
+import linkedinSVG from '../icons/linkedin.svg?raw';
+import xSVG from '../icons/x.svg?raw';
+import githubSVG from '../icons/github.svg?raw';
+import mailSVG from '../icons/mail.svg?raw';
+import imgMainSrc from '../images/main.jpeg';
+import imgProjectCovidSrc from '../images/covid.png';
+
+import '../styles/root.css';
+
+const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
 ---
 
 <Layout title="Haderman - home">
-  <main>
-    <article>
+  <header class="header-page">
+    <nav>
+      <a href="#">Blog</a>
+    </nav>
+  </header>
+  <main class="bento">
+    <article data-area="profile" class="card">
+      <header class="">
+        <i></i>
+        <div>
+          <span>Hi, I'm Header</span>
+          <span>Frontend developer</span>
+        </div>
+      </header>
+      <h1>Passionate to pursue the technology</h1>
+      <p>
+        I enjoy learning new things and try to overcome new
+        challenges while analyzing how I improved through them.
+      </p>
+    </article>
+    <article data-area="photo" class="card">
+      <Image src={imgMainSrc} alt="Main Image" />
+    </article>
+    <article data-area="contact" class="card">
       <a href="https://x.com/haderman7" target="_blank">
         <Fragment set:html={xSVG} />
       </a>
@@ -18,47 +48,157 @@ import mailSVG from "../icons/mail.svg?raw";
       <a href="mailto:cardona.hader@gmail.com">
         <Fragment set:html={mailSVG} />
       </a>
+      <a href="https://www.linkedin.com/in/hader-cardona/">
+        <Fragment set:html={linkedinSVG} />
+      </a>
+    </article>
+    <article data-area="project-alan" class="card">
+      <img src={projectAlanImage} alt="Project Alan" />
+      <div>
+        <h2>Project Alan</h2>
+        <p>Project Alan description</p>
+      </div>
+    </article>
+    <article data-area="project-covid" class="card">
+      <Image src={imgProjectCovidSrc} alt="Project Covid" />
+      <div>
+        <h2>Project Covid</h2>
+        <p>Project Covid description</p>
+      </div>
     </article>
   </main>
+  <footer>
+
+  </footer>
 </Layout>
 
 <style is:global>
-  main {
-    padding: 1rem;
-    width: 100%;
-    height: 100%;
-    color: white;
-    font-size: 20px;
-    line-height: 1.6;
+  body {
+    padding: var(--fluid-4);
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    gap: var(--fluid-4);
+  }
+
+  .header-page {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--fluid-2);
+  }
+
+  main {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
+    grid-template-areas:
+      "profile profile profile photo"
+      "profile profile profile contact"
+      "project-alan project-alan project-covid project-covid"
+      "project-c project-c project-d project-d";
   }
 
   article {
+    position: relative;
+
+    img {
+      width: 100%;
+      height: auto;
+    }
+
+    &[data-area="profile"] {
+      grid-area: profile;
+    }
+
+    &[data-area="photo"] {
+      grid-area: photo;
+    }
+
+    &[data-area="contact"] {
+      grid-area: contact;
+    }
+
+    &[data-area="project-alan"] {
+      grid-area: project-alan;
+    }
+
+    &[data-area="project-covid"] {
+      grid-area: project-covid;
+    }
+
+    &[data-area="project-c"] {
+      grid-area: project-c;
+    }
+
+    &[data-area="project-d"] {
+      grid-area: project-d;
+    }
+  }
+
+  .card {
+    --rad: var(--fluid-1);
+
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.5rem 2rem;
-    border-radius: 1rem;
-    /* background: black; */
-  }
+    border: 1px solid gray;
+    border-radius: var(--rad);
+    overflow: hidden;
 
-  a {
-    text-decoration: none;
-    display: flex;
-    color: white;
-  }
+    a {
+      display: flex;
+      align-items: center;
+    }
 
-  a:hover {
-    color: hsl(210 40% 33%);
-  }
+    h1 {
+      max-inline-size: 25ch;
+    }
 
-  svg {
-    width: 48px;
-    height: 48px;
-    stroke-width: 0.5;
-    stroke: currentColor;
+    &[data-area="profile"] {
+      flex-direction: column;
+      gap: var(--fluid-2);
+      padding: var(--fluid-3);
+    }
+
+    &[data-area="photo"] {
+      justify-content: center;
+    }
+
+    &[data-area="contact"] {
+      justify-content: space-between;
+      border: none;
+
+      a {
+        padding: var(--fluid-0);
+        border-radius: var(--rad);
+        border: 1px solid gray;
+      }
+    }
+
+    &[data-area="project-alan"],
+    &[data-area="project-covid"],
+    &[data-area="project-c"],
+    &[data-area="project-d"] {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      div {
+        position: absolute;
+        bottom: 0;
+        padding: var(--fluid-2);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--fluid-0);
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    }
   }
 </style>

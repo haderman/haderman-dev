@@ -112,7 +112,7 @@
 p {
   max-inline-size: var(--measure);
   text-wrap: pretty;
-  max-width: 60ch;
+  max-width: 50ch;
 }
 
 :where(html, body) {

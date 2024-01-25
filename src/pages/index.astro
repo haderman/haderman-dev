@@ -8,6 +8,7 @@ import githubSVG from '../icons/github.svg?raw';
 import mailSVG from '../icons/mail.svg?raw';
 import imgMainSrc from '../images/main.jpeg';
 import imgProjectCovidSrc from '../images/covid.png';
+import imgProfileSrc from '../images/profile.png';
 
 import '../styles/root.css';
 
@@ -29,28 +30,34 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
           <span>Frontend developer</span>
         </div>
       </header>
-      <h1>Passionate to pursue the technology</h1>
+      <h1>Enthusiastic about technology</h1>
       <p>
-        I enjoy learning new things and try to overcome new
-        challenges while analyzing how I improved through them.
+        I am committed to continuous learning and embracing challenges,
+        always with an eye on self-improvement and grateful for the journey.
       </p>
     </article>
     <article data-area="photo" class="card">
-      <Image src={imgMainSrc} alt="Main Image" />
+      <Image src={imgProfileSrc} alt="Main Image" />
     </article>
     <article data-area="contact" class="card">
-      <a href="https://x.com/haderman7" target="_blank">
-        <Fragment set:html={xSVG} />
-      </a>
-      <a href="https://github.com/haderman" target="_blank">
-        <Fragment set:html={githubSVG} />
-      </a>
-      <a href="mailto:cardona.hader@gmail.com">
-        <Fragment set:html={mailSVG} />
-      </a>
-      <a href="https://www.linkedin.com/in/hader-cardona/">
-        <Fragment set:html={linkedinSVG} />
-      </a>
+      <div class="contact-container">
+        <a href="https://x.com/haderman7" target="_blank">
+          <Fragment set:html={xSVG} />
+          <span>Twitter</span>
+        </a>
+        <a href="https://github.com/haderman" target="_blank">
+          <Fragment set:html={githubSVG} />
+          <span>Github</span>
+        </a>
+        <a href="mailto:cardona.hader@gmail.com">
+          <Fragment set:html={mailSVG} />
+          <span>Mail</span>
+        </a>
+        <a href="https://www.linkedin.com/in/hader-cardona/">
+          <Fragment set:html={linkedinSVG} />
+          <span>Linkedin</span>
+        </a>
+      </div>
     </article>
     <article data-area="project-alan" class="card">
       <img src={projectAlanImage} alt="Project Alan" />
@@ -74,11 +81,15 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
 <style is:global>
   body {
-    padding: var(--fluid-4);
+    padding: var(--fluid-0);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--fluid-4);
+
+    @media screen and (min-width: 768px){
+      padding: var(--fluid-4);
+    }
   }
 
   .header-page {
@@ -96,13 +107,23 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
   .bento {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fluid-3);
     grid-template-areas:
-      "profile profile profile photo"
-      "profile profile profile contact"
-      "project-alan project-alan project-covid project-covid"
-      "project-c project-c project-d project-d";
+      "profile profile"
+      "contact contact"
+      "project-alan project-alan"
+      "project-covid project-covid";
+
+    @media screen and (min-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-areas:
+        "profile profile profile photo"
+        "profile profile profile contact"
+        "project-alan project-alan project-covid project-covid";
+
+    }
   }
 
   article {
@@ -111,6 +132,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     img {
       width: 100%;
       height: auto;
+      object-fit: cover;
     }
 
     &[data-area="profile"] {
@@ -119,6 +141,11 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="photo"] {
       grid-area: photo;
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: flex;
+      }
     }
 
     &[data-area="contact"] {
@@ -146,7 +173,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     --rad: var(--fluid-1);
 
     display: flex;
-    border: 1px solid gray;
     border-radius: var(--rad);
     overflow: hidden;
 
@@ -156,34 +182,33 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     }
 
     h1 {
-      max-inline-size: 25ch;
+      max-inline-size: 20ch;
     }
 
     &[data-area="profile"] {
       flex-direction: column;
       gap: var(--fluid-2);
       padding: var(--fluid-3);
+      background-color: lch(4 1.5 210 / 0.7);
+      border: 1px solid lch(10 1.5 210);
     }
 
     &[data-area="photo"] {
       justify-content: center;
-    }
 
-    &[data-area="contact"] {
-      justify-content: space-between;
-      border: none;
-
-      a {
-        padding: var(--fluid-0);
-        border-radius: var(--rad);
-        border: 1px solid gray;
+      img {
+        filter: brightness(0.7) grayscale(1)
       }
     }
 
+    &[data-area="contact"] {
+      container-type: inline-size;
+      justify-content: space-between;
+      border: none;
+    }
+
     &[data-area="project-alan"],
-    &[data-area="project-covid"],
-    &[data-area="project-c"],
-    &[data-area="project-d"] {
+    &[data-area="project-covid"] {
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -191,14 +216,92 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       div {
         position: absolute;
         bottom: 0;
-        padding: var(--fluid-2);
+        padding: var(--fluid-1);
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: var(--fluid-0);
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.12);
+        backdrop-filter: blur(2px);
       }
+
+      :where(h2, p) {
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &[data-area="project-alan"] {
+      border: 1px solid lch(20 15 210);
+    }
+
+    &[data-area="project-covid"] {
+      border: 1px solid lch(20 0 210);
+    }
+  }
+
+  .contact-container {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    justify-content: space-around;
+    border: 1px solid lch(30 0 0);
+    border-radius: inherit;
+    background-color: lch(10 0 0);
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--fluid--2);
+      padding: var(--fluid--2);
+
+      span {
+        display: none;
+      }
+    }
+  }
+
+  /* @container (min-width: 230px) {
+    .contact-container {
+      gap: var(--fluid-0);
+      border: none;
+      background-color: unset;
+
+      a {
+        border: 1px solid lch(30 0 0);
+        border-radius: 50%;
+      }
+    }
+  } */
+
+  @container (min-width: 380px) {
+    .contact-container {
+      gap: var(--fluid--2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background-color: unset;
+
+      a {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--fluid--2);
+        padding: var(--fluid--2);
+        border-radius: var(--rad);
+        border: 1px solid lch(30 0 0);
+        height: 100%;
+        background-color: lch(10 0 0);
+
+        span {
+          display: block;
+          text-align: center;
+        }
+      }
+
     }
   }
 </style>

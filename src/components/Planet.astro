@@ -46,9 +46,23 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    background-color: #000;
+
+    &:hover {
+      .bg-animation {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+      }
+
+      .planet-A {
+        -webkit-filter: drop-shadow(0 0 0.75rem cyan);
+        filter: drop-shadow(0 0 2.65rem lch(23 67.46 265.28));
+      }
+    }
   }
 
   .bg-animation {
+    opacity: 0;
     z-index: 0;
     width: 100%;
     height: 100%;
@@ -56,6 +70,7 @@
     background-color: lch(0 0 0);
     top: 0;
     left: 0;
+    transition: all: 0.5s ease-in-out;
   }
 
   svg polyline,
@@ -70,7 +85,7 @@
   }
 
   svg circle {
-    fill: #18dcff;
+    fill: lch(56 67.46 265.28);
     stroke: black;
     stroke-width: 1px;
   }
@@ -92,16 +107,14 @@
   }
 
   .planet-A {
-    -webkit-filter: drop-shadow(0 0 0.75rem cyan);
-    filter: drop-shadow(0 0 0.75rem cyan);
   }
 
   .planet-A circle {
-    fill: #18dcff;
+    fill: lch(56 67.46 265.28);
   }
 
   .planet-A polygon {
-    fill: #3aea74;
+    fill: lch(70 90.56 143);
   }
 
   #stars {

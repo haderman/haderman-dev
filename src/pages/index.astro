@@ -23,12 +23,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
   </header>
   <main class="bento">
     <article data-area="profile" class="card">
-      <header class="">
-        <i></i>
-        <div>
-          <span>Hi, I'm Header</span>
-          <span>Frontend developer</span>
-        </div>
+      <header>
+        <Image src={imgProfileSrc} alt="profile picture" />
+        <span>Hi, I'm Hader</span>
+        <span>Frontend engineer</span>
       </header>
       <h1>Enthusiastic about technology</h1>
       <p>
@@ -191,6 +189,41 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       padding: var(--fluid-3);
       background-color: lch(4 1.5 210 / 0.7);
       border: 1px solid lch(10 1.5 210);
+
+      header {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+          "avatar name"
+          "avatar job";
+        column-gap: var(--fluid-0);
+        row-gap: var(--fluid--4);
+        align-items: center;
+
+        img {
+          --size: var(--fluid-4);
+          grid-area: avatar;
+          width: var(--size);
+          height: var(--size);
+          border-radius: 50%;
+          filter: brightness(0.7);
+          outline: 2px solid lch(63 16.19 234.47);
+        }
+
+        span:first-child {
+          grid-area: name;
+          font-size: var(--fluid-1);
+          font-weight: bold;
+        }
+
+        span:last-child {
+          grid-area: job;
+          font-size: var(--fluid-0);
+          font-weight: normal;
+          color: lch(40 0 0);
+        }
+      }
     }
 
     &[data-area="photo"] {
@@ -262,19 +295,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     }
   }
 
-  /* @container (min-width: 230px) {
-    .contact-container {
-      gap: var(--fluid-0);
-      border: none;
-      background-color: unset;
-
-      a {
-        border: 1px solid lch(30 0 0);
-        border-radius: 50%;
-      }
-    }
-  } */
-
   @container (min-width: 380px) {
     .contact-container {
       gap: var(--fluid--2);
@@ -291,7 +311,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         justify-content: center;
         gap: var(--fluid--2);
         padding: var(--fluid--2);
-        border-radius: var(--rad);
+        border-radius: var(--rad) var(--rad);
         border: 1px solid lch(30 0 0);
         height: 100%;
         background-color: lch(10 0 0);
@@ -301,7 +321,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
           text-align: center;
         }
       }
-
     }
   }
 </style>

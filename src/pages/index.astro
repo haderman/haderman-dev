@@ -9,6 +9,7 @@ import mailSVG from '../icons/mail.svg?raw';
 import imgMainSrc from '../images/main.jpeg';
 import imgProjectCovidSrc from '../images/covid.png';
 import imgProfileSrc from '../images/profile.png';
+import Planet from '../components/Planet.astro';
 
 import '../styles/root.css';
 
@@ -39,7 +40,8 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       </p>
     </article>
     <article data-area="photo" class="card">
-      <Image src={imgProfileSrc} alt="Main Image" />
+      <Planet />
+      <!-- <Image src={imgProfileSrc} alt="Main Image" /> -->
     </article>
     <article data-area="contact" class="card">
       <div class="contact-container">
@@ -122,8 +124,12 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       grid-template-columns: repeat(4, 1fr);
       grid-template-areas:
         "profile profile profile photo"
-        "profile profile profile contact"
+        "profile profile profile photo"
         "project-alan project-alan project-covid project-covid";
+
+      article[data-area="contact"] {
+        display: none;
+      }
 
     }
   }
@@ -243,11 +249,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     }
 
     &[data-area="photo"] {
+      align-items: center;
       justify-content: center;
-
-      img {
-        filter: brightness(0.7) grayscale(1)
-      }
+      border: 1px solid lch(20 0 0);
+      background-color: lch(10 0 0);
     }
 
     &[data-area="contact"] {

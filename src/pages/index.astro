@@ -23,6 +23,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
   </header>
   <main class="bento">
     <article data-area="profile" class="card">
+      <div class="background">
+        <div class="circles"></div>
+        <div class="overlay"></div>
+      </div>
       <header>
         <Image src={imgProfileSrc} alt="profile picture" />
         <span>Hi, I'm Hader</span>
@@ -190,7 +194,17 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       background-color: lch(4 1.5 210 / 0.7);
       border: 1px solid lch(10 1.5 210);
 
+      & > * {
+        z-index: 1;
+      }
+
+      .background {
+        z-index: 0;
+      }
+
       header {
+        position: relative;
+        z-index: 1;
         display: grid;
         grid-template-columns: auto 1fr;
         grid-template-rows: auto 1fr;
@@ -212,12 +226,14 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         }
 
         span:first-child {
+          z-index: 1;
           grid-area: name;
           font-size: var(--fluid-1);
           font-weight: bold;
         }
 
         span:last-child {
+          z-index: 1;
           grid-area: job;
           font-size: var(--fluid-0);
           font-weight: normal;
@@ -322,5 +338,46 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         }
       }
     }
+  }
+
+  .background {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  .circles {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: lch(0 0 0 / 0.7);
+    /* opacity: 0.8; */
+    background-image:
+      radial-gradient(circle at center center, lch(51 96.04 304.6), lch(8 13.22 217.82)),
+      repeating-radial-gradient( circle at center center, lch(78 56.84 218.25), lch(0 0 0), 2px, transparent 15px, transparent 10px);
+    background-blend-mode: multiply;
+  }
+
+  .overlay {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(2px);
+    background-color: rgba(0, 0, 0, 0.2);
   }
 </style>

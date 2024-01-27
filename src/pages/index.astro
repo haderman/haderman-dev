@@ -6,10 +6,10 @@ import linkedinSVG from '../icons/linkedin.svg?raw';
 import xSVG from '../icons/x.svg?raw';
 import githubSVG from '../icons/github.svg?raw';
 import mailSVG from '../icons/mail.svg?raw';
-import imgMainSrc from '../images/main.jpeg';
 import imgProjectCovidSrc from '../images/covid.png';
 import imgProfileSrc from '../images/profile.png';
 import Planet from '../components/Planet.astro';
+import FloatingChips from '../components/FloatingChips.astro';
 
 import '../styles/root.css';
 
@@ -41,7 +41,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     </article>
     <article data-area="photo" class="card">
       <Planet />
-      <!-- <Image src={imgProfileSrc} alt="Main Image" /> -->
     </article>
     <article data-area="contact" class="card">
       <div class="contact-container">
@@ -69,6 +68,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         <h2>Project Alan</h2>
         <p>Project Alan description</p>
       </div>
+      <FloatingChips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
     </article>
     <article data-area="project-covid" class="card">
       <Image src={imgProjectCovidSrc} alt="Project Covid" />
@@ -76,6 +76,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         <h2>Project Covid</h2>
         <p>Project Covid description</p>
       </div>
+      <FloatingChips values={['React', 'Javascript', 'NextJS', 'Graphql']} />
     </article>
   </main>
   <footer>
@@ -268,11 +269,13 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="project-alan"],
     &[data-area="project-covid"] {
+      transition: opacity 0.3s ease-in-out;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       div {
+        opacity: 0;
         position: absolute;
         bottom: 0;
         padding: var(--fluid-1);
@@ -281,12 +284,32 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         flex-direction: column;
         align-items: flex-start;
         gap: var(--fluid-0);
-        background-color: rgba(0, 0, 0, 0.12);
-        backdrop-filter: blur(2px);
+        background-color: lch(0 0 0 / 0.7);
       }
 
       :where(h2, p) {
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+      }
+
+      ul {
+        opacity: 0;
+      }
+
+      &:hover {
+        img {
+          transition: all 0.3s ease-in-out;
+          filter: brightness(0.7);
+        }
+
+        ul {
+          transition: inherit;
+          opacity: 1;
+        }
+
+        div {
+          transition: inherit;
+          opacity: 1;
+        }
       }
     }
 

@@ -42,6 +42,9 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     <article data-area="photo" class="card">
       <Planet />
     </article>
+    <div class="divider" data-area="divider">
+      <h2>Projects</h2>
+    </div>
     <article data-area="contact" class="card">
       <div class="contact-container">
         <a href="https://x.com/haderman7" target="_blank">
@@ -93,16 +96,19 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     gap: var(--fluid-4);
 
     @media screen and (min-width: 768px){
-      padding: var(--fluid-4);
+      padding: var(--fluid-0);
+      gap: var(--fluid-2);
     }
   }
 
   .header-page {
-    width: 100%;
-    max-width: 1200px;
     display: flex;
     justify-content: flex-end;
+    width: 100%;
+    max-width: 1200px;
     padding: var(--fluid-2) 0;
+
+    /* display: none; */
   }
 
   main {
@@ -117,6 +123,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     grid-template-areas:
       "profile profile"
       "contact contact"
+      "divider divider"
       "project-alan project-alan"
       "project-covid project-covid";
 
@@ -126,6 +133,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       grid-template-areas:
         "profile profile profile photo"
         "profile profile profile photo"
+        "divider divider divider divider"
         "project-alan project-alan project-covid project-covid";
 
       article[data-area="contact"] {
@@ -373,6 +381,39 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     }
   }
 
+  .divider {
+    grid-area: divider;
+    position: relative;
+    padding-top: var(--fluid-3);
+    padding-bottom: var(--fluid-3);
+    display: flex;
+    justify-content: center;
+
+    h2 {
+      display: inline-flex;
+      position: relative;
+      z-index: 1;
+      padding: var(--fluid--3);
+      font-size: var(--fluid-1);
+      font-weight: 300;
+      color: lch(40 0 0);
+      background-color: var(--primary-color);
+      border-radius: 16px;
+      border: 1px solid lch(20 6 210);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 1px;
+      background-color: lch(20 6 210);
+    }
+  }
+
   .background {
     z-index: 0;
     position: absolute;
@@ -396,11 +437,16 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     width: 100%;
     height: 100%;
     background-color: lch(0 0 0 / 0.7);
-    /* opacity: 0.8; */
     background-image:
       radial-gradient(circle at center center, lch(14 3.04 304.6), lch(5 2.22 217.82)),
       repeating-radial-gradient( circle at center center, lch(49 53.84 218.25), lch(22 0 0), 4px, transparent 20px, transparent 20px);
     background-blend-mode: multiply;
+  }
+
+  .card:hover .circles {
+    background-image:
+      radial-gradient(circle at center center, lch(35 53.04 214.6), lch(5 2.22 217.82)),
+      repeating-radial-gradient( circle at center center, lch(49 53.84 218.25), lch(22 0 0), 4px, transparent 20px, transparent 20px);
   }
 
   .overlay {

@@ -73,7 +73,7 @@
   --fluid-8: calc(((var(--fluid-min-size-8) * 1rem) + (var(--fluid-max-size-8) - var(--fluid-min-size-8)) * var(--fluid-bp)));
 
   /* Color palette */
-  --primary-color: lch(3.2 3.9 251.02);
+  --primary-color: lch(1.9 2.4 210.02);
   --primary-text: lch(70 0 0);
 }
 

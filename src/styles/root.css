@@ -183,7 +183,14 @@ summary {
 }
 
 .text-gradient {
-  background: linear-gradient(308deg,hsl(201 14% 59% / 1) 20%,hsl(189 58% 100% / 1));
+  background:
+    linear-gradient(
+      60deg,
+      lch(63 89 280) 15%,
+      lch(90 62 188) 25%,
+      lch(30 101.4 233.8) 40%,
+      lch(90 0 0) 75%
+    ) text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   box-decoration-break: clone;

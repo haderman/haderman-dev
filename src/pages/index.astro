@@ -1,15 +1,16 @@
 ---
 import { Image } from 'astro:assets';
 
+import Planet from '../components/Planet.astro';
+import Chips from '../components/Chips.astro';
 import Layout from '../layouts/Layout.astro';
 import linkedinSVG from '../icons/linkedin.svg?raw';
 import xSVG from '../icons/x.svg?raw';
 import githubSVG from '../icons/github.svg?raw';
 import mailSVG from '../icons/mail.svg?raw';
+import externalLinkSVG from '../icons/external-link.svg?raw';
 import imgProjectCovidSrc from '../images/covid.png';
 import imgProfileSrc from '../images/profile.png';
-import Planet from '../components/Planet.astro';
-import FloatingChips from '../components/FloatingChips.astro';
 
 import '../styles/root.css';
 
@@ -68,18 +69,28 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     <article data-area="project-alan" class="card">
       <img src={projectAlanImage} alt="Project Alan" />
       <div>
-        <h2>Project Alan</h2>
-        <p>Project Alan description</p>
+        <h2 id="project-alan-heading">
+          <a href="https://www.alanai.app/" target="_blank" aria-labelledby="project-alan-heading">
+            <span>Alan AI Chat</span>
+            <Fragment set:html={externalLinkSVG} />
+          </a>
+        </h2>
+        <p>VSCode extension to create multiple AI chats</p>
+        <Chips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
       </div>
-      <FloatingChips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
     </article>
     <article data-area="project-covid" class="card">
       <Image src={imgProjectCovidSrc} alt="Project Covid" />
       <div>
-        <h2>Project Covid</h2>
+        <h2 id="project-covid-heading">
+          <a href="https://covidx19.vercel.app/" target="_blank" aria-labelledby="project-covid-heading">
+            <span>Covid 19 Tracker</span>
+            <Fragment set:html={externalLinkSVG} />
+          </a>
+        </h2>
         <p>Project Covid description</p>
+        <Chips values={['React', 'Javascript', 'NextJS', 'Graphql']} />
       </div>
-      <FloatingChips values={['React', 'Javascript', 'NextJS', 'Graphql']} />
     </article>
   </main>
   <footer>
@@ -277,47 +288,49 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="project-alan"],
     &[data-area="project-covid"] {
-      transition: opacity 0.3s ease-in-out;
       flex-direction: column;
       align-items: center;
       justify-content: center;
 
       div {
-        opacity: 0;
-        position: absolute;
-        bottom: 0;
+        position: relative;
         padding: var(--fluid-1);
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
         gap: var(--fluid-0);
-        background-color: lch(0 0 0 / 0.7);
+        padding-top: 0;
+      }
+
+      div::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateY(-90%);
+        width: 100%;
+        height: var(--fluid-4);
+        background: linear-gradient(to top, lch(0 0 0 / 0.9 ) 0%, lch(0 0 0 / 0) 90%);
+        z-index: 0;
+      }
+
+      h2 {
+        a {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+          gap: var(--fluid--1);
+        }
+        svg {
+          --size: var(--fluid-2);
+          width: var(--size);
+          height: var(--size);
+        }
       }
 
       :where(h2, p) {
         text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-      }
-
-      ul {
-        opacity: 0;
-      }
-
-      &:hover {
-        img {
-          transition: all 0.3s ease-in-out;
-          filter: brightness(0.7);
-        }
-
-        ul {
-          transition: inherit;
-          opacity: 1;
-        }
-
-        div {
-          transition: inherit;
-          opacity: 1;
-        }
       }
     }
 

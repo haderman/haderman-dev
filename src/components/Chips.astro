@@ -1,0 +1,33 @@
+---
+interface Props {
+  values: string[];
+}
+
+const { values } = Astro.props;
+---
+<ul>
+  {values.map((chip) => {
+    return <li>{chip}</li>;
+  })}
+</ul>
+
+<style>
+  ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--fluid--2);
+  }
+
+  li {
+    border: 0.5px solid lch(0 0% 0% / 0.1);
+    font-size: var(--fluid-0);
+    padding: var(--fluid--3) var(--fluid--2);
+    border-radius: var(--fluid--1);
+    background:
+      linear-gradient(lch(0 0 0), lch(0 0 0)) padding-box,
+      linear-gradient(to right,lch(54 50.67 180.25), lch(51 76.64 275.89)) border-box;
+    border: 2px solid transparent;
+  }
+</style>

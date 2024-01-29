@@ -212,6 +212,13 @@ summary {
   box-decoration-break: clone;
 }
 
+.special-border {
+  background:
+    linear-gradient(black, black) padding-box,
+    linear-gradient(to right, lch(14 0 0), lch(24 0 0), lch(7 0 0)) border-box;
+  border: 2px solid transparent;
+}
+
 /*
  * Scrollbar style
  */

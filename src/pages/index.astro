@@ -24,7 +24,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     </nav> -->
   </header>
   <main class="bento">
-    <article data-area="profile" class="card">
+    <article data-area="profile" class="card special-border">
       <!-- <div class="background">
         <div class="circles"></div>
         <div class="overlay"></div>
@@ -40,33 +40,33 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         always with an eye on self-improvement and grateful for the journey.
       </p>
     </article>
-    <article data-area="photo" class="card">
+    <article data-area="photo" class="card special-border">
       <Planet />
     </article>
-    <div class="divider" data-area="divider">
-      <h2>Projects</h2>
-    </div>
     <article data-area="contact" class="card">
-      <div class="contact-container">
-        <a href="https://x.com/haderman7" target="_blank">
+      <div class="contact-container special-border">
+        <a href="https://x.com/haderman7" target="_blank" class="special-border">
           <Fragment set:html={xSVG} />
           <span>Twitter</span>
         </a>
-        <a href="https://github.com/haderman" target="_blank">
+        <a href="https://github.com/haderman" target="_blank" class="special-border">
           <Fragment set:html={githubSVG} />
           <span>Github</span>
         </a>
-        <a href="mailto:cardona.hader@gmail.com">
+        <a href="mailto:cardona.hader@gmail.com" class="special-border">
           <Fragment set:html={mailSVG} />
           <span>Mail</span>
         </a>
-        <a href="https://www.linkedin.com/in/hader-cardona/">
+        <a href="https://www.linkedin.com/in/hader-cardona/" class="special-border">
           <Fragment set:html={linkedinSVG} />
           <span>Linkedin</span>
         </a>
       </div>
     </article>
-    <article data-area="project-alan" class="card">
+    <div class="divider" data-area="divider">
+      <h2>Projects</h2>
+    </div>
+    <article data-area="project-alan" class="card special-border">
       <img src={projectAlanImage} alt="Project Alan" />
       <div>
         <h2 id="project-alan-heading">
@@ -79,7 +79,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         <Chips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
       </div>
     </article>
-    <article data-area="project-covid" class="card">
+    <article data-area="project-covid" class="card special-border">
       <Image src={imgProjectCovidSrc} alt="Project Covid" />
       <div>
         <h2 id="project-covid-heading">
@@ -143,14 +143,9 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       grid-template-columns: repeat(4, 1fr);
       grid-template-areas:
         "profile profile profile photo"
-        "profile profile profile photo"
+        "profile profile profile contact"
         "divider divider divider divider"
         "project-alan project-alan project-covid project-covid";
-
-      article[data-area="contact"] {
-        display: none;
-      }
-
     }
   }
 
@@ -203,11 +198,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     display: flex;
     border-radius: var(--rad);
     overflow: hidden;
-
-    background:
-      linear-gradient(black, black) padding-box,
-      linear-gradient(to right, lch(14 0 0), lch(24 0 0), lch(7 0 0)) border-box;
-    border: 2px solid transparent;
 
     a {
       display: flex;
@@ -283,7 +273,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     &[data-area="contact"] {
       container-type: inline-size;
       justify-content: space-between;
-      border: none;
     }
 
     &[data-area="project-alan"],
@@ -347,20 +336,58 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     display: flex;
     width: 100%;
     flex: 1;
-    justify-content: space-around;
-    border: 1px solid lch(30 0 0);
+    justify-content: space-between;
     border-radius: inherit;
-    background-color: lch(10 0 0);
 
     a {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: var(--fluid--2);
+      gap: var(--fluid-0);
       padding: var(--fluid--2);
+      border-radius: inherit;
+      background-color: none;
+      border: none;
 
       span {
         display: none;
+      }
+
+      :hover {
+        box-shadow: 0 1px 0 0px var(--primary-text);
+      }
+    }
+  }
+
+  a {
+    background-color: none;
+    border: none;
+  }
+
+  @container (min-width: 210px) {
+    .contact-container {
+      gap: var(--fluid--2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: unset;
+      border: unset;
+
+      a {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background:
+          linear-gradient(black, black) padding-box,
+          linear-gradient(to right, lch(14 0 0), lch(24 0 0), lch(7 0 0)) border-box;
+        border: 2px solid transparent;
+
+        :hover {
+          box-shadow: 0 1px 0 0px var(--primary-text);
+        }
       }
     }
   }
@@ -372,7 +399,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       align-items: center;
       justify-content: center;
       border: none;
-      background-color: unset;
+      background: unset;
 
       a {
         flex: 1;
@@ -381,14 +408,16 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         justify-content: center;
         gap: var(--fluid--2);
         padding: var(--fluid--2);
-        border-radius: var(--rad) var(--rad);
-        border: 1px solid lch(30 0 0);
         height: 100%;
-        background-color: lch(10 0 0);
+        border-radius: var(--rad) var(--rad);
 
         span {
           display: block;
           text-align: center;
+        }
+
+        :hover {
+          box-shadow: none;
         }
       }
     }

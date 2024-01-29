@@ -75,6 +75,7 @@
   /* Color palette */
   --primary-color: lch(1.9 2.4 210.02);
   --primary-text: lch(70 0 0);
+  --secondary-text: lch(50 0 0);
 }
 
 
@@ -155,6 +156,14 @@ a {
 
   &:hover {
     text-decoration: underline;
+  }
+
+  &[aria-disabled] {
+    /* pointer-events: none; */
+    color: var(--secondary-text);
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 }
 

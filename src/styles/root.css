@@ -76,6 +76,7 @@
   --primary-color: lch(1.9 2.4 210.02);
   --primary-text: lch(70 0 0);
   --secondary-text: lch(50 0 0);
+  --accent-color: lch(24 4 210);
 }
 
 
@@ -181,6 +182,22 @@ h2 {
 summary {
   font-size: var(--fluid-1);
   font-weight: 500;
+}
+
+button {
+  all: unset;
+  cursor: pointer;
+  font-size: var(--fluid-0);
+  font-weight: 500;
+  padding: var(--fluid--2);
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fluid--2)
 }
 
 .visually-hidden {

@@ -1,7 +1,7 @@
 ---
 import iconShareSvg from '../icons/share.svg?raw';
 ---
-<button id="share">
+<button id="share" disabled>
   <span>Share</span>
   <Fragment set:html={iconShareSvg} />
 </button>
@@ -37,6 +37,7 @@ import iconShareSvg from '../icons/share.svg?raw';
     }
 
     if (navigator.canShare(dataToShare)) {
+      shareButton.removeAttribute('disabled');
       shareButton.style.opacity = '1';
       shareButton.style.pointerEvents = 'auto';
       shareButton.addEventListener('click', async () => {

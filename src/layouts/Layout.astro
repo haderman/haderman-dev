@@ -5,8 +5,6 @@ interface Props {
   title: string;
 }
 
-const GTM_ID = 'GTM-TC455BMM';
-
 const { title } = Astro.props;
 ---
 
@@ -21,35 +19,37 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
-    <noscript>
-      <iframe
-        src={"https://www.googletagmanager.com/ns.html?id=" + GTM_ID}
-        height="0"
-        width="0"
-        style="display:none;visibility:hidden"
-      >
-      </iframe>
-    </noscript>
     <slot />
   </body>
 </html>
 <style is:global>
 
 </style>
+<script>
+  import { logger } from '../lib/logger';
 
-<script
-  type="text/partytown"
-  async
-  src={"https://www.googletagmanager.com/gtag/js?id=" + GTM_ID}
-></script>
+  document.addEventListener('DOMContentLoaded', () => {
+    logger({
+      type: 'pageview',
+      href: 'home',
+    });
 
-<script type="text/partytown">
-  window.dataLayer = window.dataLayer || [];
+    document.body.addEventListener('click', (e) => {
+      const target = (e.target as HTMLElement).closest('a');
+      if (target) {
+        logger({
+          type: 'click',
+          href: target.getAttribute('href'),
+        });
+      }
+    });
 
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-
-  gtag("js", new Date());
-  gtag("config", GTM_ID);
+    const $planet = document.querySelector('article[data-area="photo"]');
+    $planet.addEventListener('mouseenter', () => {
+      logger({
+        type: 'hover',
+        element: 'planet',
+      });
+    });
+  });
 </script>

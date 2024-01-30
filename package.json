@@ -10,8 +10,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.0.4",
     "@fontsource-variable/montserrat": "^5.0.9",
-    "astro": "^4.2.4"
+    "astro": "^4.2.4",
+    "nanoid": "^5.0.4"
   }
 }

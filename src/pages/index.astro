@@ -1,19 +1,18 @@
 ---
 import { Image } from 'astro:assets';
 
-import Planet from '../components/Planet.astro';
-import Chips from '../components/Chips.astro';
-import ButtonShare from '../components/ButtonShare.astro';
-import Layout from '../layouts/Layout.astro';
-import linkedinSVG from '../icons/linkedin.svg?raw';
-import xSVG from '../icons/x.svg?raw';
-import githubSVG from '../icons/github.svg?raw';
-import mailSVG from '../icons/mail.svg?raw';
-import externalLinkSVG from '../icons/external-link.svg?raw';
-import imgProjectCovidSrc from '../images/covid.png';
-import imgProfileSrc from '../images/profile.png';
-
-import '../styles/root.css';
+import ThemeWidget from '@/components/theme/Widget.astro';
+import Chips from '@/components/Chips.astro';
+import ButtonShare from '@/components/ButtonShare.astro';
+import Layout from '@/layouts/Layout.astro';
+import linkedinSVG from '@/icons/linkedin.svg?raw';
+import xSVG from '@/icons/x.svg?raw';
+import githubSVG from '@/icons/github.svg?raw';
+import mailSVG from '@/icons/mail.svg?raw';
+import externalLinkSVG from '@/icons/external-link.svg?raw';
+import imgProjectCovidSrc from '@/images/covid.png';
+import imgProfileSrc from '@/images/profile.png';
+import '@/styles/root.css';
 
 const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
 ---
@@ -43,7 +42,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       <ButtonShare />
     </article>
     <article data-area="photo" class="card special-border">
-      <Planet />
+      <ThemeWidget />
     </article>
     <article data-area="contact" class="card">
       <div class="contact-container special-border">

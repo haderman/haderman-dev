@@ -1,0 +1,87 @@
+---
+---
+<div class="planet">
+  <svg viewBox="0 0  250 250" class="planet-A">
+    <circle id="e1_circle" cx="121" cy="121" r="109.931797038"></circle>
+    <polygon
+      id="e2_polygon"
+      points="38 105 42 110 41 120 44 126 48 126 56 129 59 136 64 136 69 133 72 134 74 139 80 147 86 146 94 138 97 132 106 135 116 135 125 132 141 132 149 136 159 136 159 124 150 117 138 102 138 92 147 84 141 76 131 75 120 72 103 71 89 63 75 66 80 73 88 73 86 79 74 91 60 96 62 91 53 89 41 92 35 97"
+    ></polygon>
+    <polygon
+      id="e3_polygon"
+      points="142 159 132 165 132 172 127 172 125 176 129 182 135 182 138 179 146 181 150 181 153 190 161 192 166 191 166 186 162 187 157 187 157 180 159 174 155 167 152 160 143 154 136 154 140 160"
+    ></polygon>
+    <polygon
+      id="e4_polygon"
+      points="221 164 226 153 229 139 230 131 231 120 230 104 224 88 219 88 215 89 211 97 217 97 219 91 221 97 223 104 219 106 204 111 204 128 211 134 214 133 214 128 211 123 213 115 223 118 225 132 220 139 218 146 215 154 204 155 196 162 197 176 209 173 216 169"
+    ></polygon>
+    <polygon
+      id="e5_polygon"
+      points="99 15 113 12 122 12 139 13 150 16 160 19 172 24 190 35 207 52 199 52 191 60 181 59 171 55 171 52 177 53 177 49 172 40 160 41 149 41 145 46 124 45 112 49 98 46 94 53 90 52 90 44 97 38 111 36 121 37 127 32 134 29 125 19 103 19 88 25 74 30 64 36 60 57 51 61 39 58 31 67 27 64 37 49 53 34 75 21 96 14"
+    ></polygon>
+    <polygon
+      id="e6_polygon"
+      points="33 188 45 190 53 185 55 175 61 168 68 168 81 165 78 175 73 177 73 185 74 203 70 207 72 214 72 218 59 212 44 201"
+    ></polygon>
+  </svg>
+</div>
+
+<style>
+  .bg-animation {
+    opacity: 1;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: lch(0 0 0);
+    top: 0;
+    left: 0;
+    transition: all: 0.5s ease-in-out;
+  }
+
+  svg polyline,
+  svg line,
+  svg path {
+    fill: none;
+    stroke: #000;
+    stroke-width: 0.2px;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: 0.2s;
+  }
+
+  svg circle {
+    fill: lch(56 67.46 265.28);
+    stroke: black;
+    stroke-width: 1px;
+  }
+
+  .planet {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+
+  .planet circle {
+    stroke: black;
+    stroke-width: 1px;
+  }
+
+  .planet polygon {
+    stroke: black;
+    stroke-width: 1px;
+  }
+
+  .planet-A {
+    -webkit-filter: drop-shadow(0 0 0.75rem cyan);
+    filter: drop-shadow(0 0 2.65rem lch(23 67.46 265.28));
+  }
+
+  .planet-A circle {
+    fill: lch(56 67.46 265.28);
+  }
+
+  .planet-A polygon {
+    fill: lch(70 90.56 143);
+  }
+</style>

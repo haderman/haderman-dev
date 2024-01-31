@@ -1,0 +1,55 @@
+---
+import ArtifactA from './ArtifactA.astro';
+import ArtifactB from './ArtifactB.astro';
+import Controls from './Controls.astro';
+import Background from './Background.astro';
+---
+
+<div class="container">
+  <Background />
+  <div class="artifact-a">
+    <ArtifactA />
+  </div>
+  <div class="artifact-b">
+    <ArtifactB />
+  </div>
+  <Controls />
+</div>
+
+<style is:global>
+  .container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: var(--fluid-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: #000;
+    background-color: red;
+  }
+
+  :where(.artifact-a, .artifact-b) {
+    flex: 1;
+    display: flex;
+  }
+
+  html[data-theme="theme-a"] {
+    .artifact-a {
+      display: flex;
+    }
+    .artifact-b {
+      display: none;
+    }
+  }
+
+  html[data-theme="theme-b"] {
+    .artifact-b {
+      display: flex;
+    }
+    .artifact-a {
+      display: none;
+    }
+  }
+</style>

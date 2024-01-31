@@ -11,7 +11,9 @@
   },
   "dependencies": {
     "@fontsource-variable/montserrat": "^5.0.9",
+    "@nanostores/persistent": "^0.9.1",
     "astro": "^4.2.4",
-    "nanoid": "^5.0.4"
+    "nanoid": "^5.0.4",
+    "nanostores": "^0.9.5"
   }
 }

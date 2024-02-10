@@ -4,6 +4,7 @@ import { Image } from 'astro:assets';
 import ThemeWidget from '@/components/theme/Widget.astro';
 import Chips from '@/components/Chips.astro';
 import ButtonShare from '@/components/ButtonShare.astro';
+import Skills from '@/components/Skills.astro';
 import Layout from '@/layouts/Layout.astro';
 import linkedinSVG from '@/icons/linkedin.svg?raw';
 import xSVG from '@/icons/x.svg?raw';
@@ -63,6 +64,9 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
           <span>Linkedin</span>
         </a>
       </div>
+    </article>
+    <article data-area="skills" class="card special-border">
+      <Skills />
     </article>
     <div class="divider" data-area="divider">
       <h2>Projects</h2>
@@ -135,6 +139,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     grid-template-areas:
       "profile profile"
       "contact contact"
+      "skills skills"
       "divider divider"
       "project-alan project-alan"
       "project-covid project-covid";
@@ -145,6 +150,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       grid-template-areas:
         "profile profile profile photo"
         "profile profile profile contact"
+        "skills skills skills skills"
         "divider divider divider divider"
         "project-alan project-alan project-covid project-covid";
     }
@@ -174,6 +180,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="contact"] {
       grid-area: contact;
+    }
+
+    &[data-area="skills"] {
+      grid-area: skills;
     }
 
     &[data-area="project-alan"] {
@@ -282,6 +292,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       container-type: inline-size;
       justify-content: space-between;
       overflow: unset;
+    }
+
+    &[data-area="skills"] {
+      container-type: inline-size;
     }
 
     &[data-area="project-alan"],

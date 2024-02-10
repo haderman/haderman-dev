@@ -1,0 +1,45 @@
+---
+import astroSvg from '@/icons/brands/astro.svg?raw';
+import css3Svg from '@/icons/brands/css3.svg?raw';
+import electronSvg from '@/icons/brands/electron.svg?raw';
+import gitSvg from '@/icons/brands/git.svg?raw';
+import html5Svg from '@/icons/brands/html5.svg?raw';
+import javascriptSvg from '@/icons/brands/javascript.svg?raw';
+import nextdotjsSvg from '@/icons/brands/nextdotjs.svg?raw';
+import nodedotjsSvg from '@/icons/brands/nodedotjs.svg?raw';
+import reactSvg from '@/icons/brands/react.svg?raw';
+import tailwindcssSvg from '@/icons/brands/tailwindcss.svg?raw';
+import typescriptSvg from '@/icons/brands/typescript.svg?raw';
+import webpackSvg from '@/icons/brands/webpack.svg?raw';
+---
+<div class="skills">
+  <Fragment set:html={html5Svg} />
+  <Fragment set:html={css3Svg} />
+  <Fragment set:html={javascriptSvg} />
+  <Fragment set:html={typescriptSvg} />
+  <Fragment set:html={reactSvg} />
+  <Fragment set:html={nodedotjsSvg} />
+  <Fragment set:html={astroSvg} />
+  <Fragment set:html={webpackSvg} />
+  <Fragment set:html={electronSvg} />
+  <Fragment set:html={nextdotjsSvg} />
+  <Fragment set:html={gitSvg} />
+  <Fragment set:html={tailwindcssSvg} />
+</div>
+
+<style>
+  .skills {
+    width: 100%;
+    display: flex;
+    /* flex-wrap: wrap; */
+    justify-content: space-around;
+    padding: var(--fluid-0);
+    gap: var(--fluid-0);
+
+    svg {
+      width: 3rem;
+      height: 3rem;
+      fill: lch(50 0 210 / 1);
+    }
+  }
+</style>

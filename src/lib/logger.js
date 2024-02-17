@@ -5,9 +5,9 @@ export const nanoid = customAlphabet('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghi
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV;
 
-const datasetName = 'haderman-website-events';
+const datasetName = 'alan-landing';
 const endpoint = `https://api.axiom.co/v1/datasets/${datasetName}/ingest`;
-const token = 'xaat-a151fae3-0671-4b9d-9d7f-2dfaa4515e71';
+const token = 'xaat-3ae3ab60-5254-40bb-8a7a-7f8afd6e544b';
 
 function generateUniqueId() {
   return `usr_${nanoid(22)}`;
@@ -40,6 +40,7 @@ export function logger(data) {
       userId,
     },
     data,
+    site: document.location.href,
   }];
 
   if (isProd) {

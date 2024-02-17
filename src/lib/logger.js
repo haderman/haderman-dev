@@ -5,9 +5,9 @@ export const nanoid = customAlphabet('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghi
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV;
 
-const datasetName = 'alan-landing';
+const datasetName = 'websites';
 const endpoint = `https://api.axiom.co/v1/datasets/${datasetName}/ingest`;
-const token = 'xaat-3ae3ab60-5254-40bb-8a7a-7f8afd6e544b';
+const token = 'xaat-ec1bff92-3e26-4fec-87c6-79971f56a8e2';
 
 function generateUniqueId() {
   return `usr_${nanoid(22)}`;

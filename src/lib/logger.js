@@ -5,9 +5,7 @@ export const nanoid = customAlphabet('123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghi
 const isProd = import.meta.env.PROD;
 const isDev = import.meta.env.DEV;
 
-const datasetName = 'websites';
-const endpoint = `https://api.axiom.co/v1/datasets/${datasetName}/ingest`;
-const token = 'xaat-ec1bff92-3e26-4fec-87c6-79971f56a8e2';
+const ENDPONT = new URL('/api/logs', document.location.href);
 
 function generateUniqueId() {
   return `usr_${nanoid(22)}`;
@@ -44,11 +42,10 @@ export function logger(data) {
   }];
 
   if (isProd) {
-    fetch(endpoint, {
+    fetch(ENDPONT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(enrichedData),
     }).then((response) => {

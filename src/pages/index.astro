@@ -25,7 +25,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     </nav> -->
   </header>
   <main class="bento">
-    <article data-area="profile" class="card special-border">
+    <article data-area="profile" class="card">
       <!-- <div class="background">
         <div class="circles"></div>
         <div class="overlay"></div>
@@ -42,36 +42,36 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       </p>
       <ButtonShare />
     </article>
-    <article data-area="photo" class="card special-border">
+    <article data-area="photo" class="card">
       <ThemeWidget />
     </article>
     <article data-area="contact" class="card">
-      <div class="contact-container special-border">
-        <a href="https://x.com/haderman7" target="_blank" class="special-border">
+      <div class="contact-container">
+        <a href="https://x.com/haderman7" target="_blank">
           <Fragment set:html={xSVG} />
           <span>Twitter</span>
         </a>
-        <a href="https://github.com/haderman" target="_blank" class="special-border">
+        <a href="https://github.com/haderman" target="_blank">
           <Fragment set:html={githubSVG} />
           <span>Github</span>
         </a>
-        <a href="mailto:cardona.hader@gmail.com" class="special-border">
+        <a href="mailto:cardona.hader@gmail.com">
           <Fragment set:html={mailSVG} />
           <span>Mail</span>
         </a>
-        <a href="https://www.linkedin.com/in/hader-cardona/" class="special-border">
+        <a href="https://www.linkedin.com/in/hader-cardona/">
           <Fragment set:html={linkedinSVG} />
           <span>Linkedin</span>
         </a>
       </div>
     </article>
-    <article data-area="skills" class="card special-border">
+    <article data-area="skills" class="card">
       <Skills />
     </article>
     <div class="divider" data-area="divider">
       <h2>Projects</h2>
     </div>
-    <article data-area="project-alan" class="card special-border">
+    <article data-area="project-alan" class="card">
       <img src={projectAlanImage} alt="Project Alan" />
       <div>
         <h2 id="project-alan-heading">
@@ -84,7 +84,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         <Chips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
       </div>
     </article>
-    <article data-area="project-covid" class="card special-border">
+    <article data-area="project-covid" class="card">
       <Image src={imgProjectCovidSrc} alt="Project Covid" />
       <div>
         <h2 id="project-covid-heading">
@@ -135,7 +135,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
   .bento {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--fluid-3);
+    gap: var(--fluid-1);
     grid-template-areas:
       "profile profile"
       "contact contact"
@@ -204,7 +204,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
   }
 
   .card {
-    --rad: var(--fluid-1);
+    --rad: 0; /* var(--fluid-1); */
 
     display: flex;
     border-radius: var(--rad);
@@ -223,8 +223,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       flex-direction: column;
       gap: var(--fluid-2);
       padding: var(--fluid-3);
-      /* background-color: lch(4 1.5 210 / 0.7); */
-      /* border: 1px solid lch(10 1.5 210); */
+      background:
+        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      border: 1px solid transparent;
 
       & > * {
         z-index: 1;
@@ -284,8 +286,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     &[data-area="photo"] {
       align-items: center;
       justify-content: center;
-      /* border: 1px solid lch(20 0 0);
-      background-color: lch(10 0 0); */
+      background:
+        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      border: 1px solid transparent;
     }
 
     &[data-area="contact"] {
@@ -296,6 +300,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="skills"] {
       container-type: inline-size;
+      background:
+        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      border: 1px solid transparent;
     }
 
     &[data-area="project-alan"],
@@ -303,6 +311,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      background:
+        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      border: 1px solid transparent;
 
       div {
         position: relative;
@@ -361,6 +373,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     flex: 1;
     justify-content: space-between;
     border-radius: inherit;
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
 
     a {
       flex: 1;
@@ -370,8 +386,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       gap: var(--fluid-0);
       padding: var(--fluid--2);
       border-radius: inherit;
-      background-color: none;
-      border: none;
 
       span {
         display: none;
@@ -394,8 +408,8 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       display: flex;
       align-items: center;
       justify-content: center;
-      background: unset;
-      border: unset;
+      background-color: unset;
+      border: none;
 
       a {
         flex: 1;
@@ -404,9 +418,9 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
         justify-content: center;
         height: 100%;
         background:
-          linear-gradient(black, black) padding-box,
-          linear-gradient(to right, lch(14 0 0), lch(24 0 0), lch(7 0 0)) border-box;
-        border: 2px solid transparent;
+          radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+          linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+        border: 1px solid transparent;
 
         :hover {
           box-shadow: 0 1px 0 0px var(--primary-text);
@@ -421,8 +435,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       display: flex;
       align-items: center;
       justify-content: center;
-      border: none;
-      background: unset;
 
       a {
         flex: 1;

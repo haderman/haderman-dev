@@ -21,13 +21,13 @@ const { values } = Astro.props;
   }
 
   li {
-    border: 0.5px solid lch(0 0% 0% / 0.1);
     font-size: var(--fluid-0);
     padding: var(--fluid--3) var(--fluid--2);
-    border-radius: var(--fluid--1);
+    border-radius: 0; /* var(--fluid--1); */
     background:
-      linear-gradient(lch(0 0 0), lch(0 0 0)) padding-box,
-      linear-gradient(to right,lch(54 50.67 180.25), lch(51 76.64 275.89)) border-box;
-    border: 2px solid transparent;
+      linear-gradient(to bottom, oklch(0 0.4 210 / 1), oklch(0.2 0.1 290 / 1)) padding-box,
+      linear-gradient(30deg, oklch(0.3 0.1 210), oklch(0.25 0.1 290)) border-box;
+    border: 1px solid transparent;
+
   }
 </style>

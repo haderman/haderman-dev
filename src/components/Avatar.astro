@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import imgProfileSrc from '@/images/profile.png';
+---
+
+<div class="avatar">
+  <div class="bg"></div>
+  <Image src={imgProfileSrc} alt="profile picture" />
+</div>
+
+<style>
+  .avatar {
+    --size: var(--fluid-4);
+    grid-area: avatar;
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+    width: var(--size);
+    height: var(--size);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.45 0 0)) border-box;
+    border: 1px solid transparent;
+
+    img {
+      width: 110%;
+      top: -10%;
+      left: -5%;
+      position: relative;
+    }
+  }
+
+  .bg {
+    --tile-bg: oklch(0.18 0 241.12);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+      repeating-linear-gradient(45deg, var(--tile-bg) 25%, transparent 25%, transparent 75%, var(--tile-bg) 75%, var(--tile-bg)),
+      repeating-linear-gradient(45deg, var(--tile-bg) 25%, black 25%, black 75%, var(--tile-bg) 75%, var(--tile-bg));
+    background-position: 0 0, 5px 5px;
+    background-size: 10px 10px;
+  }
+</style>

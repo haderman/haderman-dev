@@ -1,17 +1,14 @@
 ---
-import { Image } from 'astro:assets';
-import imgProfileSrc from '@/images/profile.png';
 import ButtonShare from '@/components/ButtonShare.astro';
+import Avatar from '../Avatar.astro';
 ---
 <article data-area="profile" class="card">
   <header>
-    <div class="avatar">
-      <Image src={imgProfileSrc} alt="profile picture" />
-    </div>
+    <Avatar />
     <span>Hi, I'm Hader</span>
-    <span>Frontend engineer</span>
+    <span>Software engineer</span>
   </header>
-  <h1 class="text-gradient">Enthusiastic about technology</h1>
+  <h1 class="text-gradient_">I love to build things</h1>
   <p>
     I am committed to continuous learning and embracing challenges,
     always with an eye on self-improvement and grateful for the journey.
@@ -72,22 +69,18 @@ import ButtonShare from '@/components/ButtonShare.astro';
         color: lch(40 0 0);
       }
     }
-  }
 
-  .avatar {
-    border-radius: 50%;
-    overflow: hidden;
-    --size: var(--fluid-4);
-    grid-area: avatar;
-    width: var(--size);
-    height: var(--size);
-    background: oklch(0.52 0.14 241.12);
+    h1 {
+      font-weight: 600;
+      font-family: monospace;
+      -webkit-text-stroke: 1px oklch(1 0 0);
+      -webkit-text-fill-color: transparent;
+    }
 
-    img {
-      width: 110%;
-      top: -10%;
-      left: -5%;
-      position: relative;
+    p {
+      font-size: var(--fluid-1);
+      color: oklch(0.6 0 0);
+      max-width: none;
     }
   }
 </style>

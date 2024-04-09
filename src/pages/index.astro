@@ -1,19 +1,18 @@
 ---
 import { Image } from 'astro:assets';
 
-import ThemeWidget from '@/components/theme/Widget.astro';
+import Profile from '@/components/cards/Profile.astro';
+import Quote from '@/components/cards/Quote.astro';
+import Contact from '@/components/cards/Contact.astro';
+import Skills from '@/components/cards/Skills.astro';
+import Project from '@/components/cards/Project.astro';
+
 import Chips from '@/components/Chips.astro';
-import ButtonShare from '@/components/ButtonShare.astro';
-import Skills from '@/components/Skills.astro';
+
 import Layout from '@/layouts/Layout.astro';
-import linkedinSVG from '@/icons/linkedin.svg?raw';
-import xSVG from '@/icons/x.svg?raw';
-import githubSVG from '@/icons/github.svg?raw';
-import quouteSVG from '@/icons/quote.svg?raw';
-import mailSVG from '@/icons/mail.svg?raw';
 import externalLinkSVG from '@/icons/external-link.svg?raw';
 import imgProjectCovidSrc from '@/images/covid.png';
-import imgProfileSrc from '@/images/profile.png';
+
 import '@/styles/root.css';
 
 const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
@@ -26,81 +25,26 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     </nav> -->
   </header>
   <main class="bento">
-    <article data-area="profile" class="card">
-      <!-- <div class="background">
-        <div class="circles"></div>
-        <div class="overlay"></div>
-      </div> -->
-      <header>
-        <Image src={imgProfileSrc} alt="profile picture" />
-        <span>Hi, I'm Hader</span>
-        <span>Frontend engineer</span>
-      </header>
-      <h1 class="text-gradient">Enthusiastic about technology</h1>
-      <p>
-        I am committed to continuous learning and embracing challenges,
-        always with an eye on self-improvement and grateful for the journey.
-      </p>
-      <ButtonShare />
-    </article>
-    <article data-area="quote" class="card">
-      <Fragment set:html={quouteSVG} />
-      <q>
-        The only way to do great work is to love what you do.
-      </q>
-    </article>
-    <!-- <article data-area="photo" class="card">
-      <ThemeWidget />
-    </article> -->
-    <article data-area="contact" class="card">
-      <div class="contact-container">
-        <a href="https://x.com/haderman7" target="_blank">
-          <Fragment set:html={xSVG} />
-          <span>Twitter</span>
-        </a>
-        <a href="https://github.com/haderman" target="_blank">
-          <Fragment set:html={githubSVG} />
-          <span>Github</span>
-        </a>
-        <a href="mailto:cardona.hader@gmail.com">
-          <Fragment set:html={mailSVG} />
-          <span>Mail</span>
-        </a>
-        <a href="https://www.linkedin.com/in/hader-cardona/">
-          <Fragment set:html={linkedinSVG} />
-          <span>Linkedin</span>
-        </a>
-      </div>
-    </article>
-    <article data-area="skills" class="card">
-      <Skills />
-    </article>
-    <article data-area="project-alan" class="card">
-      <img src={projectAlanImage} alt="Project Alan" />
-      <div>
-        <h2 id="project-alan-heading">
-          <a href="https://www.alanai.app/" target="_blank" aria-labelledby="project-alan-heading">
-            <span>Alan AI Chat</span>
-            <Fragment set:html={externalLinkSVG} />
-          </a>
-        </h2>
-        <p>VSCode extension to create multiple AI chats</p>
-        <Chips values={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']} />
-      </div>
-    </article>
-    <article data-area="project-covid" class="card">
-      <Image src={imgProjectCovidSrc} alt="Project Covid" />
-      <div>
-        <h2 id="project-covid-heading">
-          <a href="https://covidx19.vercel.app/" target="_blank" aria-labelledby="project-covid-heading">
-            <span>Covid 19 Tracker</span>
-            <Fragment set:html={externalLinkSVG} />
-          </a>
-        </h2>
-        <p>COVID-19 tracker with global statistics and visualizations</p>
-        <Chips values={['React', 'Javascript', 'NextJS', 'Graphql']} />
-      </div>
-    </article>
+    <Profile />
+    <Quote />
+    <Contact />
+    <Skills />
+    <Project
+      name="Alan"
+      title="Alan AI Chat"
+      description="VSCode extension to create multiple AI chats"
+      imgSrc={projectAlanImage}
+      stack={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']}
+      href="https://www.alanai.app/"
+    />
+    <Project
+      name="Covid"
+      title="Covid 19 Tracker"
+      description="COVID-19 tracker with global statistics and visualizations"
+      imgSrc={imgProjectCovidSrc}
+      stack={['React', 'Javascript', 'NextJS', 'Graphql']}
+      href="https://covidx19.vercel.app/"
+    />
   </main>
   <footer>
 
@@ -155,7 +99,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       grid-template-areas:
         "profile profile profile quote"
         "profile profile profile contact"
-        /* ". . contact contact" */
         "skills skills skills skills"
         "project-alan project-alan project-covid project-covid";
     }
@@ -227,268 +170,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     h1 {
       max-inline-size: 20ch;
-    }
-
-    &[data-area="profile"] {
-      flex-direction: column;
-      gap: var(--fluid-2);
-      padding: var(--fluid-3);
-      background:
-        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-      border: 1px solid transparent;
-
-      & > * {
-        z-index: 1;
-      }
-
-      .background {
-        z-index: 0;
-      }
-
-      button {
-        z-index: 1;
-        position: absolute;
-        top: var(--fluid-1);
-        right: var(--fluid-1);
-      }
-
-      header {
-        position: relative;
-        z-index: 1;
-        display: grid;
-        grid-template-columns: auto 1fr;
-        grid-template-rows: auto 1fr;
-        grid-template-areas:
-          "avatar name"
-          "avatar job";
-        column-gap: var(--fluid-0);
-        row-gap: var(--fluid--4);
-        align-items: center;
-
-        img {
-          --size: var(--fluid-4);
-          grid-area: avatar;
-          width: var(--size);
-          height: var(--size);
-          border-radius: 50%;
-          /* filter: brightness(0.7); */
-          /* outline: 2px solid lch(63 16.19 234.47); */
-        }
-
-        span:first-child {
-          z-index: 1;
-          grid-area: name;
-          font-size: var(--fluid-1);
-          font-weight: bold;
-        }
-
-        span:last-child {
-          z-index: 1;
-          grid-area: job;
-          font-size: var(--fluid-0);
-          font-weight: normal;
-          color: lch(40 0 0);
-        }
-      }
-    }
-
-    &[data-area="photo"] {
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-      border: 1px solid transparent;
-    }
-
-    &[data-area="quote"] {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-around;
-      padding: var(--fluid-2);
-      background:
-        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-      border: 1px solid transparent;
-      border-radius: var(--rad);
-      font-size: var(--fluid-2);
-      font-style: italic;
-      font-weight: 300;
-      color: lch(40 0 0);
-
-      svg {
-        --size: var(--fluid-5);
-        width: var(--size);
-        height: var(--size);
-        fill: oklch(0.4 0 210);
-      }
-    }
-
-    &[data-area="contact"] {
-      container-type: inline-size;
-      justify-content: space-between;
-      overflow: unset;
-    }
-
-    &[data-area="skills"] {
-      container-type: inline-size;
-      background:
-        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-      border: 1px solid transparent;
-    }
-
-    &[data-area="project-alan"],
-    &[data-area="project-covid"] {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background:
-        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-      border: 1px solid transparent;
-
-      div {
-        position: relative;
-        padding: var(--fluid-1);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--fluid-0);
-        padding-top: 0;
-      }
-
-      div::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        transform: translateY(-90%);
-        width: 100%;
-        height: var(--fluid-4);
-        background: linear-gradient(to top, lch(0 0 0 / 0.9 ) 0%, lch(0 0 0 / 0) 90%);
-        z-index: 0;
-      }
-
-      h2 {
-        a {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          gap: var(--fluid--1);
-        }
-        svg {
-          --size: var(--fluid-2);
-          width: var(--size);
-          height: var(--size);
-        }
-      }
-
-      :where(h2, p) {
-        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
-      }
-    }
-
-    &[data-area="project-alan"] {
-      /* border: 1px solid lch(20 15 210); */
-    }
-
-    &[data-area="project-covid"] {
-      /* border: 1px solid lch(20 0 210); */
-    }
-  }
-
-  .contact-container {
-    display: flex;
-    width: 100%;
-    flex: 1;
-    justify-content: space-between;
-    border-radius: inherit;
-    gap: var(--fluid-1);
-    background:
-      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-    border: 1px solid transparent;
-
-    a {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--fluid-0);
-      padding: var(--fluid--2);
-      border-radius: inherit;
-
-      span {
-        display: none;
-      }
-
-      :hover {
-        box-shadow: 0 1px 0 0px var(--primary-text);
-      }
-    }
-  }
-
-  a {
-    background-color: none;
-    border: none;
-  }
-
-  @container (min-width: 210px) {
-    .contact-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: unset;
-      border: none;
-
-      a {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        background:
-          radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-          linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-        border: 1px solid transparent;
-
-        :hover {
-          box-shadow: 0 1px 0 0px var(--primary-text);
-        }
-      }
-    }
-  }
-
-  @container (min-width: 380px) {
-    .contact-container {
-      gap: var(--fluid--2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      a {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: var(--fluid--2);
-        padding: var(--fluid--2);
-        height: 100%;
-        border-radius: var(--rad) var(--rad);
-
-        span {
-          display: block;
-          text-align: center;
-        }
-
-        :hover {
-          box-shadow: none;
-        }
-      }
     }
   }
 

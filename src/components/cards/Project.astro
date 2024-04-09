@@ -1,0 +1,98 @@
+---
+import { Image } from 'astro:assets';
+
+import Chips from '@/components/Chips.astro';
+import externalLinkSVG from '@/icons/external-link.svg?raw';
+
+type Props = {
+  name: string;
+  title: string;
+  description: string;
+  imgSrc: ImageMetadata | string;
+  href: string;
+  stack: Array<string>;
+}
+
+const {
+  name,
+  title,
+  description,
+  imgSrc,
+  stack,
+  href,
+} = Astro.props;
+
+const ariaLabelledby = `project-${name}-heading`;
+const imgAlt = `Project ${title}`;
+const dataArea = `project-${name.toLocaleLowerCase()}`;
+---
+
+<article data-area={dataArea} class="card project">
+  {typeof imgSrc === 'string'
+    ? <img src={imgSrc} alt={imgAlt} />
+    : <Image src={imgSrc} alt={imgAlt} />
+  }
+  <div>
+    <h2 id={ariaLabelledby}>
+      <a href={href} target="_blank" aria-labelledby={ariaLabelledby}>
+        <span>{title}</span>
+        <Fragment set:html={externalLinkSVG} />
+      </a>
+    </h2>
+    <p>{description}</p>
+    <Chips values={stack} />
+  </div>
+</article>
+
+<style>
+  .card.project {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+
+    div {
+      position: relative;
+      padding: var(--fluid-1);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--fluid-0);
+      padding-top: 0;
+    }
+
+    div::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: translateY(-90%);
+      width: 100%;
+      height: var(--fluid-4);
+      background: linear-gradient(to top, lch(0 0 0 / 0.9 ) 0%, lch(0 0 0 / 0) 90%);
+      z-index: 0;
+    }
+
+    h2 {
+      a {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: var(--fluid--1);
+      }
+      svg {
+        --size: var(--fluid-2);
+        width: var(--size);
+        height: var(--size);
+      }
+    }
+
+    :where(h2, p) {
+      text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+  }
+</style>

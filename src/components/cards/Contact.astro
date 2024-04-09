@@ -1,0 +1,126 @@
+---
+import linkedinSVG from '@/icons/linkedin.svg?raw';
+import xSVG from '@/icons/x.svg?raw';
+import githubSVG from '@/icons/github.svg?raw';
+import mailSVG from '@/icons/mail.svg?raw';
+---
+
+<article data-area="contact" class="card">
+  <div class="contact-container">
+    <a href="https://x.com/haderman7" target="_blank">
+      <Fragment set:html={xSVG} />
+      <span>Twitter</span>
+    </a>
+    <a href="https://github.com/haderman" target="_blank">
+      <Fragment set:html={githubSVG} />
+      <span>Github</span>
+    </a>
+    <a href="mailto:cardona.hader@gmail.com">
+      <Fragment set:html={mailSVG} />
+      <span>Mail</span>
+    </a>
+    <a href="https://www.linkedin.com/in/hader-cardona/">
+      <Fragment set:html={linkedinSVG} />
+      <span>Linkedin</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .card[data-area="contact"] {
+    container-type: inline-size;
+    justify-content: space-between;
+    overflow: unset;
+  }
+
+  .contact-container {
+    display: flex;
+    width: 100%;
+    flex: 1;
+    justify-content: space-between;
+    border-radius: inherit;
+    gap: var(--fluid-1);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+
+    a {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--fluid-0);
+      padding: var(--fluid--2);
+      border-radius: inherit;
+
+      span {
+        display: none;
+      }
+
+      :hover {
+        box-shadow: 0 1px 0 0px var(--primary-text);
+      }
+    }
+  }
+
+  a {
+    background-color: none;
+    border: none;
+  }
+
+  @container (min-width: 210px) {
+    .contact-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: unset;
+      border: none;
+
+      a {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        background:
+          radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+          linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+        border: 1px solid transparent;
+
+        :hover {
+          box-shadow: 0 1px 0 0px var(--primary-text);
+        }
+      }
+    }
+  }
+
+  @container (min-width: 380px) {
+    .contact-container {
+      gap: var(--fluid--2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      a {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--fluid--2);
+        padding: var(--fluid--2);
+        height: 100%;
+        border-radius: var(--rad) var(--rad);
+
+        span {
+          display: block;
+          text-align: center;
+        }
+
+        :hover {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+</style>

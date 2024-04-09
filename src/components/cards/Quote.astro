@@ -1,0 +1,36 @@
+---
+import quouteSVG from '@/icons/quote.svg?raw';
+---
+
+<article data-area="quote" class="card">
+  <Fragment set:html={quouteSVG} />
+  <q>
+    The only way to do great work is to love what you do.
+  </q>
+</article>
+
+<style>
+  .card[data-area="quote"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: var(--fluid-2);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+    border-radius: var(--rad);
+    font-size: var(--fluid-2);
+    font-style: italic;
+    font-weight: 300;
+    color: lch(40 0 0);
+
+    svg {
+      --size: var(--fluid-5);
+      width: var(--size);
+      height: var(--size);
+      fill: oklch(0.4 0 210);
+    }
+  }
+</style>

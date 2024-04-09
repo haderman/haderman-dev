@@ -1,0 +1,86 @@
+---
+import { Image } from 'astro:assets';
+import imgProfileSrc from '@/images/profile.png';
+import ButtonShare from '@/components/ButtonShare.astro';
+---
+<article data-area="profile" class="card">
+  <header>
+    <div class="avatar">
+      <Image src={imgProfileSrc} alt="profile picture" />
+    </div>
+    <span>Hi, I'm Hader</span>
+    <span>Frontend engineer</span>
+  </header>
+  <h1 class="text-gradient">Enthusiastic about technology</h1>
+  <p>
+    I am committed to continuous learning and embracing challenges,
+    always with an eye on self-improvement and grateful for the journey.
+  </p>
+  <ButtonShare />
+</article>
+
+<style>
+  .card[data-area="profile"] {
+    flex-direction: column;
+    gap: var(--fluid-2);
+    padding: var(--fluid-3);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+
+    & > * {
+      z-index: 1;
+    }
+
+    .background {
+      z-index: 0;
+    }
+
+    button {
+      z-index: 1;
+      position: absolute;
+      top: var(--fluid-1);
+      right: var(--fluid-1);
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      grid-template-rows: auto 1fr;
+      grid-template-areas:
+        "avatar name"
+        "avatar job";
+      column-gap: var(--fluid-0);
+      row-gap: var(--fluid--4);
+      align-items: center;
+
+      span:first-child {
+        z-index: 1;
+        grid-area: name;
+        font-size: var(--fluid-1);
+        font-weight: bold;
+      }
+
+      span:last-child {
+        z-index: 1;
+        grid-area: job;
+        font-size: var(--fluid-0);
+        font-weight: normal;
+        color: lch(40 0 0);
+      }
+    }
+  }
+
+  .avatar {
+    border-radius: 50%;
+    overflow: hidden;
+    --size: var(--fluid-4);
+    grid-area: avatar;
+    width: var(--size);
+    height: var(--size);
+    background: oklch(0.52 0.14 241.12);
+  }
+</style>

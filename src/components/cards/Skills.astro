@@ -12,22 +12,33 @@ import tailwindcssSvg from '@/icons/brands/tailwindcss.svg?raw';
 import typescriptSvg from '@/icons/brands/typescript.svg?raw';
 import webpackSvg from '@/icons/brands/webpack.svg?raw';
 ---
-<div class="skills">
-  <Fragment set:html={html5Svg} />
-  <Fragment set:html={css3Svg} />
-  <Fragment set:html={javascriptSvg} />
-  <Fragment set:html={typescriptSvg} />
-  <Fragment set:html={reactSvg} />
-  <Fragment set:html={nodedotjsSvg} />
-  <Fragment set:html={astroSvg} />
-  <Fragment set:html={webpackSvg} />
-  <Fragment set:html={electronSvg} />
-  <Fragment set:html={nextdotjsSvg} />
-  <Fragment set:html={gitSvg} />
-  <Fragment set:html={tailwindcssSvg} />
-</div>
+
+<article data-area="skills" class="card">
+  <div class="skills">
+    <Fragment set:html={html5Svg} />
+    <Fragment set:html={css3Svg} />
+    <Fragment set:html={javascriptSvg} />
+    <Fragment set:html={typescriptSvg} />
+    <Fragment set:html={reactSvg} />
+    <Fragment set:html={nodedotjsSvg} />
+    <Fragment set:html={astroSvg} />
+    <Fragment set:html={webpackSvg} />
+    <Fragment set:html={electronSvg} />
+    <Fragment set:html={nextdotjsSvg} />
+    <Fragment set:html={gitSvg} />
+    <Fragment set:html={tailwindcssSvg} />
+  </div>
+</article>
 
 <style>
+  .card[data-area="skills"] {
+    container-type: inline-size;
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+  }
+
   .skills {
     width: 100%;
     display: flex;

@@ -1,0 +1,83 @@
+---
+
+---
+
+<main class="bento">
+  <slot />
+</main>
+
+<style is:global>
+  .bento {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fluid-1);
+    grid-template-areas:
+      "profile profile"
+      "contact contact"
+      "quote quote"
+      "project-alan project-alan"
+      "project-covid project-covid";
+
+    @media screen and (min-width: 768px) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(auto-fill, minmax(42px, 1fr));
+      grid-template-areas:
+        "profile profile profile quote"
+        "profile profile profile contact"
+        "project-alan project-alan project-covid project-covid";
+    }
+  }
+
+  .bento > article {
+    position: relative;
+
+    img {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    &[data-area="profile"] {
+      grid-area: profile;
+    }
+
+    &[data-area="quote"] {
+      grid-area: quote;
+      display: none;
+    }
+
+    &[data-area="photo"] {
+      grid-area: photo;
+      display: none;
+
+      @media screen and (min-width: 768px) {
+        display: flex;
+      }
+    }
+
+    &[data-area="contact"] {
+      grid-area: contact;
+    }
+
+    &[data-area="skills"] {
+      grid-area: skills;
+    }
+
+    &[data-area="project-alan"] {
+      grid-area: project-alan;
+    }
+
+    &[data-area="project-covid"] {
+      grid-area: project-covid;
+    }
+
+    &[data-area="project-c"] {
+      grid-area: project-c;
+    }
+
+    &[data-area="project-d"] {
+      grid-area: project-d;
+    }
+  }
+</style>

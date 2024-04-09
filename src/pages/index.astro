@@ -1,19 +1,14 @@
 ---
-import { Image } from 'astro:assets';
-
 import Profile from '@/components/cards/Profile.astro';
 import Quote from '@/components/cards/Quote.astro';
 import Contact from '@/components/cards/Contact.astro';
-import Skills from '@/components/cards/Skills.astro';
 import Project from '@/components/cards/Project.astro';
 
-import Chips from '@/components/Chips.astro';
-
 import Layout from '@/layouts/Layout.astro';
-import externalLinkSVG from '@/icons/external-link.svg?raw';
 import imgProjectCovidSrc from '@/images/covid.png';
 
 import '@/styles/root.css';
+import Bento from '@/layouts/Bento.astro';
 
 const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
 ---
@@ -24,11 +19,10 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       <a href="#" aria-disabled="true">🚧 Blog</a>
     </nav> -->
   </header>
-  <main class="bento">
+  <Bento>
     <Profile />
     <Quote />
     <Contact />
-    <Skills />
     <Project
       name="Alan"
       title="Alan AI Chat"
@@ -45,7 +39,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       stack={['React', 'Javascript', 'NextJS', 'Graphql']}
       href="https://covidx19.vercel.app/"
     />
-  </main>
+  </Bento>
   <footer>
 
   </footer>
@@ -78,82 +72,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
   main {
     width: 100%;
     max-width: 1200px;
-  }
-
-  .bento {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--fluid-1);
-    grid-template-areas:
-      "profile profile"
-      "contact contact"
-      "quote quote"
-      "skills skills"
-      "project-alan project-alan"
-      "project-covid project-covid";
-
-    @media screen and (min-width: 768px) {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(auto-fill, minmax(42px, 1fr));
-      grid-template-areas:
-        "profile profile profile quote"
-        "profile profile profile contact"
-        "skills skills skills skills"
-        "project-alan project-alan project-covid project-covid";
-    }
-  }
-
-  article {
-    position: relative;
-
-    img {
-      width: 100%;
-      height: auto;
-      object-fit: cover;
-    }
-
-    &[data-area="profile"] {
-      grid-area: profile;
-    }
-
-    &[data-area="quote"] {
-      grid-area: quote;
-      display: none;
-    }
-
-    &[data-area="photo"] {
-      grid-area: photo;
-      display: none;
-
-      @media screen and (min-width: 768px) {
-        display: flex;
-      }
-    }
-
-    &[data-area="contact"] {
-      grid-area: contact;
-    }
-
-    &[data-area="skills"] {
-      grid-area: skills;
-    }
-
-    &[data-area="project-alan"] {
-      grid-area: project-alan;
-    }
-
-    &[data-area="project-covid"] {
-      grid-area: project-covid;
-    }
-
-    &[data-area="project-c"] {
-      grid-area: project-c;
-    }
-
-    &[data-area="project-d"] {
-      grid-area: project-d;
-    }
   }
 
   .card {

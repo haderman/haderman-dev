@@ -9,6 +9,7 @@ import Layout from '@/layouts/Layout.astro';
 import linkedinSVG from '@/icons/linkedin.svg?raw';
 import xSVG from '@/icons/x.svg?raw';
 import githubSVG from '@/icons/github.svg?raw';
+import quouteSVG from '@/icons/quote.svg?raw';
 import mailSVG from '@/icons/mail.svg?raw';
 import externalLinkSVG from '@/icons/external-link.svg?raw';
 import imgProjectCovidSrc from '@/images/covid.png';
@@ -42,9 +43,15 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       </p>
       <ButtonShare />
     </article>
-    <article data-area="photo" class="card">
-      <ThemeWidget />
+    <article data-area="quote" class="card">
+      <Fragment set:html={quouteSVG} />
+      <q>
+        The only way to do great work is to love what you do.
+      </q>
     </article>
+    <!-- <article data-area="photo" class="card">
+      <ThemeWidget />
+    </article> -->
     <article data-area="contact" class="card">
       <div class="contact-container">
         <a href="https://x.com/haderman7" target="_blank">
@@ -68,9 +75,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     <article data-area="skills" class="card">
       <Skills />
     </article>
-    <div class="divider" data-area="divider">
-      <h2>Projects</h2>
-    </div>
     <article data-area="project-alan" class="card">
       <img src={projectAlanImage} alt="Project Alan" />
       <div>
@@ -139,19 +143,20 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     grid-template-areas:
       "profile profile"
       "contact contact"
+      "quote quote"
       "skills skills"
-      "divider divider"
       "project-alan project-alan"
       "project-covid project-covid";
 
     @media screen and (min-width: 768px) {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(auto-fill, minmax(42px, 1fr));
       grid-template-areas:
-        "profile profile profile photo"
+        "profile profile profile quote"
         "profile profile profile contact"
+        /* ". . contact contact" */
         "skills skills skills skills"
-        "divider divider divider divider"
         "project-alan project-alan project-covid project-covid";
     }
   }
@@ -167,6 +172,11 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
     &[data-area="profile"] {
       grid-area: profile;
+    }
+
+    &[data-area="quote"] {
+      grid-area: quote;
+      display: none;
     }
 
     &[data-area="photo"] {
@@ -292,6 +302,30 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       border: 1px solid transparent;
     }
 
+    &[data-area="quote"] {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      padding: var(--fluid-2);
+      background:
+        radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      border: 1px solid transparent;
+      border-radius: var(--rad);
+      font-size: var(--fluid-2);
+      font-style: italic;
+      font-weight: 300;
+      color: lch(40 0 0);
+
+      svg {
+        --size: var(--fluid-5);
+        width: var(--size);
+        height: var(--size);
+        fill: oklch(0.4 0 210);
+      }
+    }
+
     &[data-area="contact"] {
       container-type: inline-size;
       justify-content: space-between;
@@ -373,6 +407,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     flex: 1;
     justify-content: space-between;
     border-radius: inherit;
+    gap: var(--fluid-1);
     background:
       radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
       linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
@@ -404,7 +439,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
 
   @container (min-width: 210px) {
     .contact-container {
-      gap: var(--fluid--2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -455,39 +489,6 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
           box-shadow: none;
         }
       }
-    }
-  }
-
-  .divider {
-    grid-area: divider;
-    position: relative;
-    padding-top: var(--fluid-1);
-    padding-bottom: var(--fluid-1);
-    display: flex;
-    justify-content: center;
-
-    h2 {
-      display: inline-flex;
-      position: relative;
-      z-index: 1;
-      padding: var(--fluid-0);
-      font-size: var(--fluid-1);
-      font-weight: 300;
-      color: lch(40 0 0);
-      background-color: var(--primary-color);
-      border-radius: 16px;
-      /* border: 1px solid lch(20 6 210); */
-    }
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 100%;
-      height: 1px;
-      background-color: lch(15 2 210);
     }
   }
 

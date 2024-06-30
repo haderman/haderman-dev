@@ -1,5 +1,6 @@
 ---
 import quouteSVG from '@/icons/quote.svg?raw';
+import robotSVG from '@/icons/robot.svg?raw';
 ---
 
 <article data-area="quote" class="card">
@@ -7,6 +8,9 @@ import quouteSVG from '@/icons/quote.svg?raw';
   <q>
     The only way to do great work is to love what you do.
   </q>
+  <button class="generate">
+    <Fragment set:html={robotSVG} />
+  </button>
 </article>
 
 <style>
@@ -24,13 +28,179 @@ import quouteSVG from '@/icons/quote.svg?raw';
     font-size: var(--fluid-2);
     font-style: italic;
     font-weight: 300;
-    color: lch(40 0 0);
 
-    svg {
+    svg:not(.generate svg) {
       --size: var(--fluid-5);
       width: var(--size);
       height: var(--size);
       fill: oklch(0.4 0 210);
     }
+
+    .generate {
+      position: absolute;
+      top: var(--fluid-0);
+      right: var(--fluid-0);
+      z-index: 1;
+    }
+
+    &[data-state="generating"] {
+      opacity: 0.5;
+      transition: opacity 0.5s ease-in-out;
+    }
+  }
+
+  .generate {
+    display: none;
+  }
+
+  .generate[data-state="ready"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--fluid-1);
+    height: var(--fluid-1);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+    border-radius: var(--rad);
+
+    &:hover {
+      background:
+        radial-gradient(at center right, oklch(0.18 0 0), oklch(0.26 0 0)) padding-box,
+        linear-gradient(230deg, oklch(0.3 0 0), oklch(0.35 0 0)) border-box;
+      border: 1px solid transparent;
+    }
+
+    &[data-animation="none"] {
+      animation: none;
+    }
+
+    &[data-animation="shake"] {
+      animation: shake-rotation-color 0.8s linear infinite;
+    }
+  }
+
+
+  @keyframes shake-rotation-color {
+    0%, 100% {
+      transform: rotate(0deg);
+      color: #007BFF; /* Initial color */
+    }
+    25%, 75% {
+      transform: rotate(-5deg);
+      color: #FFC107; /* Mid-transition color */
+    }
+    50% {
+      transform: rotate(5deg);
+      color: #28A745; /* Peak transition color */
+    }
   }
 </style>
+
+<script>
+  import { logger } from '@/lib/logger';
+  import { eventsHistory } from '@/store/events-history';
+
+  if (window.ai) {
+    init();
+  }
+
+  async function init() {
+    logger({ type: 'info[Quote]', message: 'AI available' });
+
+    let state = 'idle';
+    const $card = document.querySelector('article[data-area="quote"]') as HTMLElement;
+    const $btn = showButton();
+    const session = await createTextSession();
+    const $quote = document.querySelector('q') as HTMLQuoteElement;
+
+    if (!$card) {
+      logger({ type: 'error[Quote]', message: 'Card not found' });
+    }
+
+    if (!$quote) {
+      logger({ type: 'error[Quote]', message: 'Quote not found' });
+    }
+
+    const generateQuoteCount = eventsHistory.get('generateQuoteCount');
+    let clearAnumation;
+    if (generateQuoteCount === 0) {
+      clearAnumation = animateButton($btn);
+    }
+
+    if ($quote && session) {
+      $btn.addEventListener('click', async () => {
+        updateEventsHistory();
+        clearAnumation?.();
+        logger({
+          type: 'info[Quote]',
+          message: 'Generating quote',
+        });
+
+        state = 'generating';
+        $card.setAttribute('data-state', 'generating');
+        $btn.setAttribute('data-animation', 'none');
+
+        const result = await generateQuote(session);
+        state = 'ready';
+        $quote.textContent = result;
+        $card.setAttribute('data-state', 'ready');
+      });
+    }
+  }
+
+  function animateButton($btn: HTMLButtonElement) {
+    let timeoutId;
+    let intervalId = setInterval(() => {
+      $btn.setAttribute('data-animation', 'shake');
+      timeoutId = setTimeout(() => {
+        $btn.setAttribute('data-animation', 'none');
+      }, 1000);
+    }, 5000);
+
+    return function clearAnumation() {
+      $btn.setAttribute('data-animation', 'none');
+      clearInterval(intervalId);
+      clearTimeout(timeoutId);
+    };
+  }
+
+  function updateEventsHistory() {
+    let count = eventsHistory.get('generateQuoteCount');
+    count++;
+    eventsHistory.set('generateQuoteCount', count);
+    return count;
+  }
+
+  function showButton() {
+    const $btn = document.querySelector('.generate') as HTMLButtonElement;
+    if (!$btn) {
+      return;
+    }
+
+    $btn.setAttribute('data-state', 'ready');
+
+    const generateQuoteCount = eventsHistory.get('generateQuoteCount');
+    if (Number(generateQuoteCount) === 0) {
+      // $btn.setAttribute('data-animation', 'shake');
+    }
+
+    return $btn;
+  }
+
+  async function createTextSession() {
+    const canCreate = await window.ai.canCreateTextSession();
+    if (canCreate === 'no') {
+      return;
+    }
+    const session = await window.ai.createTextSession();
+    return session;
+  }
+
+  function generateQuote(session) {
+    return session
+      .prompt('Write me a short motivational quote')
+      .then((r) => r.replaceAll('"', ''));
+  }
+</script>

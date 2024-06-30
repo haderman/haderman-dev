@@ -29,6 +29,7 @@ function getUserId() {
  * - For scroll events: `{ type: 'scroll', position: number }`
  * - For page view events: `{ type: 'pageview', href: string }`
  * - For session end events: `{ type: 'sessionend' }`
+ * - For info events: `{ type: 'info', message: string }`
  */
 export function logger(data) {
   const userId = getUserId();

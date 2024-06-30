@@ -185,6 +185,10 @@ summary {
   font-weight: 500;
 }
 
+article {
+  position: relative;
+}
+
 button {
   all: unset;
   cursor: pointer;
@@ -193,7 +197,7 @@ button {
   padding: var(--fluid--2);
   border-radius: 8px;
   background-color: var(--accent-color);
-  color: var(--primary-color);
+  color: var(--primary-text);
   transition: all 0.2s ease-in-out;
   display: inline-flex;
   align-items: center;

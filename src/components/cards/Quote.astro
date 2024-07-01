@@ -4,21 +4,22 @@ import robotSVG from '@/icons/robot.svg?raw';
 ---
 
 <article data-area="quote" class="card">
-  <Fragment set:html={quouteSVG} />
+  <div>
+    <Fragment set:html={quouteSVG} />
+    <button class="generate">
+      <Fragment set:html={robotSVG} />
+    </button>
+  </div>
   <q>
     The only way to do great work is to love what you do.
   </q>
-  <button class="generate">
-    <Fragment set:html={robotSVG} />
-  </button>
 </article>
 
 <style>
   .card[data-area="quote"] {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around;
+    gap: var(--fluid-1);
     padding: var(--fluid-2);
     background:
       radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
@@ -30,17 +31,16 @@ import robotSVG from '@/icons/robot.svg?raw';
     font-weight: 300;
 
     svg:not(.generate svg) {
-      --size: var(--fluid-5);
+      --size: var(--fluid-3);
       width: var(--size);
       height: var(--size);
       fill: oklch(0.4 0 210);
     }
 
-    .generate {
-      position: absolute;
-      top: var(--fluid-0);
-      right: var(--fluid-0);
-      z-index: 1;
+    & > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     &[data-state="generating"] {
@@ -80,7 +80,6 @@ import robotSVG from '@/icons/robot.svg?raw';
       animation: shake-rotation-color 0.8s linear infinite;
     }
   }
-
 
   @keyframes shake-rotation-color {
     0%, 100% {

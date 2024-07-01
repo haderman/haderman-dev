@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import imgProfileSrc from '@/images/profile.png';
+import imgProfileSrc from '@/images/profile.webp';
 ---
 
 <div class="avatar">
@@ -13,7 +13,6 @@ import imgProfileSrc from '@/images/profile.png';
     --size: var(--fluid-4);
     grid-area: avatar;
     position: relative;
-    border-radius: 50%;
     overflow: hidden;
     width: var(--size);
     height: var(--size);
@@ -24,7 +23,6 @@ import imgProfileSrc from '@/images/profile.png';
 
     img {
       width: 110%;
-      top: -10%;
       left: -5%;
       position: relative;
     }

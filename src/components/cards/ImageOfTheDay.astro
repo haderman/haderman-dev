@@ -1,0 +1,48 @@
+---
+import { genImage } from '@/lib/image-api';
+
+const img = await genImage();
+---
+<article class="card special-bg" data-area="image-of-the-day">
+  <figure>
+    <figcaption>
+      {img.revised_prompt}
+    </figcaption>
+    <img
+      src={img.url}
+      alt={img.revised_prompt}
+      width="100%"
+    />
+  </figure>
+</article>
+
+<style>
+  figure {
+    flex: 1;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--fluid-2);
+
+    figcaption {
+      flex-shrink: 3;
+      flex-grow: 0;
+      font-weight: 100;
+      font-size: var(--fluid-1);
+      letter-spacing: 1px;
+    }
+
+    img {
+      flex: 1;
+      height: 20vh !important;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    figure {
+      flex-direction: row;
+
+      figcaption {
+        flex-basis: 35%;
+      }
+    }
+</style>

@@ -3,14 +3,15 @@ import Profile from '@/components/cards/Profile.astro';
 import Quote from '@/components/cards/Quote.astro';
 import Contact from '@/components/cards/Contact.astro';
 import Project from '@/components/cards/Project.astro';
-
 import Layout from '@/layouts/Layout.astro';
 import imgProjectCovidSrc from '@/images/covid.png';
 
 import '@/styles/root.css';
 import Bento from '@/layouts/Bento.astro';
+import ImageOfTheDay from '@/components/cards/ImageOfTheDay.astro';
 
 const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
+
 ---
 
 <Layout title="Haderman - home">
@@ -39,6 +40,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       stack={['React', 'Javascript', 'NextJS', 'Graphql']}
       href="https://covidx19.vercel.app/"
     />
+    <ImageOfTheDay />
   </Bento>
   <footer>
 

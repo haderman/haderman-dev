@@ -187,6 +187,7 @@ summary {
 
 article {
   position: relative;
+  transition: all 0.2s;
 }
 
 button {
@@ -238,6 +239,17 @@ button {
   background-clip: text;
   -webkit-text-fill-color: transparent;
   box-decoration-break: clone;
+}
+
+.card {
+  padding: var(--fluid-0);
+}
+
+.special-bg {
+  background:
+    radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+    linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+  border: 1px solid transparent;
 }
 
 /* .special-border {

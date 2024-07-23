@@ -16,7 +16,8 @@
       "contact contact"
       "quote quote"
       "project-alan project-alan"
-      "project-covid project-covid";
+      "project-covid project-covid"
+      "image-of-the-day image-of-the-day";
 
     @media screen and (min-width: 768px) {
       display: grid;
@@ -25,7 +26,8 @@
       grid-template-areas:
         "profile profile profile quote"
         "profile profile profile contact"
-        "project-alan project-alan project-covid project-covid";
+        "project-alan project-alan project-covid project-covid"
+        "image-of-the-day image-of-the-day image-of-the-day image-of-the-day";
     }
   }
 
@@ -78,6 +80,10 @@
 
     &[data-area="project-d"] {
       grid-area: project-d;
+    }
+
+    &[data-area="image-of-the-day"] {
+      grid-area: image-of-the-day;
     }
   }
 </style>

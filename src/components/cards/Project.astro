@@ -27,7 +27,7 @@ const imgAlt = `Project ${title}`;
 const dataArea = `project-${name.toLocaleLowerCase()}`;
 ---
 
-<article data-area={dataArea} class="card project">
+<article data-area={dataArea} class="card project special-bg">
   {typeof imgSrc === 'string'
     ? <img src={imgSrc} alt={imgAlt} />
     : <Image src={imgSrc} alt={imgAlt} />
@@ -46,23 +46,18 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
 
 <style>
   .card.project {
+    gap: var(--fluid-2);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background:
-      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-    border: 1px solid transparent;
 
     div {
       position: relative;
-      padding: var(--fluid-1);
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: var(--fluid-0);
-      padding-top: 0;
     }
 
     div::before {

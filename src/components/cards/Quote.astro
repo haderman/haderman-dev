@@ -20,7 +20,6 @@ import robotSVG from '@/icons/robot.svg?raw';
     display: flex;
     flex-direction: column;
     gap: var(--fluid-1);
-    padding: var(--fluid-2);
     background:
       radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
       linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
@@ -60,14 +59,15 @@ import robotSVG from '@/icons/robot.svg?raw';
     width: var(--fluid-1);
     height: var(--fluid-1);
     background:
-      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
-      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+      radial-gradient(at center right, oklch(0.18 0 0), oklch(0.26 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.3 0 0), oklch(0.35 0 0)) border-box;
     border: 1px solid transparent;
     border-radius: var(--rad);
+    transition: all 500ms;
 
     &:hover {
       background:
-        radial-gradient(at center right, oklch(0.18 0 0), oklch(0.26 0 0)) padding-box,
+        radial-gradient(at center right, oklch(0.28 0 0), oklch(0.36 0 0)) padding-box,
         linear-gradient(230deg, oklch(0.3 0 0), oklch(0.35 0 0)) border-box;
       border: 1px solid transparent;
     }
@@ -193,12 +193,12 @@ import robotSVG from '@/icons/robot.svg?raw';
     if (canCreate === 'no') {
       return;
     }
-    const session = await window.ai.createTextSession();
-    return session;
+    const textSession = await window.ai.createTextSession();
+    return textSession;
   }
 
-  function generateQuote(session) {
-    return session
+  function generateQuote(textSession) {
+    return textSession
       .prompt('Write me a short motivational quote')
       .then((r) => r.replaceAll('"', ''));
   }

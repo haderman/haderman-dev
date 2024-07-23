@@ -23,10 +23,11 @@ const { values } = Astro.props;
   li {
     font-size: var(--fluid-0);
     padding: var(--fluid--3) var(--fluid--2);
-    border-radius: 0; /* var(--fluid--1); */
+    border-radius: 0;
+
     background:
-      linear-gradient(to bottom, oklch(0 0.4 210 / 1), oklch(0.2 0.1 290 / 1)) padding-box,
-      linear-gradient(30deg, oklch(0.3 0.1 210), oklch(0.25 0.1 290)) border-box;
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
     border: 1px solid transparent;
 
   }

@@ -1,8 +1,8 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
-import Chips from '@/components/Chips.astro';
-import externalLinkSVG from '@/icons/external-link.svg?raw';
+import Chips from "@/components/Chips.astro";
+import externalLinkSVG from "@/icons/external-link.svg?raw";
 
 type Props = {
   name: string;
@@ -11,16 +11,9 @@ type Props = {
   imgSrc: ImageMetadata | string;
   href: string;
   stack: Array<string>;
-}
+};
 
-const {
-  name,
-  title,
-  description,
-  imgSrc,
-  stack,
-  href,
-} = Astro.props;
+const { name, title, description, imgSrc, stack, href } = Astro.props;
 
 const ariaLabelledby = `project-${name}-heading`;
 const imgAlt = `Project ${title}`;
@@ -28,9 +21,12 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
 ---
 
 <article data-area={dataArea} class="card project special-bg">
-  {typeof imgSrc === 'string'
-    ? <img src={imgSrc} alt={imgAlt} />
-    : <Image src={imgSrc} alt={imgAlt} />
+  {
+    typeof imgSrc === "string" ? (
+      <img src={imgSrc} alt={imgAlt} />
+    ) : (
+      <Image src={imgSrc} alt={imgAlt} />
+    )
   }
   <div>
     <h2 id={ariaLabelledby}>
@@ -61,14 +57,18 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
     }
 
     div::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       transform: translateY(-90%);
       width: 100%;
       height: var(--fluid-4);
-      background: linear-gradient(to top, lch(0 0 0 / 0.9 ) 0%, lch(0 0 0 / 0) 90%);
+      background: linear-gradient(
+        to top,
+        lch(0 0 0 / 0.9) 0%,
+        lch(0 0 0 / 0) 90%
+      );
       z-index: 0;
     }
 
@@ -88,6 +88,16 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
 
     :where(h2, p) {
       text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    @media screen and (min-width: 1024px) {
+      :is(img) {
+        filter: grayscale(1);
+      }
+
+      &:hover :is(img) {
+        filter: grayscale(0);
+      }
     }
   }
 </style>

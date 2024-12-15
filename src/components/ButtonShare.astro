@@ -1,7 +1,8 @@
 ---
-import iconShareSvg from '@/icons/share.svg?raw';
+import iconShareSvg from "@/icons/share.svg?raw";
 ---
-<button id="share" disabled>
+
+<button id="share" disabled class="special-bg-gold">
   <span>Share</span>
   <Fragment set:html={iconShareSvg} />
 </button>
@@ -20,41 +21,42 @@ import iconShareSvg from '@/icons/share.svg?raw';
   init();
 
   function init() {
-    const shareButton = document.getElementById('share');
+    const shareButton = document.getElementById("share");
 
     if (!shareButton) {
-      console.error('Share button not found.');
+      console.error("Share button not found.");
       return;
     }
 
     if (!navigator.canShare) {
-      console.error('Web Share API not supported');
+      console.error("Web Share API not supported");
       return;
     }
 
     const dataToShare: Parameters<typeof navigator.share>[0] = {
-      title: 'Check out my website',
-      text: 'haderman.dev',
+      title: "Check out my website",
+      text: "haderman.dev",
       url: window.location.href,
-    }
+    };
 
     if (navigator.canShare(dataToShare)) {
-      shareButton.removeAttribute('disabled');
-      shareButton.style.opacity = '1';
-      shareButton.style.pointerEvents = 'auto';
-      shareButton.addEventListener('click', async () => {
+      shareButton.removeAttribute("disabled");
+      shareButton.style.opacity = "1";
+      shareButton.style.pointerEvents = "auto";
+      shareButton.addEventListener("click", async () => {
         await handleShare(dataToShare);
       });
     }
   }
 
   async function handleShare(data) {
-    navigator.share(data)
+    navigator
+      .share(data)
       .then(() => {
-        console.log('Content shared successfully');
+        console.log("Content shared successfully");
       })
       .catch((error) => {
-        console.error('Error sharing content:', error);
+        console.error("Error sharing content:", error);
       });
   }
 </script>

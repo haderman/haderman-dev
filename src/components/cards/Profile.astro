@@ -1,7 +1,8 @@
 ---
-import ButtonShare from '@/components/ButtonShare.astro';
-import Avatar from '../Avatar.astro';
+import ButtonShare from "@/components/ButtonShare.astro";
+import Avatar from "../Avatar.astro";
 ---
+
 <article data-area="profile" class="card">
   <header>
     <Avatar />
@@ -10,8 +11,8 @@ import Avatar from '../Avatar.astro';
   </header>
   <h1 class="text-gradient_">I love to build things</h1>
   <p>
-    I am committed to continuous learning and embracing challenges,
-    always with an eye on self-improvement and grateful for the journey.
+    I am committed to continuous learning and embracing challenges, always with
+    an eye on self-improvement and grateful for the journey.
   </p>
   <ButtonShare />
 </article>
@@ -21,7 +22,8 @@ import Avatar from '../Avatar.astro';
     flex-direction: column;
     gap: var(--fluid-2);
     background:
-      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0))
+        padding-box,
       linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
     border: 1px solid transparent;
 
@@ -36,8 +38,8 @@ import Avatar from '../Avatar.astro';
     button {
       z-index: 1;
       position: absolute;
-      top: var(--fluid-1);
-      right: var(--fluid-1);
+      top: var(--fluid-0);
+      right: var(--fluid-0);
     }
 
     header {

@@ -1,0 +1,125 @@
+---
+// No imports needed for this basic implementation
+---
+
+<article data-area="game-of-life" class="card">
+  <div id="game-grid" class="game-grid"></div>
+  <button id="start-button">Start</button>
+  <button id="stop-button">Stop</button>
+  <button id="reset-button">Reset</button>
+</article>
+
+<style is:global>
+  .card[data-area="game-of-life"] {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--fluid-1);
+    background:
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0))
+        padding-box,
+      linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
+    border: 1px solid transparent;
+    padding: 0;
+  }
+
+  .game-grid {
+    display: grid;
+    grid-template-columns: repeat(20, 20px);
+    grid-template-rows: repeat(20, 20px);
+    gap: 1px;
+  }
+
+  .game-grid div {
+    width: 20px;
+    height: 20px;
+    background-color: black;
+  }
+
+  .game-grid .alive {
+    background-color: red;
+  }
+</style>
+
+<script>
+  const rows = 20;
+  const cols = 20;
+  let grid = createGrid();
+
+  // Create a new Web Worker
+  const worker = new Worker("/game-of-life-worker.js");
+
+  // Listen for messages from the worker
+  worker.onmessage = function (event) {
+    grid = event.data;
+    drawGrid();
+  };
+
+  function createGrid() {
+    return new Array(rows).fill(null).map(() => new Array(cols).fill(false));
+  }
+
+  function drawGrid() {
+    const gridElement = document.getElementById("game-grid");
+    gridElement.innerHTML = "";
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const cell = document.createElement("div");
+        if (grid[row][col]) {
+          cell.className = "special-bg-gold";
+        }
+        const aliveNeighbors = countAliveNeighbors(row, col);
+        // Custom rule: apply "special-bg-gold-light" with a 10% chance if the cell has exactly 1 alive neighbor
+        if (aliveNeighbors === 1 && Math.random() < 0.5) {
+          cell.className = "special-bg-gold special-bg-gold-light";
+        }
+        gridElement.appendChild(cell);
+      }
+    }
+  }
+
+  function countAliveNeighbors(row, col) {
+    let count = 0;
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (i === 0 && j === 0) continue;
+        const newRow = row + i;
+        const newCol = col + j;
+        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+          count += grid[newRow][newCol] ? 1 : 0;
+        }
+      }
+    }
+    return count;
+  }
+
+  // Event listeners for buttons
+
+  document.getElementById("start-button").addEventListener("click", () => {
+    worker.postMessage({ type: "start", grid });
+  });
+
+  document.getElementById("stop-button").addEventListener("click", () => {
+    worker.postMessage("stop");
+  });
+
+  document.getElementById("reset-button").addEventListener("click", () => {
+    grid = createGrid();
+    randomizeGrid();
+    worker.postMessage({ type: "reset", grid });
+    drawGrid();
+  });
+
+  // Initialize the grid and draw it
+  randomizeGrid();
+  drawGrid();
+
+  function randomizeGrid() {
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        grid[row][col] = Math.random() < 0.2;
+      }
+    }
+  }
+</script>

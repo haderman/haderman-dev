@@ -1,17 +1,18 @@
 ---
-import Profile from '@/components/cards/Profile.astro';
-import Quote from '@/components/cards/Quote.astro';
-import Contact from '@/components/cards/Contact.astro';
-import Project from '@/components/cards/Project.astro';
-import Layout from '@/layouts/Layout.astro';
-import imgProjectCovidSrc from '@/images/covid.png';
+import Profile from "@/components/cards/Profile.astro";
+import Quote from "@/components/cards/Quote.astro";
+import Contact from "@/components/cards/Contact.astro";
+import Project from "@/components/cards/Project.astro";
+import Layout from "@/layouts/Layout.astro";
+import GameOfLife from "@/components/cards/GameOfLife.astro";
+import imgProjectCovidSrc from "@/images/covid.png";
 
-import '@/styles/root.css';
-import Bento from '@/layouts/Bento.astro';
-import ImageOfTheDay from '@/components/cards/ImageOfTheDay.astro';
+import "@/styles/root.css";
+import Bento from "@/layouts/Bento.astro";
+import ImageOfTheDay from "@/components/cards/ImageOfTheDay.astro";
 
-const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png';
-
+const projectAlanImage =
+  "https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png";
 ---
 
 <Layout title="Haderman - home">
@@ -29,7 +30,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       title="Alan AI Chat"
       description="VSCode extension to create multiple AI chats"
       imgSrc={projectAlanImage}
-      stack={['React', 'Typescript', 'OpenAI API', 'NodeJS', 'Astro']}
+      stack={["React", "Typescript", "OpenAI API", "NodeJS", "Astro"]}
       href="https://www.alanai.app/"
     />
     <Project
@@ -37,14 +38,13 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
       title="Covid 19 Tracker"
       description="COVID-19 tracker with global statistics and visualizations"
       imgSrc={imgProjectCovidSrc}
-      stack={['React', 'Javascript', 'NextJS', 'Graphql']}
+      stack={["React", "Javascript", "NextJS", "Graphql"]}
       href="https://covidx19.vercel.app/"
     />
     <!-- <ImageOfTheDay /> -->
+    <GameOfLife />
   </Bento>
-  <footer>
-
-  </footer>
+  <footer></footer>
 </Layout>
 
 <style is:global>
@@ -55,7 +55,7 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     align-items: center;
     gap: var(--fluid-4);
 
-    @media screen and (min-width: 768px){
+    @media screen and (min-width: 768px) {
       padding: var(--fluid-0);
       gap: var(--fluid-2);
     }
@@ -112,16 +112,36 @@ const projectAlanImage = 'https://raw.githubusercontent.com/haderman/alan-docs/m
     width: 100%;
     height: 100%;
     background-color: lch(0 0 0 / 0.7);
-    background-image:
-      radial-gradient(circle at center center, lch(14 3.04 304.6), lch(5 2.22 217.82)),
-      repeating-radial-gradient( circle at center center, lch(49 53.84 218.25), lch(22 0 0), 4px, transparent 20px, transparent 20px);
+    background-image: radial-gradient(
+        circle at center center,
+        lch(14 3.04 304.6),
+        lch(5 2.22 217.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 218.25),
+        lch(22 0 0),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
     background-blend-mode: multiply;
   }
 
   .card:hover .circles {
-    background-image:
-      radial-gradient(circle at center center, lch(35 53.04 304.6), lch(5 2.22 257.82)),
-      repeating-radial-gradient(circle at center center, lch(49 53.84 258.25), lch(22 0 250), 4px, transparent 20px, transparent 20px);
+    background-image: radial-gradient(
+        circle at center center,
+        lch(35 53.04 304.6),
+        lch(5 2.22 257.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 258.25),
+        lch(22 0 250),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
   }
 
   .overlay {

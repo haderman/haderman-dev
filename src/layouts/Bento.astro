@@ -17,7 +17,7 @@
       "quote quote"
       "project-alan project-alan"
       "project-covid project-covid"
-      "image-of-the-day image-of-the-day";
+      "game-of-life game-of-life";
 
     @media screen and (min-width: 768px) {
       display: grid;
@@ -27,7 +27,7 @@
         "profile profile profile quote"
         "profile profile profile contact"
         "project-alan project-alan project-covid project-covid"
-        "image-of-the-day image-of-the-day image-of-the-day image-of-the-day";
+        "game-of-life game-of-life . .";
     }
   }
 
@@ -84,6 +84,10 @@
 
     &[data-area="image-of-the-day"] {
       grid-area: image-of-the-day;
+    }
+
+    &[data-area="game-of-life"] {
+      grid-area: game-of-life;
     }
   }
 </style>

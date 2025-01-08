@@ -1,5 +1,5 @@
 ---
-import '@fontsource-variable/montserrat';
+import "@fontsource-variable/montserrat";
 
 interface Props {
   title: string;
@@ -22,32 +22,40 @@ const { title } = Astro.props;
     <slot />
   </body>
 </html>
-<style is:global>
-
-</style>
+<style is:global></style>
 
 <script>
-  import { logger } from '@/lib/logger';
-  import { settings } from '@/store/settings';
+  import { logger } from "@/lib/logger";
+  import { settings } from "@/store/settings";
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener("DOMContentLoaded", () => {
     configLogger();
     configTheming();
   });
 
   function configLogger() {
-    console.log('configuring logger');
+    console.log("configuring logger");
     logger({
-      type: 'pageview',
-      href: 'home',
+      type: "pageview",
+      href: "home",
     });
 
-    document.body.addEventListener('click', (e) => {
-      const target = (e.target as HTMLElement).closest('a');
+    document.body.addEventListener("click", (e) => {
+      const target = (e.target as HTMLElement).closest("a");
+      const targetButton = (e.target as HTMLElement).closest("button");
+
       if (target) {
         logger({
-          type: 'click',
-          href: target.getAttribute('href'),
+          type: "click",
+          href: target.getAttribute("href"),
+        });
+      }
+
+      if (targetButton) {
+        logger({
+          type: "button-click",
+          buttonId: targetButton.getAttribute("id"), // Assuming buttons have IDs
+          buttonText: targetButton.textContent,
         });
       }
     });
@@ -55,8 +63,8 @@ const { title } = Astro.props;
 
   function configTheming() {
     settings.subscribe((state) => {
-      const $html = document.querySelector('html');
-      $html.setAttribute('data-theme', state.theme);
+      const $html = document.querySelector("html");
+      $html.setAttribute("data-theme", state.theme);
     });
   }
 </script>

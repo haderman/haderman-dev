@@ -1,17 +1,30 @@
 ---
 // No imports needed for this basic implementation
+
+const totalRows = 15;
+const totalCols = 30;
 ---
 
 <article data-area="game-of-life" class="card">
-  <div id="game-grid" class="game-grid"></div>
+  <div
+    id="game-grid"
+    class="game-grid"
+    data-total-rows={totalRows}
+    data-total-cols={totalCols}
+  >
+    <!-- Grid cells will be dynamically generated here -->
+  </div>
   <div class="controls">
-    <button id="start-button">Start</button>
-    <button id="stop-button">Stop</button>
-    <button id="reset-button">Reset</button>
+    <button id="start-button" data-action="start">Start</button>
+    <button id="stop-button" data-action="stop">Stop</button>
+    <button id="reset-button" data-action="reset">Reset</button>
+    <button id="reset-empty-button" data-action="reset-empty"
+      >Reset Empty</button
+    >
   </div>
 </article>
 
-<style is:global>
+<style is:global define:vars={{ totalRows, totalCols }}>
   .card[data-area="game-of-life"] {
     display: flex;
     flex-direction: column;
@@ -28,9 +41,10 @@
 
   .game-grid {
     display: grid;
-    grid-template-columns: repeat(30, 20px);
-    grid-template-rows: repeat(10, 20px);
+    grid-template-columns: repeat(var(--totalCols), 20px);
+    grid-template-rows: repeat(var(--totalRows), 20px);
     gap: 1px;
+    background-color: oklab(0.17 0 0);
   }
 
   .game-grid div {
@@ -50,11 +64,56 @@
     max-width: 400px;
     padding: var(--fluid-0);
   }
+
+  button {
+    all: unset;
+    cursor: pointer;
+    font-size: var(--fluid-0);
+    font-weight: 500;
+    padding: var(--fluid--2);
+    background-color: var(--accent-color);
+    color: var(--primary-text);
+    transition: all 0.2s ease-in-out;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--fluid--2);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  button:hover {
+    background-color: darken(var(--accent-color), 10%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  button:active {
+    background-color: darken(var(--accent-color), 20%);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
+  }
 </style>
 
 <script>
-  const rows = 20;
-  const cols = 20;
+  import { logger } from "@/lib/logger";
+
+  let isGameRunning = false;
+  let isEditing = false;
+  let isMouseDown = false; // Track mouse button state
+
+  const gridElement = document.getElementById("game-grid");
+  const totalRows = parseInt(gridElement.dataset.totalRows, 10);
+  const totalCols = parseInt(gridElement.dataset.totalCols, 10);
+
+  const rows = totalRows;
+  const cols = totalCols;
+
   let grid = createGrid();
 
   // Create a new Web Worker
@@ -71,7 +130,6 @@
   }
 
   function drawGrid() {
-    const gridElement = document.getElementById("game-grid");
     gridElement.innerHTML = "";
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
@@ -80,12 +138,89 @@
           cell.className = "special-bg-gold";
         }
         const aliveNeighbors = countAliveNeighbors(row, col);
-        // Custom rule: apply "special-bg-gold-light" with a 10% chance if the cell has exactly 1 alive neighbor
-        if (aliveNeighbors === 1 && Math.random() < 0.5) {
+        if (aliveNeighbors === 1 && Math.random() < 0.8) {
           cell.className = "special-bg-gold special-bg-gold-light";
         }
+        cell.dataset.row = row.toString();
+        cell.dataset.col = col.toString();
         gridElement.appendChild(cell);
       }
+    }
+
+    gridElement.addEventListener("mousedown", handleMouseDown);
+    gridElement.addEventListener("mousemove", handleMouseMove);
+    gridElement.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("mouseup", handleMouseUp); // Ensure mouseup is detected outside the grid
+  }
+
+  function handleMouseDown(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    isMouseDown = true;
+    if (event.target.dataset.row !== undefined) {
+      startEditing(event);
+    }
+  }
+
+  function handleMouseMove(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (isMouseDown && event.target.dataset.row !== undefined) {
+      editCell(event);
+    }
+  }
+
+  function handleMouseUp(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    isMouseDown = false;
+    if (event.target.dataset.row !== undefined) {
+      stopEditing(event);
+    }
+  }
+
+  function startEditing(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    isEditing = true;
+    isGameRunning = false;
+    worker.postMessage("stop");
+    toggleCellState(event);
+
+    logger({ type: "info[Game of Life]", message: "Start editing" });
+  }
+
+  function editCell(event) {
+    if (isEditing) {
+      toggleCellState(event);
+    }
+  }
+
+  function stopEditing(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    isEditing = false;
+    // if (!isGameRunning) {
+    //   worker.postMessage({ type: "start", grid });
+    // }
+
+    logger({ type: "info[Game of Life]", message: "Stop editing" });
+  }
+
+  function toggleCellState(event) {
+    const target = event.target;
+    const row = parseInt(target.dataset.row, 10);
+    const col = parseInt(target.dataset.col, 10);
+
+    if (!isNaN(row) && !isNaN(col)) {
+      grid[row][col] = true;
+      target.className = "special-bg-gold";
+      worker.postMessage({ type: "update", grid });
     }
   }
 
@@ -106,30 +241,85 @@
 
   // Event listeners for buttons
 
-  document.getElementById("start-button").addEventListener("click", () => {
-    worker.postMessage({ type: "start", grid });
+  document.getElementById("start-button").addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    worker.postMessage({ type: "start", grid, rows, cols });
+    logger({ type: "info[Game of Life]", message: "Start game" });
   });
 
-  document.getElementById("stop-button").addEventListener("click", () => {
+  document.getElementById("stop-button").addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
     worker.postMessage("stop");
+    logger({ type: "info[Game of Life]", message: "Stop game" });
   });
 
-  document.getElementById("reset-button").addEventListener("click", () => {
+  document.getElementById("reset-button").addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    worker.postMessage("stop");
     grid = createGrid();
-    randomizeGrid();
+    setHPattern();
     worker.postMessage({ type: "reset", grid });
     drawGrid();
+    logger({ type: "info[Game of Life]", message: "Reset grid" });
   });
 
+  document
+    .getElementById("reset-empty-button")
+    .addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      worker.postMessage("stop");
+      grid = createGrid();
+      worker.postMessage({ type: "reset", grid });
+      drawGrid();
+      logger({ type: "info[Game of Life]", message: "Reset empty grid" });
+    });
+
   // Initialize the grid and draw it
-  randomizeGrid();
+  setHPattern();
   drawGrid();
 
   function randomizeGrid() {
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
-        grid[row][col] = Math.random() < 0.2;
+        grid[row][col] = Math.random() < 0.005;
       }
     }
+  }
+
+  function setHPattern() {
+    const centerRow = Math.floor(rows / 2);
+    const centerCol = Math.floor(cols / 2);
+
+    // Clear the grid first
+    grid = createGrid();
+
+    // Set the "H" pattern
+    // Left vertical bar
+    grid[centerRow - 2][centerCol - 1] = true;
+    grid[centerRow - 1][centerCol - 1] = true;
+    grid[centerRow][centerCol - 1] = true;
+    grid[centerRow + 1][centerCol - 1] = true;
+    grid[centerRow + 2][centerCol - 1] = true;
+
+    // Right vertical bar
+    grid[centerRow - 2][centerCol + 1] = true;
+    grid[centerRow - 1][centerCol + 1] = true;
+    grid[centerRow][centerCol + 1] = true;
+    grid[centerRow + 1][centerCol + 1] = true;
+    grid[centerRow + 2][centerCol + 1] = true;
+
+    // Middle horizontal bar
+    grid[centerRow][centerCol - 1] = true;
+    grid[centerRow][centerCol] = true;
+    grid[centerRow][centerCol + 1] = true;
+    grid[centerRow][centerCol + 2] = true;
   }
 </script>

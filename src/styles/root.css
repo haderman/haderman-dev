@@ -100,9 +100,8 @@
 }
 
 *:focus {
-  outline: 2px solid var(--primary-text);
-  outline-offset: 2px;
-  position: relative;
+  outline: 2px solid var(--primary-text) !important;
+  outline-offset: 2px !important;
 }
 
 :where(

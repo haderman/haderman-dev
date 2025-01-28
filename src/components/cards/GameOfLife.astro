@@ -66,6 +66,16 @@ const totalCols = 30;
   }
 
   button {
+    border: 1px solid oklab(1 0 0 / 0.45);
+    background-color: unset;
+
+    &:hover {
+      background-color: oklab(1 0 0 / 0.15);
+      color: var(--primary-text);
+    }
+  }
+
+  /* button {
     all: unset;
     cursor: pointer;
     font-size: var(--fluid-0);
@@ -80,9 +90,9 @@ const totalCols = 30;
     gap: var(--fluid--2);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+  } */
 
-  button:hover {
+  /* button:hover {
     background-color: darken(var(--accent-color), 10%);
     transform: translateY(-2px);
     box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
@@ -97,7 +107,7 @@ const totalCols = 30;
   button:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-  }
+  } */
 </style>
 
 <script>

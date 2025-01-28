@@ -63,51 +63,17 @@ const totalCols = 30;
     width: 100%;
     max-width: 400px;
     padding: var(--fluid-0);
-  }
 
-  button {
-    border: 1px solid oklab(1 0 0 / 0.45);
-    background-color: unset;
+    & > button {
+      border: 1px solid oklab(1 0 0 / 0.45);
+      background-color: unset;
 
-    &:hover {
-      background-color: oklab(1 0 0 / 0.15);
-      color: var(--primary-text);
+      &:hover {
+        background-color: oklab(1 0 0 / 0.15);
+        color: var(--primary-text);
+      }
     }
   }
-
-  /* button {
-    all: unset;
-    cursor: pointer;
-    font-size: var(--fluid-0);
-    font-weight: 500;
-    padding: var(--fluid--2);
-    background-color: var(--accent-color);
-    color: var(--primary-text);
-    transition: all 0.2s ease-in-out;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--fluid--2);
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  } */
-
-  /* button:hover {
-    background-color: darken(var(--accent-color), 10%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
-  }
-
-  button:active {
-    background-color: darken(var(--accent-color), 20%);
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  button:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5);
-  } */
 </style>
 
 <script>

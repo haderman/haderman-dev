@@ -1,0 +1,237 @@
+---
+
+---
+
+<section class="chat-container hidden">
+  <div class="chat-header">
+    Chat
+    <button id="delete-history-button">Delete History</button>
+  </div>
+  <div class="chat-messages">
+    <!-- Messages will be displayed here -->
+  </div>
+  <div class="chat-input">
+    <input type="text" id="chat-input" placeholder="Type a message..." />
+    <button id="send-button">Send</button>
+  </div>
+</section>
+
+<style is:global>
+  .chat-container {
+    position: fixed;
+    bottom: 0;
+    right: 20px;
+    width: 300px;
+    max-height: 400px;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    background-color: var(--primary-color);
+    color: var(--primary-text);
+  }
+
+  .chat-input button#delete-history-button {
+    background-color: #ff4d4d;
+    margin-left: 5px;
+  }
+
+  .chat-header {
+    padding: 10px;
+    background-color: #333;
+    color: #ffffff;
+    text-align: center;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+  }
+
+  .chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    border-bottom: 1px solid #444;
+    color: #ffffff;
+  }
+
+  .chat-input {
+    display: flex;
+    border-top: 1px solid #444;
+  }
+
+  .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-bottom-left-radius: 8px;
+    background-color: #333;
+    color: #ffffff;
+  }
+
+  .chat-input button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-bottom-right-radius: 8px;
+    cursor: pointer;
+  }
+
+  .message {
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 5px;
+    background-color: #2a2a2a;
+    max-width: 80%;
+  }
+
+  .message.user {
+    margin-left: auto;
+    background-color: #007bff;
+    color: white;
+    align-self: flex-end;
+  }
+
+  .message .username {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+</style>
+
+<script>
+  import ollama from "ollama/browser";
+
+  const chatContainer = document.querySelector(".chat-container");
+  const chatInput = document.getElementById("chat-input") as HTMLInputElement;
+  const sendButton = document.getElementById("send-button");
+  const chatHistory = document.querySelector(".chat-messages");
+  const deleteHistoryButton = document.getElementById("delete-history-button");
+
+  function loadChatHistory() {
+    const storedMessages =
+      JSON.parse(localStorage.getItem("chatHistory")) || [];
+    storedMessages.forEach(({ role, content }) => {
+      const messageElement = createMessageElement(role, content);
+      chatHistory.appendChild(messageElement);
+    });
+  }
+
+  function saveChatHistory(message) {
+    const storedMessages =
+      JSON.parse(localStorage.getItem("chatHistory")) || [];
+    storedMessages.push(message);
+    localStorage.setItem("chatHistory", JSON.stringify(storedMessages));
+  }
+
+  function createMessageElement(role, content) {
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("message");
+    if (role === "user") {
+      messageElement.classList.add("user");
+    }
+
+    const username = document.createElement("div");
+    username.classList.add("username");
+    username.textContent = role === "user" ? "You" : "haderman";
+
+    const messageContent = document.createElement("div");
+    messageContent.classList.add("message-content");
+    messageContent.textContent = content;
+
+    messageElement.appendChild(username);
+    messageElement.appendChild(messageContent);
+
+    return messageElement;
+  }
+
+  async function sendMessage() {
+    const messageContent = chatInput.value;
+    if (!messageContent) return;
+
+    const userMessage = {
+      role: "user",
+      content: messageContent,
+    };
+
+    const userMessageElement = createMessageElement("user", messageContent);
+    chatHistory.appendChild(userMessageElement);
+    saveChatHistory(userMessage);
+
+    chatInput.value = "";
+
+    try {
+      const response = await ollama.chat({
+        model: "deepseek-r1:1.5b",
+        messages: [userMessage],
+        stream: true,
+      });
+
+      const botMessageElement = createMessageElement("bot", "");
+      chatHistory.appendChild(botMessageElement);
+
+      for await (const part of response) {
+        const cleanContent = part.message.content
+          .replace(/<think>/g, "")
+          .replace(/<\/think>/g, "");
+        botMessageElement.querySelector(".message-content").textContent +=
+          cleanContent;
+      }
+
+      const botMessage = {
+        role: "bot",
+        content:
+          botMessageElement.querySelector(".message-content").textContent,
+      };
+      saveChatHistory(botMessage);
+    } catch (error) {
+      console.error("error: ", error);
+    }
+  }
+
+  sendButton.addEventListener("click", sendMessage);
+  chatInput.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  });
+
+  deleteHistoryButton.addEventListener("click", function () {
+    // Clear chat history from local storage
+    localStorage.removeItem("chatHistory");
+    // Clear chat history from the UI
+    chatHistory.innerHTML = "";
+  });
+
+  const AVAILABLE_CHAT_MODELS = [
+    "deepseek-r1:1.5b",
+    "deepseek-r1:8b",
+    "deepseek-r1:14b",
+  ];
+
+  async function checkIfChatIsAvailable() {
+    try {
+      const list = await ollama.list();
+      const availableModels = list.models.filter((model) =>
+        AVAILABLE_CHAT_MODELS.includes(model.name)
+      );
+
+      if (availableModels.length === 0) {
+        console.log("No chat models available");
+        return;
+      }
+
+      chatContainer.classList.remove("hidden");
+
+      console.log(list);
+    } catch (error) {
+      console.error("Error checking if chat is available:", error);
+      return;
+    }
+  }
+
+  checkIfChatIsAvailable();
+
+  // Initialize chat history on load
+  loadChatHistory();
+</script>

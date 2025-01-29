@@ -3,6 +3,7 @@ import Profile from "@/components/cards/Profile.astro";
 import Quote from "@/components/cards/Quote.astro";
 import Contact from "@/components/cards/Contact.astro";
 import Project from "@/components/cards/Project.astro";
+import Chat from "@/components/Chat.astro";
 import Layout from "@/layouts/Layout.astro";
 import GameOfLife from "@/components/cards/GameOfLife.astro";
 import imgProjectCovidSrc from "@/images/covid.png";
@@ -44,7 +45,9 @@ const projectAlanImage =
     <!-- <ImageOfTheDay /> -->
     <GameOfLife />
   </Bento>
-  <footer></footer>
+  <footer>
+    <Chat />
+  </footer>
 </Layout>
 
 <style is:global>

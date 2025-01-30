@@ -100,6 +100,8 @@
 </style>
 
 <script>
+  const isDev = import.meta.env.DEV;
+
   import ollama from "ollama/browser";
 
   const chatContainer = document.querySelector(".chat-container");
@@ -210,6 +212,10 @@
   ];
 
   async function checkIfChatIsAvailable() {
+    if (!isDev) {
+      return;
+    }
+
     try {
       const list = await ollama.list();
       const availableModels = list.models.filter((model) =>

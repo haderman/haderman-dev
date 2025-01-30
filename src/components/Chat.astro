@@ -97,6 +97,10 @@
     font-weight: bold;
     margin-bottom: 5px;
   }
+
+  .hidden {
+    display: none;
+  }
 </style>
 
 <script>
@@ -213,7 +217,7 @@
 
   async function checkIfChatIsAvailable() {
     if (!isDev) {
-      return;
+      return false;
     }
 
     try {
@@ -224,20 +228,20 @@
 
       if (availableModels.length === 0) {
         console.log("No chat models available");
-        return;
+        return false;
       }
 
-      chatContainer.classList.remove("hidden");
-
       console.log(list);
+      return true;
     } catch (error) {
       console.error("Error checking if chat is available:", error);
-      return;
+      return false;
     }
   }
 
-  checkIfChatIsAvailable();
-
-  // Initialize chat history on load
-  loadChatHistory();
+  const isChatAvailable = await checkIfChatIsAvailable();
+  if (isChatAvailable) {
+    loadChatHistory();
+    chatContainer.classList.remove("hidden");
+  }
 </script>

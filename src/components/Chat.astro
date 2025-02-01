@@ -1,247 +1,350 @@
 ---
-
+// src/components/Chat.astro
 ---
 
-<section class="chat-container hidden">
+<section class="chat-container hidden special-bg">
   <div class="chat-header">
-    Chat
-    <button id="delete-history-button">Delete History</button>
+    <div class="chat-header-content">
+      <h2>Assistant</h2>
+      <button
+        id="delete-history-button"
+        class="icon-button"
+        aria-label="Clear conversation"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"
+          ></path>
+        </svg>
+      </button>
+    </div>
   </div>
-  <div class="chat-messages">
+
+  <div class="chat-messages" role="log" aria-live="polite">
     <!-- Messages will be displayed here -->
   </div>
-  <div class="chat-input">
-    <input type="text" id="chat-input" placeholder="Type a message..." />
-    <button id="send-button">Send</button>
+
+  <div class="chat-input-container">
+    <div class="chat-input-wrapper">
+      <input
+        type="text"
+        id="chat-input"
+        placeholder="Type your message..."
+        aria-label="Type your message"
+        class="special-bg"
+      />
+      <button id="send-button" class="send-button special-bg-gold">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="var(--primary-text)"
+          stroke-width="2"
+        >
+          <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"></path>
+        </svg>
+      </button>
+    </div>
   </div>
 </section>
 
 <style is:global>
   .chat-container {
     position: fixed;
-    bottom: 0;
+    bottom: 20px;
     right: 20px;
-    width: 300px;
-    max-height: 400px;
-    border-radius: 8px 8px 0 0;
-    overflow: hidden;
+    width: 400px;
+    max-height: 60vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
-    background-color: var(--primary-color);
-    color: var(--primary-text);
-  }
-
-  .chat-input button#delete-history-button {
-    background-color: #ff4d4d;
-    margin-left: 5px;
+    font-family: "Mona Sans", system-ui;
+    padding: var(--fluid-0);
+    border: 1px solid transparent;
   }
 
   .chat-header {
-    padding: 10px;
-    background-color: #333;
-    color: #ffffff;
-    text-align: center;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
+    padding: var(--fluid-0);
+    border-bottom: 1px solid oklch(0.25 0 0);
+  }
+
+  .chat-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .chat-header h2 {
+    margin: 0;
+    font-size: var(--fluid-1);
+    font-weight: 600;
+    color: var(--primary-text);
+  }
+
+  .icon-button {
+    background: none;
+    border: none;
+    padding: var(--fluid--2);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .icon-button:hover {
+    background-color: oklch(0.25 0 0);
   }
 
   .chat-messages {
     flex: 1;
-    padding: 10px;
     overflow-y: auto;
-    border-bottom: 1px solid #444;
-    color: #ffffff;
-  }
-
-  .chat-input {
+    padding: var(--fluid-0);
     display: flex;
-    border-top: 1px solid #444;
-  }
-
-  .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    border-bottom-left-radius: 8px;
-    background-color: #333;
-    color: #ffffff;
-  }
-
-  .chat-input button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-bottom-right-radius: 8px;
-    cursor: pointer;
+    flex-direction: column;
+    gap: var(--fluid--2);
+    background: radial-gradient(
+      at center right,
+      oklch(0.08 0 0),
+      oklch(0.16 0 0)
+    );
   }
 
   .message {
-    margin-bottom: 10px;
-    padding: 8px;
-    border-radius: 5px;
-    background-color: #2a2a2a;
-    max-width: 80%;
+    max-width: 85%;
+    padding: var(--fluid--2) var(--fluid-0);
+    line-height: 1.5;
+    font-size: var(--fluid-0);
+    animation: messageAppear 0.25s ease-out;
+    background: oklch(0.25 0 0);
+    color: var(--primary-text);
   }
 
   .message.user {
-    margin-left: auto;
-    background-color: #007bff;
-    color: white;
+    background: var(--accent-color);
     align-self: flex-end;
   }
 
-  .message .username {
-    font-weight: bold;
-    margin-bottom: 5px;
+  .message.bot {
+    align-self: flex-start;
   }
 
-  .hidden {
-    display: none;
+  .chat-input-container {
+    padding: var(--fluid-0) 0 0;
+  }
+
+  .chat-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: var(--fluid--2);
+    padding: var(--fluid--2);
+    border: 1px solid transparent;
+  }
+
+  #chat-input {
+    flex: 1;
+    padding: var(--fluid--1);
+    font-size: var(--fluid-0);
+    color: var(--primary-text);
+    outline: none;
+    height: 100%;
+  }
+
+  .send-button {
+    padding: var(--fluid--3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  @keyframes messageAppear {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid oklch(0.25 0 0);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: var(--fluid--2) auto;
+  }
+
+  @media (max-width: 480px) {
+    .chat-container {
+      width: 100%;
+      right: 0;
+      bottom: 0;
+      max-height: 100vh;
+    }
   }
 </style>
 
 <script>
   const isDev = import.meta.env.DEV;
-
   import ollama from "ollama/browser";
 
   const chatContainer = document.querySelector(".chat-container");
   const chatInput = document.getElementById("chat-input") as HTMLInputElement;
-  const sendButton = document.getElementById("send-button");
+  const sendButton = document.getElementById(
+    "send-button"
+  ) as HTMLButtonElement;
   const chatHistory = document.querySelector(".chat-messages");
   const deleteHistoryButton = document.getElementById("delete-history-button");
-
-  function loadChatHistory() {
-    const storedMessages =
-      JSON.parse(localStorage.getItem("chatHistory")) || [];
-    storedMessages.forEach(({ role, content }) => {
-      const messageElement = createMessageElement(role, content);
-      chatHistory.appendChild(messageElement);
-    });
-  }
-
-  function saveChatHistory(message) {
-    const storedMessages =
-      JSON.parse(localStorage.getItem("chatHistory")) || [];
-    storedMessages.push(message);
-    localStorage.setItem("chatHistory", JSON.stringify(storedMessages));
-  }
-
-  function createMessageElement(role, content) {
-    const messageElement = document.createElement("div");
-    messageElement.classList.add("message");
-    if (role === "user") {
-      messageElement.classList.add("user");
-    }
-
-    const username = document.createElement("div");
-    username.classList.add("username");
-    username.textContent = role === "user" ? "You" : "haderman";
-
-    const messageContent = document.createElement("div");
-    messageContent.classList.add("message-content");
-    messageContent.textContent = content;
-
-    messageElement.appendChild(username);
-    messageElement.appendChild(messageContent);
-
-    return messageElement;
-  }
-
-  async function sendMessage() {
-    const messageContent = chatInput.value;
-    if (!messageContent) return;
-
-    const userMessage = {
-      role: "user",
-      content: messageContent,
-    };
-
-    const userMessageElement = createMessageElement("user", messageContent);
-    chatHistory.appendChild(userMessageElement);
-    saveChatHistory(userMessage);
-
-    chatInput.value = "";
-
-    try {
-      const response = await ollama.chat({
-        model: "deepseek-r1:1.5b",
-        messages: [userMessage],
-        stream: true,
-      });
-
-      const botMessageElement = createMessageElement("bot", "");
-      chatHistory.appendChild(botMessageElement);
-
-      for await (const part of response) {
-        const cleanContent = part.message.content
-          .replace(/<think>/g, "")
-          .replace(/<\/think>/g, "");
-        botMessageElement.querySelector(".message-content").textContent +=
-          cleanContent;
-      }
-
-      const botMessage = {
-        role: "bot",
-        content:
-          botMessageElement.querySelector(".message-content").textContent,
-      };
-      saveChatHistory(botMessage);
-    } catch (error) {
-      console.error("error: ", error);
-    }
-  }
-
-  sendButton.addEventListener("click", sendMessage);
-  chatInput.addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-      sendMessage();
-    }
-  });
-
-  deleteHistoryButton.addEventListener("click", function () {
-    // Clear chat history from local storage
-    localStorage.removeItem("chatHistory");
-    // Clear chat history from the UI
-    chatHistory.innerHTML = "";
-  });
-
   const AVAILABLE_CHAT_MODELS = [
     "deepseek-r1:1.5b",
     "deepseek-r1:8b",
     "deepseek-r1:14b",
   ];
 
-  async function checkIfChatIsAvailable() {
-    if (!isDev) {
-      return false;
+  async function initializeChat() {
+    try {
+      const isAvailable = await checkIfChatIsAvailable();
+      if (isAvailable) {
+        loadChatHistory();
+        chatContainer.classList.remove("hidden");
+        setupEventListeners();
+        scrollToBottom();
+      }
+    } catch (error) {
+      console.error("Chat initialization failed:", error);
     }
+  }
 
+  function setupEventListeners() {
+    sendButton.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+    deleteHistoryButton.addEventListener("click", clearChatHistory);
+  }
+
+  async function checkIfChatIsAvailable() {
+    if (!isDev) return false;
     try {
       const list = await ollama.list();
-      const availableModels = list.models.filter((model) =>
-        AVAILABLE_CHAT_MODELS.includes(model.name)
+      return AVAILABLE_CHAT_MODELS.some((model) =>
+        list.models.some((m) => m.name === model)
       );
-
-      if (availableModels.length === 0) {
-        console.log("No chat models available");
-        return false;
-      }
-
-      console.log(list);
-      return true;
     } catch (error) {
-      console.error("Error checking if chat is available:", error);
+      console.error("Model check failed:", error);
       return false;
     }
   }
 
-  const isChatAvailable = await checkIfChatIsAvailable();
-  if (isChatAvailable) {
-    loadChatHistory();
-    chatContainer.classList.remove("hidden");
+  function createMessageElement(role, content) {
+    const messageElement = document.createElement("div");
+    messageElement.className = `message ${role}`;
+    messageElement.textContent = content;
+    return messageElement;
   }
+
+  async function sendMessage() {
+    const messageContent = chatInput.value.trim();
+    if (!messageContent) return;
+
+    chatInput.disabled = true;
+    sendButton.disabled = true;
+
+    try {
+      const userMessage = createMessageElement("user", messageContent);
+      chatHistory.appendChild(userMessage);
+      saveToLocalStorage({ role: "user", content: messageContent });
+      scrollToBottom();
+
+      const loadingIndicator = document.createElement("div");
+      loadingIndicator.className = "loading-spinner";
+      chatHistory.appendChild(loadingIndicator);
+      scrollToBottom();
+
+      const response = await ollama.chat({
+        model: "deepseek-r1:1.5b",
+        messages: [{ role: "user", content: messageContent }],
+        stream: true,
+      });
+
+      chatHistory.removeChild(loadingIndicator);
+      const botMessage = createMessageElement("bot", "");
+      chatHistory.appendChild(botMessage);
+
+      let fullResponse = "";
+      for await (const part of response) {
+        fullResponse += part.message.content.replace(/<think>|<\/think>/g, "");
+        botMessage.textContent = fullResponse;
+        scrollToBottom();
+      }
+
+      saveToLocalStorage({ role: "bot", content: fullResponse });
+    } catch (error) {
+      console.error("Chat error:", error);
+      const errorMessage = createMessageElement(
+        "bot",
+        "Sorry, something went wrong. Please try again."
+      );
+      chatHistory.appendChild(errorMessage);
+    } finally {
+      chatInput.value = "";
+      chatInput.disabled = false;
+      sendButton.disabled = false;
+      chatInput.focus();
+    }
+  }
+
+  function scrollToBottom() {
+    requestAnimationFrame(() => {
+      chatHistory.scrollTop = chatHistory.scrollHeight;
+    });
+  }
+
+  function saveToLocalStorage(message) {
+    const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    history.push(message);
+    localStorage.setItem("chatHistory", JSON.stringify(history));
+  }
+
+  function loadChatHistory() {
+    const history = JSON.parse(localStorage.getItem("chatHistory") || "[]");
+    history.forEach((msg) => {
+      const element = createMessageElement(msg.role, msg.content);
+      chatHistory.appendChild(element);
+    });
+    scrollToBottom();
+  }
+
+  function clearChatHistory() {
+    localStorage.removeItem("chatHistory");
+    chatHistory.innerHTML = "";
+    const confirmation = createMessageElement("bot", "Chat history cleared");
+    chatHistory.appendChild(confirmation);
+    scrollToBottom();
+  }
+
+  initializeChat();
 </script>

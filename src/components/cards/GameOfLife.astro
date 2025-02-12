@@ -111,11 +111,11 @@ const totalCols = 30;
       for (let col = 0; col < cols; col++) {
         const cell = document.createElement("div");
         if (grid[row][col]) {
-          cell.className = "special-bg-gold";
+          cell.className = "accent-special";
         }
         const aliveNeighbors = countAliveNeighbors(row, col);
         if (aliveNeighbors === 1 && Math.random() < 0.8) {
-          cell.className = "special-bg-gold special-bg-gold-light";
+          cell.className = "accent-special accent-special-light";
         }
         cell.dataset.row = row.toString();
         cell.dataset.col = col.toString();
@@ -195,7 +195,7 @@ const totalCols = 30;
 
     if (!isNaN(row) && !isNaN(col)) {
       grid[row][col] = true;
-      target.className = "special-bg-gold";
+      target.className = "accent-special";
       worker.postMessage({ type: "update", grid });
     }
   }

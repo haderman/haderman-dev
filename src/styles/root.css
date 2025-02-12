@@ -73,12 +73,41 @@
   --fluid-8: calc(((var(--fluid-min-size-8) * 1rem) + (var(--fluid-max-size-8) - var(--fluid-min-size-8)) * var(--fluid-bp)));
 
   /* Color palette */
+  --color-cyan: oklch(0.68 0.14 212.14);
+  --color-gold: oklch(0.65 0.14 80.92);
+
+  --special-bg-gold:
+    radial-gradient(at center right, oklch(0.18 0.03 97.69), oklch(0.16 0 0)) padding-box,
+    linear-gradient(230deg, oklch(0.23 0.03 96.24), oklch(0.34 0.07 95.72)) border-box;
+
+  --special-bg-gold-hover:
+    radial-gradient(at center right, oklch(0.31 0.07 95.7), oklch(0.16 0 0)) padding-box,
+    linear-gradient(230deg, oklch(0.52 0.11 95.29), oklch(0.34 0.07 95.72)) border-box;
+
+  --special-bg-gold-light:
+    radial-gradient(at center right, oklch(0.31 0.07 95.7), oklch(0.16 0 0)) padding-box,
+    linear-gradient(230deg, oklch(0.52 0.11 95.29), oklch(0.34 0.07 95.72)) border-box;
+
+  --special-bg-cyan:
+    radial-gradient(at center right,oklch(0.16 0.03 222.39), #0d0d0d) padding-box,
+    linear-gradient(230deg, #0f171a, oklch(0.3 0.06 206.43)) border-box;
+
+  --special-bg-cyan-hover:
+    radial-gradient(at center right, oklch(0.2 0.04 214.91), oklch(0.24 0.05 216.46)) padding-box,
+    linear-gradient(230deg, #1f2f35, oklch(0.7 0.13 206.02)) border-box;
+
+  --special-bg-cyan-light:
+    radial-gradient(at center right, oklch(0.2 0.04 214.91), oklch(0.24 0.05 216.46)) padding-box,
+    linear-gradient(230deg, #1f2f35, oklch(0.7 0.13 206.02)) border-box;
+
   --primary-color: lch(1.9 2.4 210.02);
   --primary-text: lch(70 0 0);
   --secondary-text: lch(50 0 0);
-  --accent-color: lch(24 4 210);
+  --accent-color: var(--color-cyan);
+  --accent-special: var(--special-bg-cyan);
+  --accent-special-hover: var(--special-bg-cyan-hover);
+  --accent-special-light: var(--special-bg-cyan-light);
 }
-
 
 @media screen and (min-width: 1500px) {
   :root {
@@ -122,6 +151,8 @@ p {
   max-inline-size: var(--measure);
   text-wrap: pretty;
   max-width: 50ch;
+  font-weight: 100;
+  letter-spacing: 1px;
 }
 
 :where(html, body) {
@@ -206,6 +237,21 @@ button {
   gap: var(--fluid--2)
 }
 
+.accent-special {
+  border: 1px solid transparent;
+  background: var(--accent-special);
+  color: var(--accent-color);
+
+  &:hover {
+    background: var(--accent-special-hover);
+  }
+}
+
+.accent-special-light {
+  border: 1px solid transparent;
+  background: var(--accent-special-light);
+}
+
 .visually-hidden {
   position: absolute;
   clip: rect(1px, 1px, 1px, 1px);
@@ -218,7 +264,7 @@ button {
 
 .icon {
   stroke-width: 1px;
-  color: oklch(0.65 0.14 80.92);
+  color: var(--accent-color);
 }
 
 .text-gradient {
@@ -251,25 +297,6 @@ button {
   background:
     radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
     linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
-}
-
-.special-bg-gold {
-  border: 1px solid transparent;
-  background:
-    radial-gradient(at center right, oklch(0.18 0.03 97.69), oklch(0.16 0 0)) padding-box,
-    linear-gradient(230deg, oklch(0.23 0.03 96.24), oklch(0.34 0.07 95.72)) border-box;
-
-  &:hover {
-    background:
-      radial-gradient(at center right, oklch(0.31 0.07 95.7), oklch(0.16 0 0)) padding-box,
-      linear-gradient(230deg, oklch(0.52 0.11 95.29), oklch(0.34 0.07 95.72)) border-box
-  }
-}
-
-.special-bg-gold-light {
-  background:
-    radial-gradient(at center right, oklch(0.31 0.07 95.7), oklch(0.16 0 0)) padding-box,
-    linear-gradient(230deg, oklch(0.52 0.11 95.29), oklch(0.34 0.07 95.72)) border-box
 }
 
 /* .special-border {

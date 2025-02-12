@@ -7,10 +7,11 @@ import Chat from "@/components/Chat.astro";
 import Layout from "@/layouts/Layout.astro";
 import GameOfLife from "@/components/cards/GameOfLife.astro";
 import imgProjectCovidSrc from "@/images/covid.png";
-
-import "@/styles/root.css";
 import Bento from "@/layouts/Bento.astro";
 import ImageOfTheDay from "@/components/cards/ImageOfTheDay.astro";
+import Photo from "@/components/cards/Photo.astro";
+
+import "@/styles/root.css";
 
 const projectAlanImage =
   "https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png";
@@ -24,7 +25,7 @@ const projectAlanImage =
   </header>
   <Bento>
     <Profile />
-    <Quote />
+    <Photo />
     <Contact />
     <Project
       name="Alan"
@@ -46,7 +47,7 @@ const projectAlanImage =
     <GameOfLife />
   </Bento>
   <footer>
-    <Chat />
+    <!-- <Chat /> -->
   </footer>
 </Layout>
 

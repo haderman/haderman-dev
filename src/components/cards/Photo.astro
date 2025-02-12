@@ -1,18 +1,19 @@
-
 ---
-
+import Avatar from "../Avatar.astro";
 ---
 
 <article data-area="photo" class="card">
-  <div></div>
+  <Avatar />
 </article>
 
 <style>
   .card[data-area="photo"] {
+    padding: 0;
     align-items: center;
     justify-content: center;
     background:
-      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0)) padding-box,
+      radial-gradient(at center right, oklch(0.08 0 0), oklch(0.16 0 0))
+        padding-box,
       linear-gradient(230deg, oklch(0.2 0 0), oklch(0.25 0 0)) border-box;
     border: 1px solid transparent;
   }

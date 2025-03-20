@@ -529,8 +529,12 @@ import "@/styles/root.css";
         workerScript: '/gifjs/gif.worker.js', // Use a local copy of the worker script
       });
       
-      // Setup progress callback
-      gif.on('progress', (p: number) => onProgress(p));
+      // Setup progress callback - GIF rendering is the second half of the process (50-100%)
+      gif.on('progress', (p: number) => {
+        // Convert GIF.js progress (0-1) to overall progress (50-100%)
+        const overallProgress = 0.5 + (p * 0.5);
+        onProgress(overallProgress);
+      });
       
       // Calculate frame count (limit to 30 frames)
       const totalFrames = Math.min(Math.floor(fps * duration), 30);
@@ -571,7 +575,7 @@ import "@/styles/root.css";
         // Add the frame to GIF
         gif.addFrame(canvas, { copy: true, delay: 1000 / fps });
         
-        // Update progress (50% for frame capture)
+        // Update progress (0-50% for frame capture)
         onProgress(0.5 * (i / totalFrames));
       }
       

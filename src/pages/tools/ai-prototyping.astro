@@ -1,0 +1,133 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import "@/styles/root.css";
+---
+
+<Layout title="AI Prototyping - haderman">
+  <header class="header-page">
+    <a href="/tools" class="back-link">← Back to Tools</a>
+  </header>
+  
+  <main class="container">
+    <h1>AI Prototyping Tools</h1>
+    
+    <div class="tools-grid">
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>LangChain</h2>
+          <p>Framework for developing applications powered by language models through composability. Build LLM-powered applications for chatbots, question answering, and more.</p>
+          <a href="https://langchain.com/" target="_blank" rel="noopener noreferrer" class="link">Visit LangChain →</a>
+        </div>
+      </article>
+      
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Vercel AI SDK</h2>
+          <p>A toolkit for building AI-powered applications with React and Svelte. Features like streaming responses and message history are built-in.</p>
+          <a href="https://sdk.vercel.ai/docs" target="_blank" rel="noopener noreferrer" class="link">Visit Vercel AI SDK →</a>
+        </div>
+      </article>
+      
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Replicate</h2>
+          <p>Run machine learning models in the cloud. Deploy your own models or use models from the community collection.</p>
+          <a href="https://replicate.com/" target="_blank" rel="noopener noreferrer" class="link">Visit Replicate →</a>
+        </div>
+      </article>
+      
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Hugging Face</h2>
+          <p>The platform where the machine learning community collaborates on models, datasets, and applications.</p>
+          <a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer" class="link">Visit Hugging Face →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <!-- Optional footer content -->
+  </footer>
+</Layout>
+
+<style is:global>
+  .container {
+    padding: var(--fluid-3);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--fluid-2) var(--fluid-3);
+  }
+
+  .back-link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+  }
+
+  h1 {
+    font-size: var(--fluid-4);
+    margin-bottom: var(--fluid-3);
+  }
+
+  .tools-grid {
+    display: grid;
+    gap: var(--fluid-3);
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .content {
+    z-index: 2;
+    position: relative;
+    padding: var(--fluid-2);
+  }
+
+  .content h2 {
+    font-size: var(--fluid-3);
+    color: var(--primary-text);
+    margin-bottom: var(--fluid-1);
+  }
+
+  .content p {
+    font-size: var(--fluid-1);
+    margin-bottom: var(--fluid-2);
+    text-wrap: pretty;
+    max-width: 50ch;
+  }
+
+  .link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+    display: inline-block;
+  }
+
+  @media (min-width: 768px) {
+    .tools-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+</style>

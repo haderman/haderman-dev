@@ -1,0 +1,190 @@
+---
+// This page uses a chess-grid pattern where cards alternate between cyan and gold themes
+// On desktop, it creates a true chess board effect where diagonally opposite cards have the same color
+import Layout from "@/layouts/Layout.astro";
+import ToolCard from '@/components/tools/ToolCard.astro';
+import "@/styles/root.css";
+
+const tools = [
+  {
+    title: 'Design Systems',
+    description: 'Component-driven development tools',
+    href: '/tools/design-systems',
+    area: 'tool-design'
+  },
+  {
+    title: 'AI Prototyping',
+    description: 'LLM-powered interface tools',
+    href: '/tools/ai-prototyping',
+    area: 'tool-ai'
+  },
+  {
+    title: 'HTML to Markdown',
+    description: 'Convert HTML content to clean Markdown formatting',
+    href: '/tools/html-to-markdown',
+    area: 'tool-markdown'
+  },
+  {
+    title: 'Video to GIF',
+    description: 'Convert videos to high-quality GIFs in your browser',
+    href: '/tools/video-to-gif',
+    area: 'tool-gif'
+  }
+];
+
+---
+
+<Layout title="Tools - haderman">
+  <header class="header-page">
+    <a href="/" class="back-link">← Home</a>
+    <h1>Tools</h1>
+  </header>
+  
+  <main class="chess-grid">
+    {tools.map((tool) => (
+      <ToolCard {...tool} />
+    ))}
+  </main>
+  
+  <footer>
+    <!-- Optional footer content -->
+  </footer>
+</Layout>
+
+<style is:global>
+  .header-page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fluid-1);
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--fluid-2) var(--fluid-3);
+  }
+
+  .back-link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+  }
+
+  h1 {
+    font-size: var(--fluid-4);
+    color: var(--primary-text);
+  }
+
+  .chess-grid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--fluid-3);
+    padding: 0 var(--fluid-3);
+  }
+  
+  /* Chess-like pattern using nth-child */
+  .chess-grid > article:nth-child(odd) {
+    background: var(--special-bg-cyan);
+  }
+
+  .chess-grid > article:nth-child(even) {
+    background: var(--special-bg-gold);
+  }
+  
+  .chess-grid > article:nth-child(even) .circles {
+    background-image: radial-gradient(
+        circle at center center,
+        lch(14 3.04 84.6),
+        lch(5 2.22 87.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 88.25),
+        lch(22 0 0),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+  }
+  
+  .chess-grid > article:nth-child(even):hover {
+    background: var(--special-bg-gold-hover);
+  }
+  
+  .chess-grid > article:nth-child(even):hover .circles {
+    background-image: radial-gradient(
+        circle at center center,
+        lch(35 53.04 84.6),
+        lch(5 2.22 87.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 88.25),
+        lch(22 0 90),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+  }
+
+  @media (min-width: 768px) {
+    .chess-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Create a true chess pattern in the grid */
+    .chess-grid > article:nth-child(1),
+    .chess-grid > article:nth-child(4) {
+      background: var(--special-bg-cyan);
+    }
+    
+    .chess-grid > article:nth-child(2),
+    .chess-grid > article:nth-child(3) {
+      background: var(--special-bg-gold);
+    }
+    
+    .chess-grid > article:nth-child(2) .circles,
+    .chess-grid > article:nth-child(3) .circles {
+      background-image: radial-gradient(
+          circle at center center,
+          lch(14 3.04 84.6),
+          lch(5 2.22 87.82)
+        ),
+        repeating-radial-gradient(
+          circle at center center,
+          lch(49 53.84 88.25),
+          lch(22 0 0),
+          4px,
+          transparent 20px,
+          transparent 20px
+        );
+    }
+    
+    .chess-grid > article:nth-child(1):hover,
+    .chess-grid > article:nth-child(4):hover {
+      background: var(--special-bg-cyan-hover);
+    }
+    
+    .chess-grid > article:nth-child(2):hover,
+    .chess-grid > article:nth-child(3):hover {
+      background: var(--special-bg-gold-hover);
+    }
+    
+    .chess-grid > article:nth-child(2):hover .circles,
+    .chess-grid > article:nth-child(3):hover .circles {
+      background-image: radial-gradient(
+          circle at center center,
+          lch(35 53.04 84.6),
+          lch(5 2.22 87.82)
+        ),
+        repeating-radial-gradient(
+          circle at center center,
+          lch(49 53.84 88.25),
+          lch(22 0 90),
+          4px,
+          transparent 20px,
+          transparent 20px
+        );
+    }
+  }
+</style>

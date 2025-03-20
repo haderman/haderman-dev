@@ -317,10 +317,18 @@
     }
   }
 
+  let scrollTimeout;
+
   function scrollToBottom() {
-    requestAnimationFrame(() => {
-      chatHistory.scrollTop = chatHistory.scrollHeight;
-    });
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    scrollTimeout = setTimeout(() => {
+      chatHistory.scrollTo({
+        top: chatHistory.scrollHeight,
+        behavior: "smooth",
+      });
+    }, 100); // Adjust the timeout duration as needed
   }
 
   function saveToLocalStorage(message) {

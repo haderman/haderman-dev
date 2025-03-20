@@ -1,0 +1,123 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import "@/styles/root.css";
+---
+
+<Layout title="Design Systems - haderman">
+  <header class="header-page">
+    <a href="/tools" class="back-link">← Back to Tools</a>
+  </header>
+  
+  <main class="container">
+    <h1>Design Systems Tools</h1>
+    
+    <div class="tools-grid">
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Storybook</h2>
+          <p>Storybook is an open source tool for building UI components and pages in isolation. It streamlines UI development, testing, and documentation.</p>
+          <a href="https://storybook.js.org/" target="_blank" rel="noopener noreferrer" class="link">Visit Storybook →</a>
+        </div>
+      </article>
+      
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Figma</h2>
+          <p>Figma is a collaborative interface design tool that enables teams to build products together through design, prototyping, and design systems.</p>
+          <a href="https://www.figma.com/" target="_blank" rel="noopener noreferrer" class="link">Visit Figma →</a>
+        </div>
+      </article>
+      
+      <article data-area="tool-item" class="card">
+        <div class="background"></div>
+        <div class="circles"></div>
+        <div class="content">
+          <h2>Tailwind CSS</h2>
+          <p>A utility-first CSS framework packed with classes that can be composed to build any design, directly in your markup.</p>
+          <a href="https://tailwindcss.com/" target="_blank" rel="noopener noreferrer" class="link">Visit Tailwind →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <!-- Optional footer content -->
+  </footer>
+</Layout>
+
+<style is:global>
+  .container {
+    padding: var(--fluid-3);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--fluid-2) var(--fluid-3);
+  }
+
+  .back-link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+  }
+
+  h1 {
+    font-size: var(--fluid-4);
+    margin-bottom: var(--fluid-3);
+  }
+
+  .tools-grid {
+    display: grid;
+    gap: var(--fluid-3);
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+  }
+
+  .content {
+    z-index: 2;
+    position: relative;
+    padding: var(--fluid-2);
+  }
+
+  .content h2 {
+    font-size: var(--fluid-3);
+    color: var(--primary-text);
+    margin-bottom: var(--fluid-1);
+  }
+
+  .content p {
+    font-size: var(--fluid-1);
+    margin-bottom: var(--fluid-2);
+    text-wrap: pretty;
+    max-width: 50ch;
+  }
+
+  .link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+    display: inline-block;
+  }
+
+  @media (min-width: 768px) {
+    .tools-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  }
+</style>

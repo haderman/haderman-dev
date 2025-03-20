@@ -1,0 +1,61 @@
+# haderman.dev Design System Rules
+
+## Page Structure
+- When building a new page, follow this structure:
+  1. Import Layout component and root.css file
+  2. Use either Bento, Grid, or Chess-Grid layout components
+  3. Follow the established data-area patterns for component placement
+  4. Maintain the fluid typography and spacing system
+  5. Include proper header with back navigation when appropriate
+  6. Add comments explaining layout choices at the top of the file
+
+## Component Structure
+- When creating a new component:
+  1. Use proper data-area attribute to identify component placement
+  2. Follow the established card pattern with background/circles/content structure:
+     - Position: relative with z-index layering
+     - Background: special-bg-* variables from root.css
+     - Circles: Visual overlay with gradient effects
+     - Content: Positioned with z-index above background elements
+  3. Apply styles using existing CSS custom properties from root.css
+  4. Follow mobile-first responsive design approach
+  5. Place components in appropriate directory structure
+  6. Add hover effects with transform and background changes
+
+## Layout Patterns
+- Chess-Grid Pattern:
+  1. Use for tool/card listings to create visual interest
+  2. Implement alternating colors (cyan/gold) in a chess pattern
+  3. Use nth-child selectors to create proper alternating pattern
+  4. Enhance for desktop with true chess board effect
+
+## JavaScript Implementation
+- When implementing JavaScript functionality:
+  1. Prefer npm packages over vanilla JS implementations for complex functionality
+  2. Use imports from the project's dependencies (listed in package.json)
+  3. For client-side scripts in Astro components:
+     - Place scripts inside the `<script>` tag at the bottom of the component
+     - Import npm packages using standard ES module syntax: `import packageName from "package-name"`
+     - Use import aliases (e.g., `@/lib/logger`) for internal project modules
+  4. For interactive components:
+     - Use Web Workers for computationally intensive tasks (place in /public directory)
+     - Implement proper event listeners and state management
+     - Follow the established patterns for DOM manipulation
+  5. When adding new npm packages:
+     - Choose packages that align with the existing stack
+     - Consider bundle size and performance impact
+     - Add proper TypeScript types when available
+
+## Styling Guidelines
+- Use text-wrap: pretty for paragraphs
+- Use text-wrap: balance for headings when appropriate
+- Utilize CSS custom properties for consistency
+- Apply --fluid-* variables for typography and spacing
+- Use radial and linear gradients for card backgrounds
+- Implement visual hover states for interactive elements
+
+## Project Naming Conventions
+- Components: PascalCase (e.g., ToolCard.astro)
+- Pages: kebab-case (e.g., design-systems.astro)
+- CSS classes: kebab-case (e.g., chess-grid)
+- Data attributes: kebab-case (e.g., data-area="tool-card")

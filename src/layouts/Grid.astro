@@ -1,0 +1,34 @@
+---
+import "@fontsource-variable/montserrat";
+
+interface Props {
+  gap?: string;
+}
+
+const { gap } = Astro.props;
+---
+
+
+<div class="grid-container">
+  <slot />
+</div>
+
+<style>
+  .grid-container {
+    --grid-gap: ${gap || 'var(--fluid-2)'};
+    
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--grid-gap);
+    width: 100%;
+    padding-inline: var(--fluid-1);
+
+    container-type: inline-size;
+  }
+
+  @container (width > 768px) {
+    .grid-container {
+      grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    }
+  }
+</style>

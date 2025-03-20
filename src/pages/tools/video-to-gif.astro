@@ -1,0 +1,810 @@
+---
+/**
+ * @overview
+ * This page allows users to convert video files into GIF format.
+ * Users can upload their video files, select conversion options, and download the resulting GIFs.
+ * The interface is designed to be user-friendly and efficient, ensuring a smooth conversion process.
+ */
+// This page implements a video-to-gif converter tool using browser-based technologies
+// It follows the Bento layout pattern with proper data-area attributes for component placement
+// The tool uses FFmpeg for video to GIF conversion entirely in the browser
+import Layout from '@/layouts/Layout.astro';
+import "@/styles/root.css";
+---
+
+<Layout title="Video to GIF Converter - haderman">
+  <header class="header-page">
+    <a href="/tools" class="back-link">← Back to Tools</a>
+    <h1>Video to GIF Converter</h1>
+    <p class="subtitle">Convert videos to high-quality GIFs directly in your browser</p>
+  </header>
+  
+  <main class="converter-container">
+    <div class="bento-grid">
+      <div data-area="video-input" class="card special-bg">
+        <div class="background">
+          <!-- Background content -->
+        </div>
+        <div class="circles">
+          <!-- Visual effects overlay -->
+        </div>
+        <div class="content">
+          <h2>Select Video</h2>
+          <div class="file-input-container">
+            <input type="file" id="video-input" accept="video/*" class="file-input" />
+            <label for="video-input" class="file-input-label">
+              <span class="file-input-icon">📁</span>
+              <span class="file-input-text">Choose a video file</span>
+            </label>
+          </div>
+          <div class="video-preview-container">
+            <video id="video-preview" controls class="video-preview"></video>
+          </div>
+        </div>
+      </div>
+      
+      <div data-area="gif-settings" class="card special-bg">
+        <div class="background">
+          <!-- Background content -->
+        </div>
+        <div class="circles">
+          <!-- Visual effects overlay -->
+        </div>
+        <div class="content">
+          <h2>GIF Settings</h2>
+          <div class="settings-grid">
+            <div class="setting-group">
+              <label for="quality-slider">Quality</label>
+              <input type="range" id="quality-slider" min="1" max="10" value="7" class="slider" />
+              <span id="quality-value">7</span>
+            </div>
+            
+            <div class="setting-group">
+              <label for="fps-input">FPS</label>
+              <input type="number" id="fps-input" min="1" max="30" value="10" class="number-input" />
+            </div>
+            
+            <div class="setting-group">
+              <label for="width-input">Width</label>
+              <input type="number" id="width-input" min="1" max="1920" value="480" class="number-input" />
+            </div>
+            
+            <div class="setting-group">
+              <label for="start-time-input">Start Time (s)</label>
+              <input type="number" id="start-time-input" min="0" step="0.1" value="0" class="number-input" />
+            </div>
+            
+            <div class="setting-group">
+              <label for="duration-input">Duration (s)</label>
+              <input type="number" id="duration-input" min="0.1" step="0.1" value="5" class="number-input" />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div data-area="gif-output" class="card special-bg">
+        <div class="background">
+          <!-- Background content -->
+        </div>
+        <div class="circles">
+          <!-- Visual effects overlay -->
+        </div>
+        <div class="content">
+          <div class="output-header">
+            <h2>Output GIF</h2>
+            <a id="download-btn" class="cta-button secondary disabled" aria-disabled="true" aria-label="Download GIF">
+              💾 Download
+            </a>
+          </div>
+          <div class="gif-preview-container">
+            <img id="gif-preview" class="gif-preview" alt="GIF Preview will appear here" />
+            <div class="progress-container">
+              <div id="progress-text">0%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="actions">
+      <button id="convert-btn" class="btn primary" disabled>
+        <span class="btn-text">Convert to GIF</span>
+      </button>
+    </div>
+  </main>
+</Layout>
+
+<style is:global>
+  .converter-container {
+    padding: var(--fluid-3);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .header-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--fluid-2) var(--fluid-3);
+  }
+
+  .back-link {
+    font-size: var(--fluid-1);
+    color: var(--accent-color);
+  }
+
+  h1 {
+    font-size: var(--fluid-4);
+    color: var(--primary-text);
+    text-wrap: balance;
+    margin-top: var(--fluid-2);
+    margin-bottom: var(--fluid-1);
+  }
+
+  .subtitle {
+    font-size: var(--fluid-1);
+    color: var(--secondary-text);
+    text-wrap: pretty;
+    max-width: 50ch;
+  }
+
+  .bento-grid {
+    display: grid;
+    gap: var(--fluid-3);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "video-input"
+      "gif-settings"
+      "gif-output";
+  }
+
+  .card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .card[data-area="video-input"] {
+    background: var(--special-bg-cyan);
+    grid-area: video-input;
+  }
+
+  .card[data-area="gif-settings"] {
+    background: var(--special-bg-gold);
+    grid-area: gif-settings;
+  }
+
+  .card[data-area="gif-output"] {
+    background: var(--special-bg-cyan);
+    grid-area: gif-output;
+  }
+
+  .background {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .circles {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: lch(0 0 0 / 0.7);
+    background-image: radial-gradient(
+        circle at center center,
+        lch(14 3.04 304.6),
+        lch(5 2.22 217.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 218.25),
+        lch(22 0 0),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+    background-blend-mode: multiply;
+    transition: background-image 0.3s ease-in-out;
+  }
+
+  .card[data-area="gif-settings"] .circles {
+    background-image: radial-gradient(
+        circle at center center,
+        lch(14 3.04 84.6),
+        lch(5 2.22 87.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 88.25),
+        lch(22 0 0),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+  }
+
+  .content {
+    z-index: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--fluid-2);
+    height: 100%;
+    padding: var(--fluid-2);
+  }
+
+  h2 {
+    font-size: var(--fluid-3);
+    color: var(--primary-text);
+    text-wrap: balance;
+  }
+
+  .file-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fluid-1);
+  }
+
+  .file-input {
+    position: absolute;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .file-input-label {
+    display: flex;
+    align-items: center;
+    gap: var(--fluid-1);
+    padding: var(--fluid-1) var(--fluid-2);
+    background: var(--color-cyan);
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .file-input-label:hover {
+    opacity: 0.9;
+  }
+
+  .video-preview-container,
+  .gif-preview-container {
+    width: 100%;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .video-preview,
+  .gif-preview {
+    max-width: 100%;
+    max-height: 300px;
+    display: none;
+  }
+
+  .settings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--fluid-2);
+  }
+
+  .setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--fluid-0);
+  }
+
+  .slider,
+  .number-input {
+    width: 100%;
+    padding: var(--fluid-0);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: var(--primary-text);
+  }
+
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .cta-button {
+    padding: var(--fluid-1) var(--fluid-2);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--fluid-0);
+  }
+
+  .primary {
+    background: var(--color-cyan);
+    color: var(--primary-color);
+  }
+
+  .secondary {
+    background: var(--special-bg-cyan);
+    color: var(--color-cyan);
+    border: 1px solid var(--color-cyan);
+  }
+
+  .cta-button:hover:not(.disabled) {
+    opacity: 0.9;
+  }
+
+  .cta-button.disabled, 
+  .cta-button[aria-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .cta-button.loading {
+    position: relative;
+    color: transparent;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--fluid-3);
+  }
+
+  .progress-container {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+  }
+
+  .btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn.primary {
+    background-color: var(--color-cyan);
+    color: var(--color-dark);
+  }
+
+  .btn.secondary {
+    background-color: var(--color-gold);
+    color: var(--color-dark);
+  }
+
+  .btn:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  .btn.primary:not(:disabled):hover {
+    background-color: var(--color-cyan-light);
+  }
+
+  .btn.secondary:not(:disabled):hover {
+    background-color: var(--color-gold-light);
+  }
+
+  .btn.loading .btn-text::after {
+    content: "...";
+    display: inline-block;
+    width: 1.2em;
+    text-align: left;
+    animation: ellipsis 1.2s infinite;
+  }
+
+  @keyframes ellipsis {
+    0% { content: "."; }
+    33% { content: ".."; }
+    66% { content: "..."; }
+  }
+
+  @media (min-width: 768px) {
+    .bento-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "video-input gif-settings"
+        "gif-output gif-output";
+    }
+
+    .settings-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
+
+<script>
+  // Import FFmpeg
+  import { createFFmpeg, fetchFile } from '@ffmpeg/ffmpeg';
+  // Import GIF.js (now installed as a package)
+  import GIF from 'gif.js';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM fully loaded');
+    
+    // Elements
+    const videoInput = document.getElementById('video-input') as HTMLInputElement;
+    const videoPreview = document.getElementById('video-preview') as HTMLVideoElement;
+    const gifPreview = document.getElementById('gif-preview') as HTMLImageElement;
+    const convertBtn = document.getElementById('convert-btn') as HTMLButtonElement;
+    const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
+    const progressText = document.getElementById('progress-text') as HTMLSpanElement;
+    const qualitySlider = document.getElementById('quality-slider') as HTMLInputElement;
+    const qualityValue = document.getElementById('quality-value') as HTMLSpanElement;
+    const fpsInput = document.getElementById('fps-input') as HTMLInputElement;
+    const widthInput = document.getElementById('width-input') as HTMLInputElement;
+    const startTimeInput = document.getElementById('start-time-input') as HTMLInputElement;
+    const durationInput = document.getElementById('duration-input') as HTMLInputElement;
+    
+    // Check browser compatibility
+    const isBrowserCompatible = () => {
+      // Check if the browser supports SharedArrayBuffer which is required by FFmpeg
+      try {
+        return typeof SharedArrayBuffer !== 'undefined';
+      } catch (e) {
+        return false;
+      }
+    };
+
+    // Initialize FFmpeg with appropriate config
+    const initFFmpeg = async () => {
+      try {
+        // Create FFmpeg instance with core configuration (no SharedArrayBuffer)
+        const ffmpeg = createFFmpeg({
+          log: true,
+          corePath: 'https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js',
+          progress: ({ ratio }) => {
+            if (ratio >= 0 && ratio <= 1) {
+              const percentage = Math.floor(ratio * 100);
+              console.log(`FFmpeg progress: ${percentage}%`);
+              if (progressText) progressText.textContent = `${percentage}%`;
+            }
+          },
+        });
+        
+        if (!ffmpeg.isLoaded()) {
+          console.log('Loading FFmpeg...');
+          await ffmpeg.load();
+          console.log('FFmpeg loaded successfully');
+        }
+
+        return ffmpeg;
+      } catch (error) {
+        console.error('Error loading FFmpeg:', error);
+        throw error;
+      }
+    };
+
+    // Alternative GIF creation method using Canvas
+    const createGifUsingCanvas = async (
+      videoElement: HTMLVideoElement, 
+      fps: number, 
+      startTime: number, 
+      duration: number, 
+      width: number,
+      quality: number,
+      onProgress: (progress: number) => void
+    ) => {
+      // Create GIF encoder with Web Workers if supported
+      const gif = new GIF({
+        workers: 2,
+        quality: 10 - quality, // Invert quality scale
+        width: width,
+        height: Math.floor(width / (videoElement.videoWidth / videoElement.videoHeight)),
+        workerScript: '/gifjs/gif.worker.js', // Use a local copy of the worker script
+      });
+      
+      // Setup progress callback
+      gif.on('progress', (p: number) => onProgress(p));
+      
+      // Calculate frame count (limit to 30 frames)
+      const totalFrames = Math.min(Math.floor(fps * duration), 30);
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d')!;
+      
+      // Set canvas dimensions
+      canvas.width = width;
+      canvas.height = Math.floor(width / (videoElement.videoWidth / videoElement.videoHeight));
+      
+      // Position video at start time
+      videoElement.currentTime = startTime;
+      await new Promise(r => setTimeout(r, 100)); // Small delay
+      
+      // Capture each frame
+      for (let i = 0; i < totalFrames; i++) {
+        // Calculate time for this frame
+        const frameTime = startTime + (i * (duration / totalFrames));
+        videoElement.currentTime = frameTime;
+        
+        // Wait for the time update
+        await new Promise<void>(resolve => {
+          const timeupdate = () => {
+            videoElement.removeEventListener('timeupdate', timeupdate);
+            resolve();
+          };
+          videoElement.addEventListener('timeupdate', timeupdate);
+          // Fallback timeout
+          setTimeout(() => {
+            videoElement.removeEventListener('timeupdate', timeupdate);
+            resolve();
+          }, 500);
+        });
+        
+        // Draw the video frame to canvas
+        ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+        
+        // Add the frame to GIF
+        gif.addFrame(canvas, { copy: true, delay: 1000 / fps });
+        
+        // Update progress (50% for frame capture)
+        onProgress(0.5 * (i / totalFrames));
+      }
+      
+      // Render GIF
+      return new Promise<Blob>((resolve, reject) => {
+        gif.on('finished', (blob: Blob) => {
+          resolve(blob);
+        });
+        
+        gif.on('error', (error: Error) => {
+          reject(error);
+        });
+        
+        gif.render();
+      });
+    };
+    
+    let videoBlob: Blob | null = null;
+    let gifUrl: string | null = null;
+    
+    // Handle quality slider change
+    qualitySlider?.addEventListener('input', () => {
+      if (qualityValue) qualityValue.textContent = qualitySlider.value;
+    });
+    
+    // Handle video input change
+    videoInput?.addEventListener('change', (e) => {
+      const files = (e.target as HTMLInputElement).files;
+      if (!files || files.length === 0) return;
+      
+      const file = files[0];
+      videoBlob = file;
+      
+      // Create object URL for video preview
+      const videoUrl = URL.createObjectURL(file);
+      if (videoPreview) {
+        videoPreview.src = videoUrl;
+        videoPreview.style.display = 'block';
+      }
+      
+      // Enable convert button
+      if (convertBtn) convertBtn.disabled = false;
+      
+      // Reset GIF preview
+      if (gifPreview) gifPreview.style.display = 'none';
+      if (downloadBtn) {
+        downloadBtn.classList.add('disabled');
+        downloadBtn.setAttribute('aria-disabled', 'true');
+      }
+      
+      // Set video metadata once loaded
+      if (videoPreview) {
+        videoPreview.onloadedmetadata = () => {
+          // Default duration to video length if available
+          if (videoPreview.duration && videoPreview.duration !== Infinity && durationInput) {
+            durationInput.value = Math.min(videoPreview.duration, 10).toString();
+          }
+        };
+      }
+    });
+    
+    // Handle convert button click
+    convertBtn?.addEventListener('click', async () => {
+      console.log('Convert button clicked');
+      
+      if (!videoPreview || !videoPreview.src) {
+        alert('Please select a video first');
+        return;
+      }
+      
+      // Check if already converting
+      if (convertBtn.classList.contains('loading')) {
+        console.log('Already converting, ignoring click');
+        return;
+      }
+      
+      try {
+        console.log('Starting conversion process');
+        // Show loading state and disable button
+        convertBtn.classList.add('loading');
+        convertBtn.disabled = true;
+        
+        if (gifPreview) gifPreview.style.display = 'none';
+        if (progressText) progressText.textContent = '0%';
+        
+        // Get settings
+        const quality = parseInt(qualitySlider?.value || '7');
+        const fps = parseInt(fpsInput?.value || '10');
+        const width = parseInt(widthInput?.value || '480');
+        const startTime = parseFloat(startTimeInput?.value || '0');
+        const duration = parseFloat(durationInput?.value || '5');
+        
+        // Limit duration for large videos to prevent memory issues
+        const maxDuration = 5; // Maximum of 5 seconds for any video
+        const effectiveDuration = Math.min(duration, maxDuration, videoPreview.duration - startTime);
+        
+        // Downsample dimensions for better performance
+        const maxWidth = 320; // Limit width for better performance
+        const finalWidth = Math.min(width, maxWidth);
+        
+        console.log(`Using settings: quality=${quality}, fps=${fps}, width=${finalWidth}, startTime=${startTime}, duration=${effectiveDuration}`);
+        
+        // Start the conversion process
+        if (!videoBlob) {
+          throw new Error('Video file is not available');
+        }
+        
+        let gifBlob: Blob;
+        
+        // Try using FFmpeg first
+        try {
+          if (!isBrowserCompatible()) {
+            throw new Error('Browser does not support SharedArrayBuffer, falling back to Canvas method');
+          }
+          
+          // Initialize FFmpeg
+          const ffmpeg = await initFFmpeg();
+          console.log(`Converting video to GIF with FFmpeg: Quality ${quality}, FPS ${fps}, width ${finalWidth}px`);
+          
+          // Write video file to memory
+          const videoData = await fetchFile(videoBlob);
+          ffmpeg.FS('writeFile', 'input.mp4', videoData);
+          
+          // Run FFmpeg command to convert video to GIF
+          await ffmpeg.run(
+            // Input options
+            '-i', 'input.mp4',
+            // Start time
+            '-ss', startTime.toString(),
+            // Duration
+            '-t', effectiveDuration.toString(),
+            // Output options - scale, framerate, and dithering
+            '-vf', `scale=${finalWidth}:-1:flags=lanczos,fps=${fps}`,
+            // Quality control - lower values = better quality but larger file
+            '-q:v', (10 - quality).toString(),
+            // Output filename
+            'output.gif'
+          );
+          
+          // Read the resulting GIF file
+          const gifData = ffmpeg.FS('readFile', 'output.gif');
+          console.log('FFmpeg GIF creation completed successfully!');
+          
+          // Create a Blob from the GIF data
+          gifBlob = new Blob([gifData.buffer], { type: 'image/gif' });
+          
+          // Clean up FFmpeg memory
+          try {
+            ffmpeg.FS('unlink', 'input.mp4');
+            ffmpeg.FS('unlink', 'output.gif');
+          } catch (e) {
+            console.error('Error cleaning up FFmpeg files:', e);
+          }
+        } catch (error) {
+          console.warn('FFmpeg method failed, falling back to Canvas method:', error);
+          if (progressText) progressText.textContent = 'Using fallback method...';
+          
+          // Fall back to canvas-based approach
+          gifBlob = await createGifUsingCanvas(
+            videoPreview,
+            fps,
+            startTime,
+            effectiveDuration,
+            finalWidth,
+            quality,
+            (progress) => {
+              const percentage = Math.floor(progress * 100);
+              console.log(`Canvas GIF progress: ${percentage}%`);
+              if (progressText) progressText.textContent = `${percentage}%`;
+            }
+          );
+          
+          console.log('Canvas GIF creation completed successfully!');
+        }
+        
+        // Create object URL for GIF preview
+        if (gifUrl) URL.revokeObjectURL(gifUrl);
+        gifUrl = URL.createObjectURL(gifBlob);
+        
+        // Show GIF preview
+        if (gifPreview) {
+          gifPreview.src = gifUrl;
+          gifPreview.style.display = 'block';
+          
+          // Scroll to the GIF preview
+          setTimeout(() => {
+            gifPreview.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 300);
+        }
+        
+        // Enable download button
+        if (downloadBtn) {
+          downloadBtn.classList.remove('disabled');
+          downloadBtn.setAttribute('aria-disabled', 'false');
+          downloadBtn.setAttribute('href', gifUrl);
+          downloadBtn.setAttribute('download', `converted-${Date.now()}.gif`);
+        }
+        
+      } catch (error) {
+        console.error('Error creating GIF:', error);
+        
+        // Handle specific error types
+        let errorMessage = 'An error occurred during conversion. ';
+        
+        if (error instanceof Error) {
+          // Memory-related error messages
+          if (error.message.includes('memory') || error.message.includes('allocation')) {
+            errorMessage += 'The video may be too large or too long. Try reducing the duration or resolution.';
+          } 
+          // Timeout-related error messages
+          else if (error.message.includes('timeout')) {
+            errorMessage += 'The conversion took too long. Try reducing the duration or quality.';
+          } 
+          // Other errors
+          else {
+            errorMessage += error.message;
+          }
+        }
+        
+        alert(errorMessage);
+      } finally {
+        // Reset UI state
+        if (convertBtn) {
+          convertBtn.classList.remove('loading');
+          convertBtn.disabled = false;
+        }
+      }
+    });
+    
+    // Handle download button click
+    downloadBtn?.addEventListener('click', () => {
+      console.log('Download button clicked');
+      // The download happens automatically due to the href and download attributes
+    });
+  });
+</script>

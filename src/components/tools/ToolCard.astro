@@ -1,0 +1,126 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  href: string;
+  area?: string;
+}
+
+const { title, description, href, area = "tool-card" } = Astro.props;
+---
+
+<a href={href} class="card-link">
+  <article data-area={area} class="card special-bg">
+    <div class="background">
+      <!-- Background content -->
+    </div>
+    <div class="circles">
+      <!-- Visual effects overlay -->
+    </div>
+    <div class="content">
+      <h3 class="title">
+        <span>{title}</span>
+      </h3>
+      <p class="description">{description}</p>
+    </div>
+  </article>
+</a>
+
+<style>
+  .card-link {
+    display: block;
+    text-decoration: none;
+    height: 100%;
+    color: inherit;
+  }
+
+  .card {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    background: var(--special-bg-cyan);
+    cursor: pointer;
+  }
+
+  .card:hover {
+    background: var(--special-bg-cyan-hover);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .background {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .circles {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: lch(0 0 0 / 0.7);
+    background-image: radial-gradient(
+        circle at center center,
+        lch(14 3.04 304.6),
+        lch(5 2.22 217.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 218.25),
+        lch(22 0 0),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+    background-blend-mode: multiply;
+    transition: background-image 0.3s ease-in-out;
+  }
+
+  .card:hover .circles {
+    background-image: radial-gradient(
+        circle at center center,
+        lch(35 53.04 304.6),
+        lch(5 2.22 257.82)
+      ),
+      repeating-radial-gradient(
+        circle at center center,
+        lch(49 53.84 258.25),
+        lch(22 0 250),
+        4px,
+        transparent 20px,
+        transparent 20px
+      );
+  }
+
+  .content {
+    z-index: 2;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--fluid-1);
+    height: 100%;
+    padding: var(--fluid-2);
+  }
+
+  .title {
+    font-size: var(--fluid-3);
+    color: var(--primary-text);
+    margin-bottom: var(--fluid-1);
+  }
+
+  .description {
+    font-size: var(--fluid-1);
+    color: var(--secondary-text);
+    line-height: 1.4;
+    text-wrap: pretty;
+    max-width: 50ch;
+  }
+</style>

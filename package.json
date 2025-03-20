@@ -11,13 +11,21 @@
   },
   "dependencies": {
     "@astrojs/vercel": "^7.5.0",
+    "@ffmpeg/core": "^0.10.0",
+    "@ffmpeg/ffmpeg": "^0.10.1",
     "@fontsource-variable/montserrat": "^5.0.9",
     "@nanostores/persistent": "^0.9.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/edge": "^1.1.1",
     "astro": "^4.2.4",
+    "gif.js": "^0.2.0",
     "nanoid": "^5.0.4",
     "nanostores": "^0.9.5",
-    "ollama": "^0.5.12"
+    "ollama": "^0.5.12",
+    "turndown": "^7.2.0"
+  },
+  "devDependencies": {
+    "@types/ffmpeg": "^1.0.7",
+    "@types/turndown": "^5.0.5"
   }
 }

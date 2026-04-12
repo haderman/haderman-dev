@@ -10,15 +10,15 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/partytown": "^2.1.4",
-    "@astrojs/vercel": "^8.2.9",
+    "@astrojs/partytown": "^2.1.6",
+    "@astrojs/vercel": "^10.0.4",
     "@ffmpeg/core": "^0.10.0",
     "@ffmpeg/ffmpeg": "^0.10.1",
     "@fontsource-variable/montserrat": "^5.2.8",
     "@nanostores/persistent": "^0.9.1",
     "@vercel/analytics": "^1.2.2",
     "@vercel/edge": "^1.2.2",
-    "astro": "^5.14.4",
+    "astro": "^6.1.5",
     "gif.js": "^0.2.0",
     "nanoid": "^5.1.6",
     "nanostores": "^0.9.5",

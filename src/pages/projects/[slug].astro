@@ -1,0 +1,158 @@
+---
+import { Image } from "astro:assets";
+
+import Chips from "@/components/Chips.astro";
+import Layout from "@/layouts/Layout.astro";
+import { projects } from "@/data/projects";
+import "@/styles/root.css";
+
+export const prerender = true;
+
+export function getStaticPaths() {
+  return projects.map((project) => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<Layout title={`${project.title} - Haderman`}>
+  <header class="project-header">
+    <a href="/">← Back home</a>
+  </header>
+
+  <main class="project-page">
+    <section class="project-hero special-bg">
+      <p class="eyebrow">Project</p>
+      <h1>{project.title}</h1>
+      <p class="intro">{project.description}</p>
+      <Chips values={[...project.stack]} />
+
+      <div class="actions">
+        <a
+          class="accent-special"
+          href={project.liveUrl}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Visit project ↗
+        </a>
+      </div>
+    </section>
+
+    <figure class="project-media special-bg">
+      {
+        typeof project.image === "string" ? (
+          <img src={project.image} alt={`${project.title} screenshot`} />
+        ) : (
+          <Image src={project.image} alt={`${project.title} screenshot`} />
+        )
+      }
+    </figure>
+
+    <section class="content-section">
+      <h2>Overview</h2>
+      <p>{project.overview}</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Features</h2>
+      <ul>
+        {project.features.map((feature) => <li>{feature}</li>)}
+      </ul>
+    </section>
+
+    <nav class="project-navigation" aria-label="Project navigation">
+      <a href="/">← All projects</a>
+    </nav>
+  </main>
+</Layout>
+
+<style>
+  body {
+    padding: var(--fluid-1);
+  }
+
+  .project-header,
+  .project-page {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .project-header {
+    padding-block: var(--fluid-2);
+  }
+
+  .project-page {
+    display: grid;
+    gap: var(--fluid-2);
+    padding-bottom: var(--fluid-5);
+  }
+
+  .project-hero,
+  .project-media,
+  .content-section {
+    padding: var(--fluid-2);
+  }
+
+  .project-hero {
+    display: grid;
+    gap: var(--fluid-1);
+  }
+
+  h1 {
+    font-size: var(--fluid-5);
+  }
+
+  .eyebrow {
+    color: var(--accent-color);
+    font-size: var(--fluid-0);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    font-size: var(--fluid-2);
+  }
+
+  .project-media {
+    margin: 0;
+  }
+
+  .project-media img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--fluid-1);
+  }
+
+  .actions a {
+    padding: var(--fluid--1) var(--fluid-0);
+  }
+
+  .content-section {
+    border-top: 1px solid var(--secondary-text);
+  }
+
+  .content-section h2 {
+    margin-bottom: var(--fluid-1);
+    text-align: left;
+  }
+
+  .content-section ul {
+    display: grid;
+    gap: var(--fluid--1);
+    padding-left: var(--fluid-1);
+  }
+
+  .project-navigation {
+    padding-top: var(--fluid-1);
+  }
+</style>

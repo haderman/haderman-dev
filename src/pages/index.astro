@@ -1,20 +1,14 @@
 ---
 import Profile from "@/components/cards/Profile.astro";
-import Quote from "@/components/cards/Quote.astro";
 import Contact from "@/components/cards/Contact.astro";
 import Project from "@/components/cards/Project.astro";
-import Chat from "@/components/Chat.astro";
 import Layout from "@/layouts/Layout.astro";
 import GameOfLife from "@/components/cards/GameOfLife.astro";
-import imgProjectCovidSrc from "@/images/covid.png";
 import Bento from "@/layouts/Bento.astro";
-import ImageOfTheDay from "@/components/cards/ImageOfTheDay.astro";
 import Photo from "@/components/cards/Photo.astro";
+import { projects } from "@/data/projects";
 
 import "@/styles/root.css";
-
-const projectAlanImage =
-  "https://raw.githubusercontent.com/haderman/alan-docs/main/screenshots/landing-hero.png";
 ---
 
 <Layout title="Haderman - home">
@@ -27,23 +21,18 @@ const projectAlanImage =
     <Profile />
     <Photo />
     <Contact />
-    <Project
-      name="Alan"
-      title="Alan AI Chat"
-      description="VSCode extension to create multiple AI chats"
-      imgSrc={projectAlanImage}
-      stack={["React", "Typescript", "OpenAI API", "NodeJS", "Astro"]}
-      href="https://www.alanai.app/"
-    />
-    <Project
-      name="Covid"
-      title="Covid 19 Tracker"
-      description="COVID-19 tracker with global statistics and visualizations"
-      imgSrc={imgProjectCovidSrc}
-      stack={["React", "Javascript", "NextJS", "Graphql"]}
-      href="https://covidx19.vercel.app/"
-    />
-    <!-- <ImageOfTheDay /> -->
+    {
+      projects.map((project) => (
+        <Project
+          name={project.name}
+          title={project.title}
+          description={project.description}
+          imgSrc={project.image}
+          stack={[...project.stack]}
+          href={`/projects/${project.slug}`}
+        />
+      ))
+    }
     <GameOfLife />
   </Bento>
   <footer>
@@ -71,8 +60,6 @@ const projectAlanImage =
     width: 100%;
     max-width: 1200px;
     padding: var(--fluid-2) 0;
-
-    /* display: none; */
   }
 
   main {
@@ -81,7 +68,7 @@ const projectAlanImage =
   }
 
   .card {
-    --rad: 0; /* var(--fluid-1); */
+    --rad: 0;
 
     display: flex;
     border-radius: var(--rad);
@@ -96,8 +83,7 @@ const projectAlanImage =
   .background {
     z-index: 0;
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
 
@@ -111,8 +97,7 @@ const projectAlanImage =
   .circles {
     z-index: 0;
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
     background-color: lch(0 0 0 / 0.7);
@@ -151,11 +136,8 @@ const projectAlanImage =
   .overlay {
     z-index: 1;
     position: absolute;
-    top: 0;
-    left: 0;
+    inset: 0;
     width: 100%;
     height: 100%;
-    /* backdrop-filter: blur(2px); */
-    /* background-color: rgba(0, 0, 0, 0.2); */
   }
 </style>

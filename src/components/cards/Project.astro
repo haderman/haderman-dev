@@ -11,9 +11,18 @@ type Props = {
   imgSrc: ImageMetadata | string;
   href: string;
   stack: Array<string>;
+  external?: boolean;
 };
 
-const { name, title, description, imgSrc, stack, href } = Astro.props;
+const {
+  name,
+  title,
+  description,
+  imgSrc,
+  stack,
+  href,
+  external = false,
+} = Astro.props;
 
 const ariaLabelledby = `project-${name}-heading`;
 const imgAlt = `Project ${title}`;
@@ -30,9 +39,14 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
   }
   <div>
     <h2 id={ariaLabelledby}>
-      <a href={href} target="_blank" aria-labelledby={ariaLabelledby}>
+      <a
+        href={href}
+        aria-labelledby={ariaLabelledby}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noreferrer" : undefined}
+      >
         <span>{title}</span>
-        <Fragment set:html={externalLinkSVG} />
+        {external && <Fragment set:html={externalLinkSVG} />}
       </a>
     </h2>
     <p>{description}</p>

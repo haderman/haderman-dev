@@ -15,8 +15,7 @@
       "profile profile"
       "contact contact"
       "quote quote"
-      "project-alan project-alan"
-      "project-covid project-covid"
+      "projects projects"
       "game-of-life game-of-life";
 
     @media screen and (min-width: 768px) {
@@ -26,7 +25,7 @@
       grid-template-areas:
         "profile profile profile photo"
         "profile profile profile contact"
-        "project-alan project-alan project-covid project-covid"
+        "projects projects projects projects"
         "game-of-life game-of-life . .";
     }
   }
@@ -66,28 +65,31 @@
       grid-area: skills;
     }
 
-    &[data-area="project-alan"] {
-      grid-area: project-alan;
-    }
-
-    &[data-area="project-covid"] {
-      grid-area: project-covid;
-    }
-
-    &[data-area="project-c"] {
-      grid-area: project-c;
-    }
-
-    &[data-area="project-d"] {
-      grid-area: project-d;
-    }
-
     &[data-area="image-of-the-day"] {
       grid-area: image-of-the-day;
     }
 
     &[data-area="game-of-life"] {
       grid-area: game-of-life;
+    }
+  }
+
+  .bento > .projects-grid {
+    grid-area: projects;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--fluid-1);
+    min-width: 0;
+
+    > article {
+      min-width: 0;
+    }
+
+    @media screen and (min-width: 768px) {
+      grid-template-columns: repeat(
+        var(--project-count, 1),
+        minmax(0, 1fr)
+      );
     }
   }
 </style>

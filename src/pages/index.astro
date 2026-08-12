@@ -21,18 +21,23 @@ import "@/styles/root.css";
     <Profile />
     <Photo />
     <Contact />
-    {
-      projects.map((project) => (
-        <Project
-          name={project.name}
-          title={project.title}
-          description={project.description}
-          imgSrc={project.image}
-          stack={[...project.stack]}
-          href={`/projects/${project.slug}`}
-        />
-      ))
-    }
+    <div
+      class="projects-grid"
+      style={`--project-count: ${Math.max(projects.length, 1)}`}
+    >
+      {
+        projects.map((project) => (
+          <Project
+            name={project.name}
+            title={project.title}
+            description={project.description}
+            imgSrc={project.image}
+            stack={[...project.stack]}
+            href={`/projects/${project.slug}`}
+          />
+        ))
+      }
+    </div>
     <GameOfLife />
   </Bento>
   <footer>

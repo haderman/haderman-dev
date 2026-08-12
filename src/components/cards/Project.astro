@@ -30,14 +30,16 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
 ---
 
 <article data-area={dataArea} class="card project special-bg">
-  {
-    typeof imgSrc === "string" ? (
-      <img src={imgSrc} alt={imgAlt} />
-    ) : (
-      <Image src={imgSrc} alt={imgAlt} />
-    )
-  }
-  <div>
+  <div class="project-image">
+    {
+      typeof imgSrc === "string" ? (
+        <img src={imgSrc} alt={imgAlt} />
+      ) : (
+        <Image src={imgSrc} alt={imgAlt} />
+      )
+    }
+  </div>
+  <div class="project-content">
     <h2 id={ariaLabelledby}>
       <a
         href={href}
@@ -59,9 +61,24 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
     gap: var(--fluid-2);
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
-    div {
+    .project-image {
+      flex: 0 0 auto;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+
+      img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+      }
+    }
+
+    .project-content {
       position: relative;
       width: 100%;
       display: flex;
@@ -70,7 +87,7 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
       gap: var(--fluid-0);
     }
 
-    div::before {
+    .project-content::before {
       content: "";
       position: absolute;
       top: 0;
@@ -87,6 +104,9 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
     }
 
     h2 {
+      font-size: var(--fluid-1);
+      text-align: left;
+
       a {
         position: relative;
         display: inline-flex;
@@ -105,11 +125,11 @@ const dataArea = `project-${name.toLocaleLowerCase()}`;
     }
 
     @media screen and (min-width: 1024px) {
-      :is(img) {
+      .project-image img {
         filter: grayscale(1);
       }
 
-      &:hover :is(img) {
+      &:hover .project-image img {
         filter: grayscale(0);
       }
     }

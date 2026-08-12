@@ -34,6 +34,30 @@ export const projects = [
       "GraphQL-powered data",
     ],
   },
+  // {
+  //   slug: "atlas",
+  //   name: "Atlas",
+  //   title: "Atlas Dashboard (Mock)",
+  //   description: "Mock project card for previewing a dashboard layout.",
+  //   image: "/projects/mock-atlas.svg",
+  //   stack: ["React", "TypeScript", "Tailwind CSS"],
+  //   liveUrl: "https://example.com/atlas",
+  //   overview:
+  //     "Atlas is a placeholder project used to preview how a dashboard-focused card fits into the home page.",
+  //   features: ["Dashboard overview", "Responsive layout", "Reusable UI components"],
+  // },
+  // {
+  //   slug: "signal",
+  //   name: "Signal",
+  //   title: "Signal Notes (Mock)",
+  //   description: "Mock project card for a focused notes experience.",
+  //   image: "/projects/mock-signal.svg",
+  //   stack: ["Astro", "TypeScript", "SQLite"],
+  //   liveUrl: "https://example.com/signal",
+  //   overview:
+  //     "Signal is a placeholder project used to preview a more editorial project card alongside Atlas.",
+  //   features: ["Quick capture", "Searchable notes", "Minimal interface"],
+  // },
 ] as const;
 
 export function getProject(slug: string) {

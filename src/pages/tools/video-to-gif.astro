@@ -719,8 +719,10 @@ import "@/styles/root.css";
           const gifData = ffmpeg.FS('readFile', 'output.gif');
           console.log('FFmpeg GIF creation completed successfully!');
           
-          // Create a Blob from the GIF data
-          gifBlob = new Blob([gifData.buffer], { type: 'image/gif' });
+          // Create a Blob from a copied ArrayBuffer to avoid SharedArrayBuffer typing.
+          const gifBuffer = new ArrayBuffer(gifData.byteLength);
+          new Uint8Array(gifBuffer).set(gifData);
+          gifBlob = new Blob([gifBuffer], { type: 'image/gif' });
           
           // Clean up FFmpeg memory
           try {

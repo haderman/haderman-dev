@@ -1,0 +1,152 @@
+---
+import { render, getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import {
+  formatBlogAuthorship,
+  formatBlogDate,
+  getBlogSlug,
+} from "@/data/blog";
+import "@/styles/root.css";
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => !data.draft);
+
+  return posts.map((post) => ({
+    params: { slug: getBlogSlug(post) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const publishedAt = post.data.publishDate.toISOString();
+---
+
+<Layout title={`${post.data.title} - Haderman`}>
+  <header class="post-header">
+    <a href="/blog">← All writing</a>
+    <p class="eyebrow">Writing</p>
+    <h1>{post.data.title}</h1>
+    <p class="description">{post.data.description}</p>
+    <div class="post-meta">
+      <span class="post-authorship">
+        {formatBlogAuthorship(post.data.authorship)}
+      </span>
+      <time datetime={publishedAt}>
+        {formatBlogDate(post.data.publishDate)}
+      </time>
+      {
+        post.data.tags.length > 0 && (
+          <span>{post.data.tags.join(" · ")}</span>
+        )
+      }
+    </div>
+  </header>
+
+  <main class="post-page">
+    <article class="post-content">
+      <Content />
+    </article>
+  </main>
+</Layout>
+
+<style>
+  body {
+    padding: var(--fluid-1);
+  }
+
+  .post-header,
+  .post-page {
+    width: 100%;
+    max-width: 800px;
+    margin-inline: auto;
+  }
+
+  .post-header {
+    display: grid;
+    gap: var(--fluid-1);
+    padding-block: var(--fluid-2) var(--fluid-3);
+  }
+
+  .post-header > a,
+  .eyebrow {
+    color: var(--accent-color);
+  }
+
+  .eyebrow {
+    margin-top: var(--fluid-1);
+    font-size: var(--fluid--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 24ch;
+    font-size: var(--fluid-5);
+    text-align: left;
+  }
+
+  .description {
+    color: var(--secondary-text);
+    font-size: var(--fluid-1);
+  }
+
+  .post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fluid--1);
+    color: var(--secondary-text);
+    font-size: var(--fluid--1);
+  }
+
+  .post-authorship {
+    color: var(--primary-text);
+  }
+
+  .post-content {
+    display: grid;
+    gap: var(--fluid-1);
+    padding-bottom: var(--fluid-5);
+  }
+
+  .post-content :global(h2) {
+    margin-top: var(--fluid-2);
+    font-size: var(--fluid-3);
+    text-align: left;
+  }
+
+  .post-content :global(p) {
+    color: var(--primary-text);
+    font-size: var(--fluid-1);
+    line-height: 1.7;
+  }
+
+  .post-content :global(ul),
+  .post-content :global(ol) {
+    display: grid;
+    gap: var(--fluid--1);
+    padding-left: var(--fluid-1);
+  }
+
+  .post-content :global(a) {
+    color: var(--accent-color);
+  }
+
+  .post-content :global(code) {
+    padding: var(--fluid--3) var(--fluid--2);
+    background: var(--accent-special);
+    color: var(--accent-color);
+  }
+
+  .post-content :global(pre) {
+    overflow-x: auto;
+    padding: var(--fluid-1);
+    background: var(--accent-special);
+  }
+
+  .post-content :global(pre code) {
+    padding: 0;
+  }
+</style>

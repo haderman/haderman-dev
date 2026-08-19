@@ -1,0 +1,99 @@
+---
+import BlogPost from "@/components/cards/BlogPost.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getPublishedPosts } from "@/data/blog";
+import "@/styles/root.css";
+
+export const prerender = true;
+
+const posts = await getPublishedPosts();
+---
+
+<Layout title="Writing - Haderman">
+  <header class="blog-header">
+    <a href="/">← Home</a>
+    <div>
+      <p class="eyebrow">Writing</p>
+      <h1>Notes, experiments, and things I’m learning.</h1>
+    </div>
+  </header>
+
+  <main class="blog-page">
+    {
+      posts.length > 0 ? (
+        <div class="posts-grid">
+          {posts.map((post, index) => (
+            <BlogPost
+              post={post}
+              label={index === 0 ? "Latest" : post.data.featured ? "Featured" : "Note"}
+              latest={index === 0}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-state">No posts published yet.</p>
+      )
+    }
+  </main>
+</Layout>
+
+<style>
+  body {
+    padding: var(--fluid-1);
+  }
+
+  .blog-header,
+  .blog-page {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+  }
+
+  .blog-header {
+    display: grid;
+    gap: var(--fluid-2);
+    padding-block: var(--fluid-2) var(--fluid-3);
+  }
+
+  .blog-header > a {
+    color: var(--accent-color);
+  }
+
+  .blog-header > div {
+    display: grid;
+    gap: var(--fluid--2);
+  }
+
+  .eyebrow {
+    color: var(--accent-color);
+    font-size: var(--fluid--1);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    max-width: 24ch;
+    font-size: var(--fluid-4);
+    text-align: left;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: var(--fluid-1);
+  }
+
+  .empty-state {
+    padding: var(--fluid-2);
+    border: 1px solid var(--secondary-text);
+  }
+
+  @media screen and (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .posts-grid :global(.post-card.latest) {
+      grid-column: span 2;
+    }
+  }
+</style>

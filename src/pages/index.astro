@@ -9,6 +9,16 @@ import Photo from "@/components/cards/Photo.astro";
 import { projects } from "@/data/projects";
 
 import "@/styles/root.css";
+import Blog from "@/components/cards/Blog.astro";
+import { getPublishedPosts } from "@/data/blog";
+
+const blogPosts = await getPublishedPosts();
+const latestPost = blogPosts[0];
+const featuredPosts = latestPost
+  ? blogPosts
+      .filter((post) => post.id !== latestPost.id && post.data.featured)
+      .slice(0, 3)
+  : [];
 ---
 
 <Layout title="Haderman - home">
@@ -38,6 +48,7 @@ import "@/styles/root.css";
         ))
       }
     </div>
+    {latestPost && <Blog latest={latestPost} featured={featuredPosts} />}
     <GameOfLife />
   </Bento>
   <footer>

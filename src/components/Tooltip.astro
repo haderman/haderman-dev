@@ -1,0 +1,322 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  anchorName: string;
+}
+
+const { id, label, anchorName } = Astro.props;
+---
+
+<span
+  class="tooltip-anchor"
+  data-tooltip-trigger={id}
+  data-tooltip-anchor-name={anchorName}
+>
+  <slot name="trigger" />
+</span>
+<div
+  id={id}
+  class="tooltip"
+  data-tooltip
+  popover="auto"
+  role="tooltip"
+  style={`position-anchor: ${anchorName};`}
+>
+  {label}
+</div>
+
+<script>
+  type TooltipController = {
+    trigger: HTMLElement;
+    tooltip: HTMLElement;
+    closeTimer?: number;
+  };
+
+  const closeDelay = 120;
+  const supportsPopover = "popover" in HTMLElement.prototype;
+  const supportsAnchorPositioning =
+    typeof CSS !== "undefined" &&
+    CSS.supports("anchor-name: --tooltip-anchor") &&
+    CSS.supports("position-area: block-start");
+  const controllers = new Map<HTMLElement, TooltipController>();
+  const initialized = new WeakSet<HTMLElement>();
+
+  function clearCloseTimer(controller: TooltipController) {
+    if (controller.closeTimer !== undefined) {
+      window.clearTimeout(controller.closeTimer);
+      controller.closeTimer = undefined;
+    }
+  }
+
+  function isActive(controller: TooltipController) {
+    return (
+      controller.trigger.matches(":hover, :focus-within") ||
+      controller.tooltip.matches(":hover, :focus-within")
+    );
+  }
+
+  function syncTooltipState(tooltip: HTMLElement, isOpen: boolean) {
+    if (isOpen) {
+      tooltip.setAttribute("data-tooltip-open", "");
+      return;
+    }
+
+    tooltip.removeAttribute("data-tooltip-open");
+    if (!supportsAnchorPositioning) {
+      tooltip.style.removeProperty("left");
+      tooltip.style.removeProperty("top");
+    }
+  }
+
+  function positionTooltip(controller: TooltipController) {
+    const { trigger, tooltip } = controller;
+    const triggerRect = trigger.getBoundingClientRect();
+    const tooltipRect = tooltip.getBoundingClientRect();
+    const gap = 8;
+
+    let top = triggerRect.top - tooltipRect.height - gap;
+    if (top < gap) {
+      top = triggerRect.bottom + gap;
+    }
+
+    const maxLeft = Math.max(gap, window.innerWidth - tooltipRect.width - gap);
+    const left = Math.min(
+      Math.max(
+        gap,
+        triggerRect.left + (triggerRect.width - tooltipRect.width) / 2,
+      ),
+      maxLeft,
+    );
+
+    tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${Math.min(
+      Math.max(gap, top),
+      Math.max(gap, window.innerHeight - tooltipRect.height - gap),
+    )}px`;
+  }
+
+  function closeTooltip(tooltip: HTMLElement) {
+    const controller = controllers.get(tooltip);
+    if (!controller) {
+      return;
+    }
+
+    clearCloseTimer(controller);
+
+    if (supportsPopover && "hidePopover" in tooltip) {
+      try {
+        tooltip.hidePopover();
+      } catch {
+        // The popover may already have been dismissed by the browser.
+      }
+    }
+
+    syncTooltipState(tooltip, false);
+  }
+
+  function openTooltip(controller: TooltipController) {
+    const { tooltip } = controller;
+    clearCloseTimer(controller);
+
+    controllers.forEach((otherController) => {
+      if (otherController.tooltip !== tooltip) {
+        closeTooltip(otherController.tooltip);
+      }
+    });
+
+    if (supportsPopover && "showPopover" in tooltip) {
+      try {
+        if (!tooltip.matches(":popover-open")) {
+          tooltip.showPopover();
+        }
+      } catch {
+        // Fall back to the data attribute when the native popover cannot open.
+      }
+    }
+
+    syncTooltipState(tooltip, true);
+
+    if (!supportsAnchorPositioning) {
+      window.requestAnimationFrame(() => positionTooltip(controller));
+    }
+  }
+
+  function scheduleClose(controller: TooltipController) {
+    clearCloseTimer(controller);
+    controller.closeTimer = window.setTimeout(() => {
+      if (!isActive(controller)) {
+        closeTooltip(controller.tooltip);
+      }
+    }, closeDelay);
+  }
+
+  function pruneControllers() {
+    controllers.forEach((controller, tooltip) => {
+      if (!controller.trigger.isConnected || !tooltip.isConnected) {
+        closeTooltip(tooltip);
+        controllers.delete(tooltip);
+      }
+    });
+  }
+
+  function initTooltips() {
+    pruneControllers();
+
+    document.querySelectorAll<HTMLElement>(".tooltip-anchor").forEach((anchor) => {
+      if (initialized.has(anchor)) {
+        return;
+      }
+
+      const trigger = anchor.firstElementChild;
+      const tooltipId = anchor.dataset.tooltipTrigger;
+      const anchorName = anchor.dataset.tooltipAnchorName;
+      const tooltip = tooltipId
+        ? document.getElementById(tooltipId)
+        : undefined;
+
+      if (
+        !(trigger instanceof HTMLElement) ||
+        !anchorName ||
+        !(tooltip instanceof HTMLElement)
+      ) {
+        return;
+      }
+
+      const controller: TooltipController = { trigger, tooltip };
+      controllers.set(tooltip, controller);
+      initialized.add(anchor);
+
+      trigger.style.setProperty("anchor-name", anchorName);
+      if (!trigger.hasAttribute("aria-describedby")) {
+        trigger.setAttribute("aria-describedby", tooltip.id);
+      }
+
+      trigger.addEventListener("pointerenter", (event) => {
+        if ((event as PointerEvent).pointerType !== "touch") {
+          openTooltip(controller);
+        }
+      });
+      trigger.addEventListener("pointerleave", () => {
+        scheduleClose(controller);
+      });
+      trigger.addEventListener("focusin", () => openTooltip(controller));
+      trigger.addEventListener("focusout", () => scheduleClose(controller));
+
+      tooltip.addEventListener("pointerenter", () => {
+        clearCloseTimer(controller);
+      });
+      tooltip.addEventListener("pointerleave", () => {
+        scheduleClose(controller);
+      });
+      tooltip.addEventListener("focusin", () => openTooltip(controller));
+      tooltip.addEventListener("focusout", () => scheduleClose(controller));
+      tooltip.addEventListener("toggle", (event) => {
+        const isOpen = (event as ToggleEvent).newState === "open";
+        syncTooltipState(tooltip, isOpen);
+      });
+    });
+
+    if (!document.documentElement.dataset.tooltipsInitialized) {
+      document.documentElement.dataset.tooltipsInitialized = "true";
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape") {
+          controllers.forEach((controller) => {
+            closeTooltip(controller.tooltip);
+          });
+        }
+      });
+
+      document.addEventListener("pointerdown", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) {
+          return;
+        }
+
+        controllers.forEach((controller) => {
+          if (
+            !controller.trigger.contains(target) &&
+            !controller.tooltip.contains(target)
+          ) {
+            closeTooltip(controller.tooltip);
+          }
+        });
+      });
+
+      const repositionOpenTooltips = () => {
+        if (supportsAnchorPositioning) {
+          return;
+        }
+
+        controllers.forEach((controller) => {
+          if (controller.tooltip.hasAttribute("data-tooltip-open")) {
+            positionTooltip(controller);
+          }
+        });
+      };
+
+      window.addEventListener("resize", repositionOpenTooltips);
+      window.addEventListener("scroll", repositionOpenTooltips, true);
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTooltips, { once: true });
+  } else {
+    initTooltips();
+  }
+
+  document.addEventListener("astro:page-load", initTooltips);
+</script>
+
+<style is:global>
+  .tooltip-anchor {
+    display: contents;
+  }
+
+  [data-tooltip] {
+    display: none;
+    position: fixed;
+    inset: auto;
+    margin: 0;
+    z-index: 1000;
+    max-inline-size: min(20rem, calc(100vw - 2rem));
+    padding: 0.45rem 0.65rem;
+    border: 1px solid oklch(0.45 0 0);
+    border-radius: 0.25rem;
+    background: oklch(0.12 0 0);
+    color: var(--primary-text);
+    font-size: var(--fluid--1);
+    line-height: 1.3;
+    text-align: center;
+    pointer-events: auto;
+  }
+
+  [data-tooltip]:is(:popover-open, .\:popover-open, [data-tooltip-open]) {
+    display: block;
+  }
+
+  @supports (anchor-name: --tooltip-anchor) and
+    (position-area: block-start) {
+    [data-tooltip] {
+      inset: auto;
+      margin: unset;
+      position-area: block-start;
+      position-try-fallbacks: flip-block;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-tooltip] {
+      transition:
+        opacity 120ms ease,
+        transform 120ms ease;
+    }
+
+    [data-tooltip]:not(:is(:popover-open, .\:popover-open, [data-tooltip-open])) {
+      opacity: 0;
+      transform: translateY(0.2rem);
+    }
+  }
+</style>

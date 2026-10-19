@@ -1,4 +1,5 @@
 ---
+import Tooltip from "@/components/Tooltip.astro";
 import quouteSVG from '@/icons/quote.svg?raw';
 import robotSVG from '@/icons/robot.svg?raw';
 ---
@@ -6,9 +7,20 @@ import robotSVG from '@/icons/robot.svg?raw';
 <article data-area="quote" class="card">
   <div>
     <Fragment set:html={quouteSVG} />
-    <button class="generate">
-      <Fragment set:html={robotSVG} />
-    </button>
+    <Tooltip
+      id="tooltip-quote-generate"
+      label="Generate a new quote"
+      anchorName="--tooltip-quote-generate"
+    >
+      <button
+        slot="trigger"
+        class="generate"
+        type="button"
+        aria-label="Generate a new quote"
+      >
+        <Fragment set:html={robotSVG} />
+      </button>
+    </Tooltip>
   </div>
   <q>
     The only way to do great work is to love what you do.

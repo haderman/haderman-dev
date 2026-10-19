@@ -1,15 +1,38 @@
 ---
+import Tooltip from "@/components/Tooltip.astro";
 import arrowLeftSvg from '@/icons/arrow-big-left.svg?raw';
 import arrowRightSvg from '@/icons/arrow-big-right.svg?raw';
 ---
 
 <div id="theme-controls" class="controls">
-  <button name="left">
-    <Fragment set:html={arrowLeftSvg} />
-  </button>
-  <button name="right">
-    <Fragment set:html={arrowRightSvg} />
-  </button>
+  <Tooltip
+    id="tooltip-theme-previous"
+    label="Previous theme"
+    anchorName="--tooltip-theme-previous"
+  >
+    <button
+      name="left"
+      type="button"
+      aria-label="Previous theme"
+      slot="trigger"
+    >
+      <Fragment set:html={arrowLeftSvg} />
+    </button>
+  </Tooltip>
+  <Tooltip
+    id="tooltip-theme-next"
+    label="Next theme"
+    anchorName="--tooltip-theme-next"
+  >
+    <button
+      name="right"
+      type="button"
+      aria-label="Next theme"
+      slot="trigger"
+    >
+      <Fragment set:html={arrowRightSvg} />
+    </button>
+  </Tooltip>
 </div>
 
 <script>

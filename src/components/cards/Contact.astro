@@ -1,4 +1,5 @@
 ---
+import Tooltip from "@/components/Tooltip.astro";
 import linkedinSVG from "@/icons/linkedin.svg?raw";
 import xSVG from "@/icons/x.svg?raw";
 import githubSVG from "@/icons/github.svg?raw";
@@ -7,26 +8,68 @@ import mailSVG from "@/icons/mail.svg?raw";
 
 <article data-area="contact" class="card">
   <div class="contact-container">
-    <a href="https://x.com/haderman7" target="_blank" class="accent-special">
-      <Fragment set:html={xSVG} />
-      <span>Twitter</span>
-    </a>
-    <a
-      href="https://github.com/haderman"
-      target="_blank"
-      class="accent-special"
+    <Tooltip
+      id="tooltip-contact-twitter"
+      label="Twitter"
+      anchorName="--tooltip-contact-twitter"
     >
-      <Fragment set:html={githubSVG} />
-      <span>Github</span>
-    </a>
-    <a href="mailto:hacasua@gmail.com" class="accent-special">
-      <Fragment set:html={mailSVG} />
-      <span>Mail</span>
-    </a>
-    <a href="https://www.linkedin.com/in/hader-cardona/" class="accent-special">
-      <Fragment set:html={linkedinSVG} />
-      <span>Linkedin</span>
-    </a>
+      <a
+        href="https://x.com/haderman7"
+        target="_blank"
+        class="accent-special"
+        aria-label="Twitter"
+        slot="trigger"
+      >
+        <Fragment set:html={xSVG} />
+        <span>Twitter</span>
+      </a>
+    </Tooltip>
+    <Tooltip
+      id="tooltip-contact-github"
+      label="GitHub"
+      anchorName="--tooltip-contact-github"
+    >
+      <a
+        href="https://github.com/haderman"
+        target="_blank"
+        class="accent-special"
+        aria-label="GitHub"
+        slot="trigger"
+      >
+        <Fragment set:html={githubSVG} />
+        <span>Github</span>
+      </a>
+    </Tooltip>
+    <Tooltip
+      id="tooltip-contact-mail"
+      label="Mail"
+      anchorName="--tooltip-contact-mail"
+    >
+      <a
+        href="mailto:hacasua@gmail.com"
+        class="accent-special"
+        aria-label="Mail"
+        slot="trigger"
+      >
+        <Fragment set:html={mailSVG} />
+        <span>Mail</span>
+      </a>
+    </Tooltip>
+    <Tooltip
+      id="tooltip-contact-linkedin"
+      label="LinkedIn"
+      anchorName="--tooltip-contact-linkedin"
+    >
+      <a
+        href="https://www.linkedin.com/in/hader-cardona/"
+        class="accent-special"
+        aria-label="LinkedIn"
+        slot="trigger"
+      >
+        <Fragment set:html={linkedinSVG} />
+        <span>Linkedin</span>
+      </a>
+    </Tooltip>
   </div>
 </article>
 
